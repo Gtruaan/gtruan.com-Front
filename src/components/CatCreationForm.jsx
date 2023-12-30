@@ -33,11 +33,13 @@ export default function CatCreationForm() {
     };
 
     const handleConfirmation = () => {
-        postCat({
-            'name': name,
-            'variation': variation
-        });
-        setIsOpen(false);
+        if (name != '') {
+            postCat({
+                'name': name,
+                'variation': variation
+            });
+            setIsOpen(false);
+        }
     };
 
     return (
