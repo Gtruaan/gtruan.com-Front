@@ -58,6 +58,11 @@ p {
   margin: 0;
 }
 
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
 button {
   border: 1px solid transparent;
   padding: 0.4em 0.8em;
