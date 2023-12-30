@@ -1,0 +1,73 @@
+.cat-container {
+    display: grid;
+    grid-template-columns: repeat(3, auto [col-start]);
+}
+
+.cat {
+    width: 250px;
+    height: 250px;
+
+    padding: 10px;
+}
+
+.cat-icon {
+    position: relative;
+    height: 70%;
+    margin-top: 0px;
+
+    filter: drop-shadow(0px 0px 6px rgb(255, 255, 255));
+    will-change: filter;
+    transition: filter 300ms, height 300ms;
+}
+
+.cat-icon:hover {
+    height: 80%;
+    filter: drop-shadow(0px 0px 14px rgb(255, 255, 255));
+}
+
+.cat-name {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.cat-age {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.loading-image {
+    margin-top: 40px;
+    width: 50px;
+    height: 50px;
+
+    animation: spin 1s infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+@media screen and (max-width: 769px) {
+    .cat {
+        width: 150px;
+        height: 150px;
+    
+        padding: 10px;
+    }
+
+    .cat-name {
+        margin-bottom: 0;
+    }
+
+    .cat-container {
+        display: grid;
+        grid-template-columns: repeat(2, auto [col-start]);
+    }
+}
