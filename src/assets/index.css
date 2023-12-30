@@ -27,7 +27,7 @@ body {
   min-height: 100vh;
 
   background-color: var(--bg-color);
-  background-image: url("assets/galaxy-bg.jpg");
+  background-image: url("galaxy-bg.jpg");
   background-size: 800px;
   background-repeat: repeat;
 
