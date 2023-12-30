@@ -1,8 +1,30 @@
-# React + Vite
+# gtruan.com Front-end
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Built with React on top of Vite and vanilla CSS.
+Site is running (or should be) on [gtruan.com](https://gtruan.com).
 
-Currently, two official plugins are available:
+Sprites were made by me on **paint.net** :smile:.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Development
+
+Installation
+
+```bash
+yarn install
+```
+
+---------------
+
+Running
+
+```bash
+yarn start
+```
+
+---------------
+
+Building
+
+```bash
+yarn build
+```
