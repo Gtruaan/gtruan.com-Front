@@ -3,7 +3,7 @@
 Built with React on top of Vite and vanilla CSS.
 Site is running (or should be) on [gtruan.com](https://gtruan.com).
 
-Sprites were made by me on **paint.net** :smile:.
+Sprites were made by me on **paint.net** :smile:
 
 ## Development
 
