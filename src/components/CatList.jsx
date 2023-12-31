@@ -18,6 +18,7 @@ export default function CatContainer() {
             }
         }).then(res => res.json()
             .then(result => {
+                result.sort(() => Math.random() - 0.5);
                 setCatContainer({
                     loaded: true,
                     cats: result
