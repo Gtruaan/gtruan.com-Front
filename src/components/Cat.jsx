@@ -17,8 +17,8 @@ function calculateAge(date) {
         const interval = seconds / secondsInInterval[key];
 
         if (interval > 1) {
-            let displayValue = Math.floor(interval);
-            let displayTimespan = ` ${key}${(key === 'mes') ? 'e' : ''}${(displayValue > 1) ? 's' : ''}`;
+            const displayValue = Math.floor(interval);
+            const displayTimespan = ` ${key}${(key === 'mes' && displayValue > 1) ? 'e' : ''}${(displayValue > 1) ? 's' : ''}`;
             return displayValue + displayTimespan;
         }
     }
