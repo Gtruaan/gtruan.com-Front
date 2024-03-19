@@ -62,7 +62,7 @@ export default function CatCreationForm() {
                     <select className='cat-variation-input' 
                         defaultValue={variation} 
                         onChange={handleVariationChange}>
-                        <option value='black'>Black</option>
+                        <option value='black'>Negro</option>
                         <option value='tabby'>Tabby</option>
                         <option value='orange'>Naranja</option>
                         <option value='white'>Blanco</option>
