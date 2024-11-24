@@ -27,7 +27,7 @@ function calculateAge(date) {
 }
 
 function cropName(name) {
-    const maxLength = 15;
+    const maxLength = 14;
     const trailingString = '...';
 
     if (name.length > maxLength) {

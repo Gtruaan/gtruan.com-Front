@@ -18,7 +18,9 @@ export default function CatContainer() {
             }
         }).then(res => res.json()
             .then(result => {
-                result.sort(() => Math.random() - 0.5);
+                // removing shuffle for now
+                // result.sort(() => Math.random() - 0.5);
+                result.reverse();
                 setCatContainer({
                     loaded: true,
                     cats: result
