@@ -1,6 +1,8 @@
 .cat-container {
     display: grid;
     grid-template-columns: repeat(3, auto [col-start]);
+    justify-items: center;
+    align-items: center;
 }
 
 .cat {
