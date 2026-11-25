@@ -62,8 +62,8 @@
       <section class="settings" id="settings" aria-label="Graph settings" hidden>
         <fieldset>
           <legend>Show</legend>
-          <label><input type="radio" name="detail" value="overview" checked> Overview</label>
-          <label><input type="radio" name="detail" value="steps"> Proof steps and facts</label>
+          <label><input type="radio" name="detail" value="overview"> Overview</label>
+          <label><input type="radio" name="detail" value="steps" checked> Proof steps and facts</label>
           <label><input type="radio" name="detail" value="references"> Lean references</label>
         </fieldset>
         <label class="setting-check"><input id="formula-toggle" type="checkbox" checked> Formulas on nodes</label>
@@ -71,7 +71,7 @@
       </section>
       <p class="canvas-notice" id="canvas-notice" role="status">Loading proof graph…</p>
       <div class="stage-footer">
-        <span class="graph-help">Drag nodes · Pan the grid · Scroll to zoom</span>
+        <span class="graph-help">Drag nodes · Pan the grid · <span class="scroll-help">Scroll to zoom</span><span class="pinch-help">Pinch to zoom</span></span>
         <span id="graph-count" class="graph-count" aria-live="polite"></span>
       </div>
     </section>

@@ -76,6 +76,11 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   user-select: none;
 }
 .diagram.is-dragging { cursor: grabbing; }
+.pinch-help { display: none; }
+@media (pointer: coarse) {
+  .scroll-help { display: none; }
+  .pinch-help { display: inline; }
+}
 .diagram-labels { position: absolute; inset: 0; pointer-events: none; }
 .label-world { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
 .paper { pointer-events: none; }

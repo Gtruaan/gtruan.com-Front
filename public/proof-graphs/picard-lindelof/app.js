@@ -66,6 +66,9 @@ const labelWidthRatio = 1.50;
 const labelHeightRatio = 1.16;
 const nodeGap = 25;
 const linkedNodeGap = 46;
+const minZoom = .19;
+const maxZoom = 3.3;
+const touchPoints = new Map();
 
 let proof;
 let evidence;
@@ -75,8 +78,9 @@ let roots;
 let flow;
 let layout;
 let selected = null;
-let mode = "overview";
+let mode = bySelector('input[name="detail"]:checked').value;
 let gesture = null;
+let pinch = null;
 let camera = { x: 0, y: 0, scale: 1, fitted: true, overview: true };
 let frame = 0;
 
@@ -252,6 +256,10 @@ function createEdge(link, nodes) {
 
 function createLayout() {
   cancelAnimationFrame(frame);
+  gesture = null;
+  pinch = null;
+  touchPoints.clear();
+  diagram.classList.remove("is-dragging");
   const projection = buildProjection(mode);
   const portrait = portraitLayout.matches;
   nodeLayer.replaceChildren();
@@ -493,7 +501,7 @@ function fitGraph(initial = false) {
   const margin = narrow ? 18 : 55;
   const scale = Math.min(1.32, (box.width - 2 * margin) / (right - left),
     (box.height - 72) / (bottom - top));
-  camera.scale = Math.max(initial && narrow && !layout.portrait ? .64 : .19, scale);
+  camera.scale = Math.max(initial && narrow && !layout.portrait ? .64 : minZoom, scale);
   camera.x = box.width / 2 - (left + right) / 2 * camera.scale;
   camera.y = (box.height - 15) / 2 - (top + bottom) / 2 * camera.scale;
   camera.fitted = true;
@@ -502,11 +510,13 @@ function fitGraph(initial = false) {
 }
 
 function zoom(factor, x = stage.clientWidth / 2, y = stage.clientHeight / 2) {
-  const scale = Math.max(.19, Math.min(3.3, camera.scale * factor));
-  const change = scale / camera.scale;
-  camera.x = x - (x - camera.x) * change;
-  camera.y = y - (y - camera.y) * change;
-  camera.scale = scale;
+  zoomAbout(camera.scale * factor, (x - camera.x) / camera.scale, (y - camera.y) / camera.scale, x, y);
+}
+
+function zoomAbout(scale, worldX, worldY, x, y) {
+  camera.scale = Math.max(minZoom, Math.min(maxZoom, scale));
+  camera.x = x - worldX * camera.scale;
+  camera.y = y - worldY * camera.scale;
   camera.fitted = false;
   paintCamera();
 }
@@ -679,21 +689,55 @@ function pointerPosition(event) {
   return { x: event.clientX - box.left, y: event.clientY - box.top };
 }
 
+function singlePointer(pointerId, { x, y }, node = null, moved = false) {
+  return { x, y, pointerId, node, moved, cameraX: camera.x, cameraY: camera.y,
+    nodeX: node?.x, nodeY: node?.y };
+}
+
+function pinchPosition() {
+  const [a, b] = touchPoints.values();
+  return {
+    x: (a.x + b.x) / 2,
+    y: (a.y + b.y) / 2,
+    distance: Math.max(1, Math.hypot(a.x - b.x, a.y - b.y)),
+  };
+}
+
 diagram.addEventListener("pointerdown", (event) => {
-  if (!layout || gesture || event.button !== 0) return;
-  const { x, y } = pointerPosition(event);
-  const id = event.target.closest("[data-node]")?.dataset.node;
-  const node = id && layout.nodeMap.get(id);
-  gesture = { x, y, cameraX: camera.x, cameraY: camera.y, node, pointerId: event.pointerId, moved: false };
-  if (node) { gesture.nodeX = node.x; gesture.nodeY = node.y; }
+  if (!layout || event.button !== 0) return;
+  const touch = event.pointerType === "touch";
+  if (touchPoints.size === 2 || (gesture && !(touch && touchPoints.size === 1))) return;
+  const point = pointerPosition(event);
   diagram.setPointerCapture(event.pointerId);
+  if (touch) {
+    touchPoints.set(event.pointerId, point);
+    if (touchPoints.size === 2) {
+      finishGesture(true);
+      const { x, y, distance } = pinchPosition();
+      pinch = { distance, scale: camera.scale, worldX: (x - camera.x) / camera.scale,
+        worldY: (y - camera.y) / camera.scale };
+      diagram.classList.add("is-dragging");
+      return;
+    }
+  }
+  const id = event.target.closest("[data-node]")?.dataset.node;
+  gesture = singlePointer(event.pointerId, point, layout.nodeMap.get(id));
 });
 
 diagram.addEventListener("pointermove", (event) => {
-  if (!gesture || gesture.pointerId !== event.pointerId) return;
-  const { x, y } = pointerPosition(event);
-  const dx = x - gesture.x;
-  const dy = y - gesture.y;
+  const trackedTouch = touchPoints.has(event.pointerId);
+  if (!trackedTouch && gesture?.pointerId !== event.pointerId) return;
+  const point = pointerPosition(event);
+  if (trackedTouch) {
+    touchPoints.set(event.pointerId, point);
+    if (pinch) {
+      const { x, y, distance } = pinchPosition();
+      zoomAbout(pinch.scale * distance / pinch.distance, pinch.worldX, pinch.worldY, x, y);
+      return;
+    }
+  }
+  const dx = point.x - gesture.x;
+  const dy = point.y - gesture.y;
   if (!gesture.moved && Math.hypot(dx, dy) < 4) return;
   if (!gesture.moved) {
     gesture.moved = true;
@@ -715,8 +759,7 @@ diagram.addEventListener("pointermove", (event) => {
   }
 });
 
-function endGesture(event, cancelled) {
-  if (!gesture || gesture.pointerId !== event.pointerId) return;
+function finishGesture(cancelled) {
   const { node, moved } = gesture;
   gesture = null;
   diagram.classList.remove("is-dragging");
@@ -731,8 +774,21 @@ function endGesture(event, cancelled) {
   }
 }
 
+function endGesture(event, cancelled) {
+  if (touchPoints.delete(event.pointerId) && pinch) {
+    pinch = null;
+    const [[pointerId, point]] = touchPoints;
+    gesture = singlePointer(pointerId, point, null, true);
+    return;
+  }
+  if (gesture?.pointerId === event.pointerId) finishGesture(cancelled);
+}
+
 diagram.addEventListener("pointerup", (event) => endGesture(event, false));
 diagram.addEventListener("pointercancel", (event) => endGesture(event, true));
+diagram.addEventListener("lostpointercapture", (event) => {
+  if (event.target === diagram) endGesture(event, true);
+});
 diagram.addEventListener("wheel", (event) => {
   if (!layout) return;
   event.preventDefault();
@@ -785,8 +841,6 @@ for (const input of settings.querySelectorAll('input[name="detail"]')) {
 
 portraitLayout.addEventListener("change", () => {
   if (!layout) return;
-  gesture = null;
-  diagram.classList.remove("is-dragging");
   createLayout();
   updateHighlights();
   fitGraph(true);
