@@ -1,0 +1,4116 @@
+{
+  "schema_version": 1,
+  "root": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
+  "roots": [
+    "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
+    "lean:[\"ODE_solution_unique_of_mem_Icc\"]"
+  ],
+  "coverage": "source_curated_argument_both_roots",
+  "source": {
+    "kind": "source_curated",
+    "project_revision": "2e2ff720d124dd9b5a7612870665e2984615b52e",
+    "scope": "Mathematical argument for two distinct Mathlib declarations. Inference and fact nodes are source-aligned summaries, with bundled hypotheses and reusable one-sided results. The roots have their own hypotheses."
+  },
+  "nodes": [
+    {
+      "id": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
+      "kind": "declaration",
+      "type": "theorem",
+      "name": "IsPicardLindelof.exists_eq_forall_mem_Icc_hasDerivWithinAt",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L55-L66",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          55,
+          66
+        ]
+      },
+      "lean": "existence of a local solution whose initial point `x` may be different from the centre `x₀` of\nthe closed ball within which the properties of the vector field hold. -/\ntheorem exists_eq_forall_mem_Icc_hasDerivWithinAt\n    (hf : IsPicardLindelof f t₀ x₀ a r L K) (hx : x ∈ closedBall x₀ r) :\n    ∃ α : ℝ → E, α t₀ = x ∧\n      ∀ t ∈ Icc tmin tmax, HasDerivWithinAt α (f t (α t)) (Icc tmin tmax) t := by\n  obtain ⟨α, hα⟩ := FunSpace.exists_isFixedPt_next hf hx\n  refine ⟨α.compProj, by rw [FunSpace.compProj_val, ← hα, FunSpace.next_apply₀], fun t ht ↦ ?_⟩\n  apply hasDerivWithinAt_picard_Icc t₀.property hf.continuousOn_uncurry\n    α.continuous_compProj.continuousOn (fun _ ht' ↦ α.compProj_mem_closedBall hf.mul_max_le)\n    x ht |>.congr_of_mem _ ht\n  intro t' ht'"
+    },
+    {
+      "id": "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
+      "kind": "declaration",
+      "type": "theorem",
+      "name": "ODE_solution_unique_of_mem_Icc",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L252-L276",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          252,
+          276
+        ]
+      },
+      "lean": "theorem ODE_solution_unique_of_mem_Icc\n    (hv : ∀ t ∈ Ioo a b, LipschitzOnWith K (v t) (s t))\n    (ht : t₀ ∈ Ioo a b)\n    (hf : ContinuousOn f (Icc a b))\n    (hf' : ∀ t ∈ Ioo a b, HasDerivAt f (v t (f t)) t)\n    (hfs : ∀ t ∈ Ioo a b, f t ∈ s t)\n    (hg : ContinuousOn g (Icc a b))\n    (hg' : ∀ t ∈ Ioo a b, HasDerivAt g (v t (g t)) t)\n    (hgs : ∀ t ∈ Ioo a b, g t ∈ s t)\n    (heq : f t₀ = g t₀) :\n    EqOn f g (Icc a b) := by\n  rw [← Icc_union_Icc_eq_Icc (le_of_lt ht.1) (le_of_lt ht.2)]\n  apply EqOn.union\n  · have hss : Ioc a t₀ ⊆ Ioo a b := Ioc_subset_Ioo_right ht.2\n    exact ODE_solution_unique_of_mem_Icc_left (fun t ht ↦ hv t (hss ht))\n      (hf.mono <| Icc_subset_Icc_right <| le_of_lt ht.2)\n      (fun _ ht' ↦ (hf' _ (hss ht')).hasDerivWithinAt) (fun _ ht' ↦ (hfs _ (hss ht')))\n      (hg.mono <| Icc_subset_Icc_right <| le_of_lt ht.2)\n      (fun _ ht' ↦ (hg' _ (hss ht')).hasDerivWithinAt) (fun _ ht' ↦ (hgs _ (hss ht'))) heq\n  · have hss : Ico t₀ b ⊆ Ioo a b := Ico_subset_Ioo_left ht.1\n    exact ODE_solution_unique_of_mem_Icc_right (fun t ht ↦ hv t (hss ht))\n      (hf.mono <| Icc_subset_Icc_left <| le_of_lt ht.1)\n      (fun _ ht' ↦ (hf' _ (hss ht')).hasDerivWithinAt) (fun _ ht' ↦ (hfs _ (hss ht')))\n      (hg.mono <| Icc_subset_Icc_left <| le_of_lt ht.1)\n      (fun _ ht' ↦ (hg' _ (hss ht')).hasDerivWithinAt) (fun _ ht' ↦ (hgs _ (hss ht'))) heq"
+    },
+    {
+      "id": "lean:[\"IsPicardLindelof\"]",
+      "kind": "declaration",
+      "type": "inductive",
+      "name": "IsPicardLindelof",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L75-L85",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          75,
+          85
+        ]
+      },
+      "lean": "`IsPicardLindelof f t₀ x₀ a r L K`, where `t₀ ∈ Icc tmin tmax`, means that the time-dependent vector\nfield `f` satisfies the conditions to admit an integral curve `α : ℝ → E` to `f` defined on\n`Icc tmin tmax` with the initial condition `α t₀ = x`, where `‖x - x₀‖ ≤ r`. Note that the initial\npoint `x` is allowed to differ from the point `x₀` about which the conditions on `f` are stated. -/\nstructure IsPicardLindelof {E : Type*} [NormedAddCommGroup E]\n    (f : ℝ → E → E) {tmin tmax : ℝ} (t₀ : Icc tmin tmax) (x₀ : E) (a r L K : ℝ≥0) : Prop where\n  /-- The vector field at any time is Lipschitz with constant `K` within a closed ball. -/\n  lipschitzOnWith : ∀ t ∈ Icc tmin tmax, LipschitzOnWith K (f t) (closedBall x₀ a)\n  /-- The vector field is continuous in time within a closed ball. -/\n  continuousOn : ∀ x ∈ closedBall x₀ a, ContinuousOn (f · x) (Icc tmin tmax)\n  /-- `L` is an upper bound of the norm of the vector field. -/"
+    },
+    {
+      "id": "lean:[\"ODE\",\"FunSpace\"]",
+      "kind": "declaration",
+      "type": "inductive",
+      "name": "ODE.FunSpace",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L143-L148",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          143,
+          148
+        ]
+      },
+      "lean": "structure FunSpace {E : Type*} [NormedAddCommGroup E]\n    {tmin tmax : ℝ} (t₀ : Icc tmin tmax) (x₀ : E) (r L : ℝ≥0) where\n  /-- The domain is `Icc tmin tmax`. -/\n  toFun : Icc tmin tmax → E\n  lipschitzWith : LipschitzWith L toFun\n  mem_closedBall₀ : toFun t₀ ∈ closedBall x₀ r"
+    },
+    {
+      "id": "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
+      "kind": "declaration",
+      "type": "instance",
+      "name": "ODE.FunSpace.instCompleteSpace",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L201-L208",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          201,
+          208
+        ]
+      },
+      "lean": "/-- We show that `FunSpace` is complete in order to apply the contraction mapping theorem. -/\ninstance [CompleteSpace E] : CompleteSpace (FunSpace t₀ x₀ r L) := by\n  rw [completeSpace_iff_isComplete_range isUniformInducing_toContinuousMap]\n  apply IsClosed.isComplete\n  rw [range_toContinuousMap, ofPred_and]\n  apply isClosed_setOfPred_lipschitzWith L |>.preimage continuous_coeFun |>.inter\n  simp_rw [mem_closedBall_iff_norm]\n  exact isClosed_le (by fun_prop) (by fun_prop)"
+    },
+    {
+      "id": "lean:[\"ODE\",\"picard\"]",
+      "kind": "declaration",
+      "type": "definition",
+      "name": "ODE.picard",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L103-L107",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          103,
+          107
+        ]
+      },
+      "lean": "/-- The Picard iteration. It will be shown that if `α : ℝ → E` and `picard f t₀ x₀ α` agree on an\ninterval containing `t₀`, then `α` is a solution to `f` with `α t₀ = x₀` on this interval. -/\nnoncomputable def picard (f : ℝ → E → E) (t₀ : ℝ) (x₀ : E) (α : ℝ → E) : ℝ → E :=\n  fun t ↦ x₀ + ∫ τ in t₀..t, f τ (α τ)"
+    },
+    {
+      "id": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
+      "kind": "declaration",
+      "type": "definition",
+      "name": "ODE.FunSpace.next",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L277-L293",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          277,
+          293
+        ]
+      },
+      "lean": "/-- The map on `FunSpace` defined by `picard`, some `n`-th iterate of which will be a contracting\nmap -/\nnoncomputable def next (hf : IsPicardLindelof f t₀ x₀ a r L K) (hx : x ∈ closedBall x₀ r)\n    (α : FunSpace t₀ x₀ r L) : FunSpace t₀ x₀ r L where\n  toFun t := picard f t₀ x α.compProj t\n  lipschitzWith := LipschitzWith.of_dist_le_mul fun t₁ t₂ ↦ by\n    rw [dist_eq_norm, picard_apply, picard_apply, add_sub_add_left_eq_sub,\n      integral_interval_sub_left (intervalIntegrable_comp_compProj hf _ t₁)\n        (intervalIntegrable_comp_compProj hf _ t₂), Subtype.dist_eq, Real.dist_eq]\n    apply intervalIntegral.norm_integral_le_of_norm_le_const\n    intro t ht\n    -- Can `grind` do this in the future?\n    have ht : t ∈ Icc tmin tmax :=\n      subset_trans uIoc_subset_uIcc (uIcc_subset_Icc t₂.property t₁.property) ht\n    exact hf.norm_le _ ht _ <| α.mem_closedBall hf.mul_max_le\n  mem_closedBall₀ := by simp [hx]"
+    },
+    {
+      "id": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]",
+      "kind": "declaration",
+      "type": "theorem",
+      "name": "ODE.FunSpace.dist_iterate_next_apply_le",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L330-L362",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          330,
+          362
+        ]
+      },
+      "lean": "/-- A time-dependent bound on the distance between the `n`-th iterates of `next` on two curves -/\nlemma dist_iterate_next_apply_le (hf : IsPicardLindelof f t₀ x₀ a r L K)\n    (hx : x ∈ closedBall x₀ r) (α β : FunSpace t₀ x₀ r L) (n : ℕ) (t : Icc tmin tmax) :\n    dist ((next hf hx)^[n] α t) ((next hf hx)^[n] β t) ≤\n      (K * |t.val - t₀.val|) ^ n / n ! * dist α β := by\n  induction n generalizing t with\n  | zero => simpa using!\n      ContinuousMap.dist_apply_le_dist (f := toContinuousMap α) (g := toContinuousMap β) _\n  | succ n hn =>\n    rw [iterate_succ_apply', iterate_succ_apply', dist_eq_norm, next_apply,\n      next_apply, picard_apply, picard_apply, add_sub_add_left_eq_sub,\n      ← intervalIntegral.integral_sub (intervalIntegrable_comp_compProj hf _ t)\n        (intervalIntegrable_comp_compProj hf _ t)]\n    calc\n      _ ≤ ∫ τ in uIoc t₀.val t.val, K ^ (n + 1) * |τ - t₀| ^ n / n ! * dist α β := by\n        rw [intervalIntegral.norm_intervalIntegral_eq]\n        apply MeasureTheory.norm_integral_le_of_norm_le (Continuous.integrableOn_uIoc (by fun_prop))\n        apply ae_restrict_mem measurableSet_Ioc |>.mono\n        intro t' ht'\n        -- Can `grind` do this in the future?\n        have ht' : t' ∈ Icc tmin tmax :=\n          subset_trans uIoc_subset_uIcc (uIcc_subset_Icc t₀.property t.property) ht'\n        rw [← dist_eq_norm, compProj_of_mem, compProj_of_mem]\n        exact dist_comp_iterate_next_le hf hx _ ⟨t', ht'⟩ (hn _)\n      _ ≤ (K * |t.val - t₀.val|) ^ (n + 1) / (n + 1) ! * dist α β := by\n        apply le_of_abs_le\n        -- critical: `integral_pow_abs_sub_uIoc`\n        rw [← intervalIntegral.abs_intervalIntegral_eq, intervalIntegral.integral_mul_const,\n          intervalIntegral.integral_div, intervalIntegral.integral_const_mul, abs_mul, abs_div,\n          abs_mul, intervalIntegral.abs_intervalIntegral_eq, integral_pow_abs_sub_uIoc, abs_div,\n          abs_pow, abs_pow, abs_dist, NNReal.abs_eq, abs_abs, mul_div, div_div, ← abs_mul,\n          ← Nat.cast_succ, ← Nat.cast_mul, ← Nat.factorial_succ, Nat.abs_cast, ← mul_pow]"
+    },
+    {
+      "id": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]",
+      "kind": "declaration",
+      "type": "theorem",
+      "name": "ODE.FunSpace.dist_iterate_next_iterate_next_le",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L363-L376",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          363,
+          376
+        ]
+      },
+      "lean": "/-- The `n`-th iterate of `next` is Lipschitz continuous with respect to `FunSpace`, with constant\n$(K \\max(t_{\\mathrm{max}}, t_{\\mathrm{min}})^n / n!$. -/\nlemma dist_iterate_next_iterate_next_le (hf : IsPicardLindelof f t₀ x₀ a r L K)\n    (hx : x ∈ closedBall x₀ r) (α β : FunSpace t₀ x₀ r L) (n : ℕ) :\n    dist ((next hf hx)^[n] α) ((next hf hx)^[n] β) ≤\n      (K * max (tmax - t₀) (t₀ - tmin)) ^ n / n ! * dist α β := by\n  rw [← MetricSpace.isometry_induced FunSpace.toContinuousMap FunSpace.toContinuousMap.injective\n    |>.dist_eq, ContinuousMap.dist_le]\n  · intro t\n    apply le_trans <| dist_iterate_next_apply_le hf hx α β n t\n    gcongr\n    exact abs_sub_le_max_sub t.property.1 t.property.2 _\n  · have : 0 ≤ max (tmax - t₀) (t₀ - tmin) := le_max_of_le_left <| sub_nonneg_of_le t₀.property.2\n    positivity"
+    },
+    {
+      "id": "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]",
+      "kind": "declaration",
+      "type": "theorem",
+      "name": "ODE.FunSpace.exists_contractingWith_iterate_next",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L378-L389",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          378,
+          389
+        ]
+      },
+      "lean": "/-- Some `n`-th iterate of `next` is a contracting map, and its associated Lipschitz constant is\nindependent of the initial point. -/\nlemma exists_contractingWith_iterate_next (hf : IsPicardLindelof f t₀ x₀ a r L K) :\n    ∃ (n : ℕ) (C : ℝ≥0), ∀ (x : E) (hx : x ∈ closedBall x₀ r),\n      ContractingWith C (next hf hx)^[n] := by\n  obtain ⟨n, hn⟩ := FloorSemiring.tendsto_pow_div_factorial_atTop (K * max (tmax - t₀) (t₀ - tmin))\n    |>.eventually (gt_mem_nhds zero_lt_one) |>.exists\n  have : (0 : ℝ) ≤ (K * max (tmax - t₀) (t₀ - tmin)) ^ n / n ! := by\n    have : 0 ≤ max (tmax - t₀) (t₀ - tmin) := le_max_of_le_left <| sub_nonneg_of_le t₀.property.2\n    positivity\n  refine ⟨n, ⟨_, this⟩, fun x hx ↦ ?_⟩\n  exact ⟨hn, LipschitzWith.of_dist_le_mul fun α β ↦ dist_iterate_next_iterate_next_le hf hx α β n⟩"
+    },
+    {
+      "id": "lean:[\"ContractingWith\",\"isFixedPt_fixedPoint_iterate\"]",
+      "kind": "declaration",
+      "type": "theorem",
+      "name": "ContractingWith.isFixedPt_fixedPoint_iterate",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Topology/MetricSpace/Contracting.lean#L318-L324",
+        "file": "Mathlib/Topology/MetricSpace/Contracting.lean",
+        "lines": [
+          318,
+          324
+        ]
+      },
+      "lean": "theorem isFixedPt_fixedPoint_iterate {n : ℕ} (hf : ContractingWith K f^[n]) :\n    IsFixedPt f (hf.fixedPoint f^[n]) := by\n  set x := hf.fixedPoint f^[n]\n  have hx : f^[n] x = x := hf.fixedPoint_isFixedPt\n  have := hf.toLipschitzWith.dist_le_mul x (f x)\n  rw [← iterate_succ_apply, iterate_succ_apply', hx] at this\n  contrapose! this"
+    },
+    {
+      "id": "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]",
+      "kind": "declaration",
+      "type": "theorem",
+      "name": "ODE.FunSpace.exists_isFixedPt_next",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L391-L397",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          391,
+          397
+        ]
+      },
+      "lean": "/-- The map `next` has a fixed point in the space of curves. This will be used to construct a\nsolution `α : ℝ → E` to the ODE. -/\nlemma exists_isFixedPt_next [CompleteSpace E] (hf : IsPicardLindelof f t₀ x₀ a r L K)\n    (hx : x ∈ closedBall x₀ r) :\n    ∃ α : FunSpace t₀ x₀ r L, IsFixedPt (next hf hx) α :=\n  let ⟨_, _, h⟩ := exists_contractingWith_iterate_next hf\n  ⟨_, h x hx |>.isFixedPt_fixedPoint_iterate⟩"
+    },
+    {
+      "id": "lean:[\"ODE\",\"FunSpace\",\"compProj\"]",
+      "kind": "declaration",
+      "type": "definition",
+      "name": "ODE.FunSpace.compProj",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L210-L214",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          210,
+          214
+        ]
+      },
+      "lean": "/-- Extend the domain of `α` from `Icc tmin tmax` to `ℝ` such that `α t = α tmin` for all `t ≤ tmin`\nand `α t = α tmax` for all `t ≥ tmax`. -/\nnoncomputable def compProj (α : FunSpace t₀ x₀ r L) (t : ℝ) : E :=\n  α <| projIcc tmin tmax (le_trans t₀.property.1 t₀.property.2) t"
+    },
+    {
+      "id": "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]",
+      "kind": "declaration",
+      "type": "theorem",
+      "name": "ODE.hasDerivWithinAt_picard_Icc",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L482-L501",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          482,
+          501
+        ]
+      },
+      "lean": "-- TODO: generalise to open sets and `Ici` and `Iic`\n/-- If the time-dependent vector field `f` and the curve `α` are continuous, then `f t (α t)` is the\nderivative of `picard f t₀ x₀ α`. -/\nlemma hasDerivWithinAt_picard_Icc\n    (ht₀ : t₀ ∈ Icc tmin tmax)\n    (hf : ContinuousOn (uncurry f) ((Icc tmin tmax) ×ˢ u))\n    (hα : ContinuousOn α (Icc tmin tmax))\n    (hmem : ∀ t ∈ Icc tmin tmax, α t ∈ u) (x₀ : E)\n    {t : ℝ} (ht : t ∈ Icc tmin tmax) :\n    HasDerivWithinAt (picard f t₀ x₀ α) (f t (α t)) (Icc tmin tmax) t := by\n  apply HasDerivWithinAt.const_add\n  have : Fact (t ∈ Icc tmin tmax) := ⟨ht⟩ -- needed to synthesise `FTCFilter` for `Icc`\n  apply intervalIntegral.integral_hasDerivWithinAt_right _ -- need `CompleteSpace E` and `Icc`\n    (continuousOn_comp hf hα hmem |>.stronglyMeasurableAtFilter_nhdsWithin measurableSet_Icc t)\n    (continuousOn_comp hf hα hmem _ ht)\n  apply ContinuousOn.intervalIntegrable\n  apply continuousOn_comp hf hα hmem |>.mono\n  exact uIcc_subset_Icc ht₀ ht\n\n/-- Converse of `hasDerivWithinAt_picard_Icc`: if `f` is the derivative along `α`, then `α`"
+    },
+    {
+      "id": "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
+      "kind": "declaration",
+      "type": "theorem",
+      "name": "ODE_solution_unique_of_mem_Icc_left",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L207-L248",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          207,
+          248
+        ]
+      },
+      "lean": "/-- A time-reversed version of `ODE_solution_unique_of_mem_Icc_right`. Uniqueness is shown in a\nclosed interval `Icc a b`, where `b` is the \"initial\" time. -/\ntheorem ODE_solution_unique_of_mem_Icc_left\n    (hv : ∀ t ∈ Ioc a b, LipschitzOnWith K (v t) (s t))\n    (hf : ContinuousOn f (Icc a b))\n    (hf' : ∀ t ∈ Ioc a b, HasDerivWithinAt f (v t (f t)) (Iic t) t)\n    (hfs : ∀ t ∈ Ioc a b, f t ∈ s t)\n    (hg : ContinuousOn g (Icc a b))\n    (hg' : ∀ t ∈ Ioc a b, HasDerivWithinAt g (v t (g t)) (Iic t) t)\n    (hgs : ∀ t ∈ Ioc a b, g t ∈ s t)\n    (hb : f b = g b) :\n    EqOn f g (Icc a b) := by\n  have hv' : ∀ t ∈ Ico (-b) (-a), LipschitzOnWith K (Neg.neg ∘ (v (-t))) (s (-t)) := by\n    intro t ht\n    replace ht : -t ∈ Ioc a b := by\n      push _ ∈ _ at ht ⊢\n      constructor <;> linarith\n    rw [← one_mul K]\n    exact LipschitzWith.id.neg.comp_lipschitzOnWith (hv _ ht)\n  have hmt1 : MapsTo Neg.neg (Icc (-b) (-a)) (Icc a b) :=\n    fun _ ht ↦ ⟨le_neg.mp ht.2, neg_le.mp ht.1⟩\n  have hmt2 : MapsTo Neg.neg (Ico (-b) (-a)) (Ioc a b) :=\n    fun _ ht ↦ ⟨lt_neg.mp ht.2, neg_le.mp ht.1⟩\n  have hmt3 (t : ℝ) : MapsTo Neg.neg (Ici t) (Iic (-t)) :=\n    fun _ ht' ↦ mem_Iic.mpr <| neg_le_neg ht'\n  suffices EqOn (f ∘ Neg.neg) (g ∘ Neg.neg) (Icc (-b) (-a)) by\n    rw [eqOn_comp_right_iff] at this\n    convert this\n    simp\n  apply ODE_solution_unique_of_mem_Icc_right hv'\n    (hf.comp continuousOn_neg hmt1) _ (fun _ ht ↦ hfs _ (hmt2 ht))\n    (hg.comp continuousOn_neg hmt1) _ (fun _ ht ↦ hgs _ (hmt2 ht)) (by simp [hb])\n  · intro t ht\n    convert\n      HasFDerivWithinAt.comp_hasDerivWithinAt t (hf' (-t) (hmt2 ht))\n        (hasDerivAt_neg t).hasDerivWithinAt (hmt3 t)\n    simp\n  · intro t ht\n    convert\n      HasFDerivWithinAt.comp_hasDerivWithinAt t (hg' (-t) (hmt2 ht))\n        (hasDerivAt_neg t).hasDerivWithinAt (hmt3 t)\n    simp"
+    },
+    {
+      "id": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
+      "kind": "declaration",
+      "type": "theorem",
+      "name": "ODE_solution_unique_of_mem_Icc_right",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L189-L205",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          189,
+          205
+        ]
+      },
+      "lean": "/-- There exists only one solution of an ODE $\\dot x=v(t, x)$ in a set `s ⊆ ℝ × E` with\na given initial value provided that the RHS is Lipschitz continuous in `x` within `s`,\nand we consider only solutions included in `s`.\n\nThis version shows uniqueness in a closed interval `Icc a b`, where `a` is the initial time. -/\ntheorem ODE_solution_unique_of_mem_Icc_right\n    (hv : ∀ t ∈ Ico a b, LipschitzOnWith K (v t) (s t))\n    (hf : ContinuousOn f (Icc a b))\n    (hf' : ∀ t ∈ Ico a b, HasDerivWithinAt f (v t (f t)) (Ici t) t)\n    (hfs : ∀ t ∈ Ico a b, f t ∈ s t)\n    (hg : ContinuousOn g (Icc a b))\n    (hg' : ∀ t ∈ Ico a b, HasDerivWithinAt g (v t (g t)) (Ici t) t)\n    (hgs : ∀ t ∈ Ico a b, g t ∈ s t)\n    (ha : f a = g a) :\n    EqOn f g (Icc a b) := fun t ht ↦ by\n  have := dist_le_of_trajectories_ODE_of_mem hv hf hf' hfs hg hg' hgs (dist_le_zero.2 ha) t ht\n  rwa [zero_mul, dist_le_zero] at this"
+    },
+    {
+      "id": "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]",
+      "kind": "declaration",
+      "type": "theorem",
+      "name": "dist_le_of_trajectories_ODE_of_mem",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/Gronwall.lean#L208-L221",
+        "file": "Mathlib/Analysis/ODE/Gronwall.lean",
+        "lines": [
+          208,
+          221
+        ]
+      },
+      "lean": "theorem dist_le_of_trajectories_ODE_of_mem\n    (hv : ∀ t ∈ Ico a b, LipschitzOnWith K (v t) (s t))\n    (hf : ContinuousOn f (Icc a b))\n    (hf' : ∀ t ∈ Ico a b, HasDerivWithinAt f (v t (f t)) (Ici t) t)\n    (hfs : ∀ t ∈ Ico a b, f t ∈ s t)\n    (hg : ContinuousOn g (Icc a b)) (hg' : ∀ t ∈ Ico a b, HasDerivWithinAt g (v t (g t)) (Ici t) t)\n    (hgs : ∀ t ∈ Ico a b, g t ∈ s t) (ha : dist (f a) (g a) ≤ δ) :\n    ∀ t ∈ Icc a b, dist (f t) (g t) ≤ δ * exp (K * (t - a)) := by\n  have f_bound : ∀ t ∈ Ico a b, dist (v t (f t)) (v t (f t)) ≤ 0 := by intros; rw [dist_self]\n  have g_bound : ∀ t ∈ Ico a b, dist (v t (g t)) (v t (g t)) ≤ 0 := by intros; rw [dist_self]\n  intro t ht\n  have :=\n    dist_le_of_approx_trajectories_ODE_of_mem hv hf hf' f_bound hfs hg hg' g_bound hgs ha t ht\n  rwa [zero_add, gronwallBound_ε0] at this"
+    },
+    {
+      "id": "lean:[\"norm_le_gronwallBound_of_norm_deriv_right_le\"]",
+      "kind": "declaration",
+      "type": "theorem",
+      "name": "norm_le_gronwallBound_of_norm_deriv_right_le",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/Gronwall.lean#L129-L158",
+        "file": "Mathlib/Analysis/ODE/Gronwall.lean",
+        "lines": [
+          129,
+          158
+        ]
+      },
+      "lean": "/-- A Grönwall-like inequality: if `f : ℝ → E` is continuous on `[a, b]`, has right derivative\n`f' x` at every point `x ∈ [a, b)`, and satisfies the inequalities `‖f a‖ ≤ δ`,\n`∀ x ∈ [a, b), ‖f' x‖ ≤ K * ‖f x‖ + ε`, then `‖f x‖` is bounded by `gronwallBound δ K ε (x - a)`\non `[a, b]`. -/\ntheorem norm_le_gronwallBound_of_norm_deriv_right_le {f f' : ℝ → E} {δ K ε : ℝ} {a b : ℝ}\n    (hf : ContinuousOn f (Icc a b)) (hf' : ∀ x ∈ Ico a b, HasDerivWithinAt f (f' x) (Ici x) x)\n    (ha : ‖f a‖ ≤ δ) (bound : ∀ x ∈ Ico a b, ‖f' x‖ ≤ K * ‖f x‖ + ε) :\n    ∀ x ∈ Icc a b, ‖f x‖ ≤ gronwallBound δ K ε (x - a) :=\n  le_gronwallBound_of_liminf_deriv_right_le (continuous_norm.comp_continuousOn hf)\n    (fun x hx _r hr => (hf' x hx).liminf_right_slope_norm_le hr) ha bound\n\n/-- Let `f : [a, b] → E` be a differentiable function such that `f a = 0`\nand `‖f'(x)‖ ≤ K ‖f(x)‖` for some constant `K`. Then `f = 0` on `[a, b]`. -/\ntheorem eq_zero_of_abs_deriv_le_mul_abs_self_of_eq_zero_right {f f' : ℝ → E} {K a b : ℝ}\n    (hf : ContinuousOn f (Icc a b)) (hf' : ∀ x ∈ Ico a b, HasDerivWithinAt f (f' x) (Ici x) x)\n    (ha : f a = 0) (bound : ∀ x ∈ Ico a b, ‖f' x‖ ≤ K * ‖f x‖) :\n    ∀ x ∈ Set.Icc a b, f x = 0 := by\n  intro x hx\n  apply norm_le_zero_iff.mp\n  calc ‖f x‖\n    _ ≤ gronwallBound 0 K 0 (x - a) :=\n      norm_le_gronwallBound_of_norm_deriv_right_le hf hf' (by simp [ha]) (by simpa using bound) _ hx\n    _ = 0 := by rw [gronwallBound_ε0_δ0]\n\nvariable {v : ℝ → E → E} {s : ℝ → Set E} {K : ℝ≥0} {f g f' g' : ℝ → E} {a b : ℝ} {εf εg δ : ℝ}\n\n/-- If `f` and `g` are two approximate solutions of the same ODE, then the distance between them\ncan't grow faster than exponentially. This is a simple corollary of Grönwall's inequality, and some\npeople call this Grönwall's inequality too."
+    },
+    {
+      "id": "fact:state-space",
+      "kind": "fact",
+      "role": "assumption",
+      "scope": "existence",
+      "statement": "E is a complete real normed space; the closed time interval I contains t₀.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L48-L56",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          48,
+          56
+        ]
+      }
+    },
+    {
+      "id": "fact:existence-hypotheses",
+      "kind": "fact",
+      "role": "assumption",
+      "scope": "existence",
+      "statement": "On the closed ball around x₀ of radius a, the field is uniformly K-Lipschitz in state, continuous in time, and bounded by L. The interval size satisfies L·R ≤ a−r, where R is the greater distance from t₀ to an endpoint. The initial point x lies in the radius-r ball.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L75-L85",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          75,
+          85
+        ]
+      }
+    },
+    {
+      "id": "step:curve-space",
+      "kind": "inference",
+      "type": "source_summary",
+      "scope": "existence",
+      "statement": "Use interval-valued Lipschitz curves with the initial-ball constraint and the supremum metric. Completeness follows by identifying a closed subset of continuous maps.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L143-L208",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          143,
+          208
+        ]
+      }
+    },
+    {
+      "id": "fact:curve-space",
+      "kind": "fact",
+      "role": "intermediate",
+      "scope": "existence",
+      "statement": "The admissible curve space X is a nonempty complete metric space.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L143-L208",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          143,
+          208
+        ]
+      }
+    },
+    {
+      "id": "step:picard-self-map",
+      "kind": "inference",
+      "type": "source_summary",
+      "scope": "existence",
+      "statement": "Integrate the field along a candidate curve. The field bound and the interval-size hypothesis keep the construction admissible.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L246-L293",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          246,
+          293
+        ]
+      }
+    },
+    {
+      "id": "fact:picard-self-map",
+      "kind": "fact",
+      "role": "intermediate",
+      "scope": "existence",
+      "statement": "The Picard integral formula Tα(t)=x+∫ₜ₀ᵗ f(s,α(s)) ds defines a self-map T of the admissible curve space.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L246-L293",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          246,
+          293
+        ]
+      }
+    },
+    {
+      "id": "step:factorial-bound",
+      "kind": "inference",
+      "type": "source_summary",
+      "scope": "existence",
+      "statement": "Induct on n, bound differences of vector-field values using Lipschitz continuity, integrate the power of elapsed time, then take the supremum over the interval.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L313-L376",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          313,
+          376
+        ]
+      }
+    },
+    {
+      "id": "fact:factorial-bound",
+      "kind": "fact",
+      "role": "intermediate",
+      "scope": "existence",
+      "statement": "The distance between Tⁿα and Tⁿβ is bounded by ((K·R)ⁿ/n!) times the distance between α and β.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L313-L376",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          313,
+          376
+        ]
+      }
+    },
+    {
+      "id": "step:contracting-iterate",
+      "kind": "inference",
+      "type": "source_summary",
+      "scope": "existence",
+      "statement": "Use convergence of (K·R)ⁿ/n! to zero to choose n with a Lipschitz coefficient less than one.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L378-L389",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          378,
+          389
+        ]
+      }
+    },
+    {
+      "id": "fact:contracting-iterate",
+      "kind": "fact",
+      "role": "intermediate",
+      "scope": "existence",
+      "statement": "There is an iterate Tⁿ that is a contraction on the admissible curve space.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L378-L389",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          378,
+          389
+        ]
+      }
+    },
+    {
+      "id": "step:fixed-curve",
+      "kind": "inference",
+      "type": "source_summary",
+      "scope": "existence",
+      "statement": "Apply the complete-space fixed-point lemma for a contracting iterate. It yields a point fixed by T itself.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L391-L397",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          391,
+          397
+        ]
+      }
+    },
+    {
+      "id": "fact:fixed-curve",
+      "kind": "fact",
+      "role": "intermediate",
+      "scope": "existence",
+      "statement": "There is an admissible curve α with Tα=α.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L391-L397",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          391,
+          397
+        ]
+      }
+    },
+    {
+      "id": "step:integral-equation",
+      "kind": "inference",
+      "type": "source_summary",
+      "scope": "existence",
+      "statement": "Extend the interval curve to the real line by constant endpoint continuation. On the interval, rewrite using the fixed-point identity and the definition of T.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L58-L66",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          58,
+          66
+        ]
+      }
+    },
+    {
+      "id": "fact:integral-equation",
+      "kind": "fact",
+      "role": "intermediate",
+      "scope": "existence",
+      "statement": "The extended curve g satisfies g(t)=x+∫ₜ₀ᵗ f(s,g(s)) ds for t in I.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L58-L66",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          58,
+          66
+        ]
+      }
+    },
+    {
+      "id": "step:ode-solution",
+      "kind": "inference",
+      "type": "source_summary",
+      "scope": "existence",
+      "statement": "Evaluate the integral at t₀ and differentiate it within the interval using the fundamental theorem of calculus and equality on the interval.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L55-L66",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          55,
+          66
+        ]
+      }
+    },
+    {
+      "id": "fact:ode-solution",
+      "kind": "fact",
+      "role": "conclusion",
+      "scope": "existence",
+      "statement": "There exists g : ℝ → E with g(t₀)=x and derivative within I equal to f(t,g(t)) for every t∈I.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L55-L66",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          55,
+          66
+        ]
+      }
+    },
+    {
+      "id": "fact:uniqueness-hypotheses",
+      "kind": "fact",
+      "role": "assumption",
+      "scope": "uniqueness",
+      "statement": "The initial time t₀ is strictly inside [a,b]. The field is uniformly Lipschitz on the permitted state sets. The two continuous trajectories solve the same ODE at interior times and stay in those sets.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L252-L262",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          252,
+          262
+        ]
+      }
+    },
+    {
+      "id": "fact:same-initial-value",
+      "kind": "fact",
+      "role": "assumption",
+      "scope": "uniqueness",
+      "statement": "The two trajectories satisfy f(t₀)=g(t₀).",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L261-L262",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          261,
+          262
+        ]
+      }
+    },
+    {
+      "id": "step:trajectory-comparison",
+      "kind": "inference",
+      "type": "source_summary",
+      "scope": "uniqueness",
+      "statement": "Use the differential Grönwall inequality on the difference between two trajectories. Provide a reusable one-sided comparison lemma with an initial distance bound δ.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/Gronwall.lean#L185-L221",
+        "file": "Mathlib/Analysis/ODE/Gronwall.lean",
+        "lines": [
+          185,
+          221
+        ]
+      }
+    },
+    {
+      "id": "fact:trajectory-comparison",
+      "kind": "fact",
+      "role": "intermediate",
+      "scope": "uniqueness",
+      "statement": "Reusable estimate: ordered forward trajectories with initial separation at most δ have distance at most δ·exp(K·(t−a)).",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/Gronwall.lean#L185-L221",
+        "file": "Mathlib/Analysis/ODE/Gronwall.lean",
+        "lines": [
+          185,
+          221
+        ]
+      }
+    },
+    {
+      "id": "step:one-sided-principle",
+      "kind": "inference",
+      "type": "source_summary",
+      "scope": "uniqueness",
+      "statement": "In the comparison lemma take δ=0 from equality of the initial values. Simplify the exponential bound to zero distance and therefore equality. This yields the reusable one-sided uniqueness theorem.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L194-L205",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          194,
+          205
+        ]
+      }
+    },
+    {
+      "id": "fact:one-sided-principle",
+      "kind": "fact",
+      "role": "intermediate",
+      "scope": "uniqueness",
+      "statement": "Reusable principle: two solutions starting at the same left endpoint agree on their forward interval under the one-sided theorem's hypotheses.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L194-L205",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          194,
+          205
+        ]
+      }
+    },
+    {
+      "id": "step:split-interval",
+      "kind": "inference",
+      "type": "source_summary",
+      "scope": "uniqueness",
+      "statement": "Split the closed interval at the interior initial time and restrict the solution hypotheses to each resulting half.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L263-L276",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          263,
+          276
+        ]
+      }
+    },
+    {
+      "id": "fact:split-interval",
+      "kind": "fact",
+      "role": "intermediate",
+      "scope": "uniqueness",
+      "statement": "The two half-intervals cover [a,b], and their corresponding one-sided hypotheses follow from the interior hypotheses.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L263-L276",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          263,
+          276
+        ]
+      }
+    },
+    {
+      "id": "step:forward-agreement",
+      "kind": "inference",
+      "type": "source_summary",
+      "scope": "uniqueness",
+      "statement": "Apply one-sided uniqueness directly on [t₀,b], using the equality at its left endpoint.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L271-L276",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          271,
+          276
+        ]
+      }
+    },
+    {
+      "id": "fact:forward-agreement",
+      "kind": "fact",
+      "role": "intermediate",
+      "scope": "uniqueness",
+      "statement": "The trajectories agree on [t₀,b].",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L271-L276",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          271,
+          276
+        ]
+      }
+    },
+    {
+      "id": "step:backward-agreement",
+      "kind": "inference",
+      "type": "source_summary",
+      "scope": "uniqueness",
+      "statement": "Apply the reversed version on [a,t₀]. Its proof reflects time and uses the same forward uniqueness theorem for the negated, time-reversed field.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L209-L270",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          209,
+          270
+        ]
+      }
+    },
+    {
+      "id": "fact:backward-agreement",
+      "kind": "fact",
+      "role": "intermediate",
+      "scope": "uniqueness",
+      "statement": "The trajectories agree on [a,t₀].",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L209-L270",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          209,
+          270
+        ]
+      }
+    },
+    {
+      "id": "step:agreement-on-interval",
+      "kind": "inference",
+      "type": "source_summary",
+      "scope": "uniqueness",
+      "statement": "Combine equality on the two covering subintervals.",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L252-L276",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          252,
+          276
+        ]
+      }
+    },
+    {
+      "id": "fact:agreement-on-interval",
+      "kind": "fact",
+      "role": "conclusion",
+      "scope": "uniqueness",
+      "statement": "The two trajectories agree on [a,b].",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L252-L276",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          252,
+          276
+        ]
+      }
+    }
+  ],
+  "edges": [
+    {
+      "source": "fact:state-space",
+      "target": "step:curve-space",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L143-L208",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          143,
+          208
+        ]
+      }
+    },
+    {
+      "source": "step:curve-space",
+      "target": "lean:[\"ODE\",\"FunSpace\"]",
+      "relation": "summarizes",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L143-L208",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          143,
+          208
+        ]
+      }
+    },
+    {
+      "source": "step:curve-space",
+      "target": "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
+      "relation": "summarizes",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L143-L208",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          143,
+          208
+        ]
+      }
+    },
+    {
+      "source": "step:curve-space",
+      "target": "fact:curve-space",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L143-L208",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          143,
+          208
+        ]
+      }
+    },
+    {
+      "source": "fact:existence-hypotheses",
+      "target": "step:picard-self-map",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L246-L293",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          246,
+          293
+        ]
+      }
+    },
+    {
+      "source": "fact:curve-space",
+      "target": "step:picard-self-map",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L246-L293",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          246,
+          293
+        ]
+      }
+    },
+    {
+      "source": "step:picard-self-map",
+      "target": "lean:[\"ODE\",\"picard\"]",
+      "relation": "summarizes",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L246-L293",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          246,
+          293
+        ]
+      }
+    },
+    {
+      "source": "step:picard-self-map",
+      "target": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
+      "relation": "summarizes",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L246-L293",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          246,
+          293
+        ]
+      }
+    },
+    {
+      "source": "step:picard-self-map",
+      "target": "fact:picard-self-map",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L246-L293",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          246,
+          293
+        ]
+      }
+    },
+    {
+      "source": "fact:picard-self-map",
+      "target": "step:factorial-bound",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L313-L376",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          313,
+          376
+        ]
+      }
+    },
+    {
+      "source": "fact:existence-hypotheses",
+      "target": "step:factorial-bound",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L313-L376",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          313,
+          376
+        ]
+      }
+    },
+    {
+      "source": "step:factorial-bound",
+      "target": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]",
+      "relation": "summarizes",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L313-L376",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          313,
+          376
+        ]
+      }
+    },
+    {
+      "source": "step:factorial-bound",
+      "target": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]",
+      "relation": "summarizes",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L313-L376",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          313,
+          376
+        ]
+      }
+    },
+    {
+      "source": "step:factorial-bound",
+      "target": "fact:factorial-bound",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L313-L376",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          313,
+          376
+        ]
+      }
+    },
+    {
+      "source": "fact:factorial-bound",
+      "target": "step:contracting-iterate",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L378-L389",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          378,
+          389
+        ]
+      }
+    },
+    {
+      "source": "step:contracting-iterate",
+      "target": "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]",
+      "relation": "summarizes",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L378-L389",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          378,
+          389
+        ]
+      }
+    },
+    {
+      "source": "step:contracting-iterate",
+      "target": "fact:contracting-iterate",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L378-L389",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          378,
+          389
+        ]
+      }
+    },
+    {
+      "source": "fact:contracting-iterate",
+      "target": "step:fixed-curve",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L391-L397",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          391,
+          397
+        ]
+      }
+    },
+    {
+      "source": "fact:curve-space",
+      "target": "step:fixed-curve",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L391-L397",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          391,
+          397
+        ]
+      }
+    },
+    {
+      "source": "step:fixed-curve",
+      "target": "lean:[\"ContractingWith\",\"isFixedPt_fixedPoint_iterate\"]",
+      "relation": "applies",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L391-L397",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          391,
+          397
+        ]
+      }
+    },
+    {
+      "source": "step:fixed-curve",
+      "target": "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]",
+      "relation": "summarizes",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L391-L397",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          391,
+          397
+        ]
+      }
+    },
+    {
+      "source": "step:fixed-curve",
+      "target": "fact:fixed-curve",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/PicardLindelof.lean#L391-L397",
+        "file": "Mathlib/Analysis/ODE/PicardLindelof.lean",
+        "lines": [
+          391,
+          397
+        ]
+      }
+    },
+    {
+      "source": "fact:fixed-curve",
+      "target": "step:integral-equation",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L58-L66",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          58,
+          66
+        ]
+      }
+    },
+    {
+      "source": "fact:picard-self-map",
+      "target": "step:integral-equation",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L58-L66",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          58,
+          66
+        ]
+      }
+    },
+    {
+      "source": "step:integral-equation",
+      "target": "lean:[\"ODE\",\"FunSpace\",\"compProj\"]",
+      "relation": "summarizes",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L58-L66",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          58,
+          66
+        ]
+      }
+    },
+    {
+      "source": "step:integral-equation",
+      "target": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
+      "relation": "summarizes",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L58-L66",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          58,
+          66
+        ]
+      }
+    },
+    {
+      "source": "step:integral-equation",
+      "target": "fact:integral-equation",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L58-L66",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          58,
+          66
+        ]
+      }
+    },
+    {
+      "source": "fact:integral-equation",
+      "target": "step:ode-solution",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L55-L66",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          55,
+          66
+        ]
+      }
+    },
+    {
+      "source": "fact:existence-hypotheses",
+      "target": "step:ode-solution",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L55-L66",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          55,
+          66
+        ]
+      }
+    },
+    {
+      "source": "fact:state-space",
+      "target": "step:ode-solution",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L55-L66",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          55,
+          66
+        ]
+      }
+    },
+    {
+      "source": "step:ode-solution",
+      "target": "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]",
+      "relation": "applies",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L55-L66",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          55,
+          66
+        ]
+      }
+    },
+    {
+      "source": "step:ode-solution",
+      "target": "fact:ode-solution",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L55-L66",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          55,
+          66
+        ]
+      }
+    },
+    {
+      "source": "fact:ode-solution",
+      "target": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
+      "relation": "concludes",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L55-L66",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          55,
+          66
+        ]
+      }
+    },
+    {
+      "source": "step:trajectory-comparison",
+      "target": "lean:[\"norm_le_gronwallBound_of_norm_deriv_right_le\"]",
+      "relation": "summarizes",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/Gronwall.lean#L185-L221",
+        "file": "Mathlib/Analysis/ODE/Gronwall.lean",
+        "lines": [
+          185,
+          221
+        ]
+      }
+    },
+    {
+      "source": "step:trajectory-comparison",
+      "target": "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]",
+      "relation": "summarizes",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/Gronwall.lean#L185-L221",
+        "file": "Mathlib/Analysis/ODE/Gronwall.lean",
+        "lines": [
+          185,
+          221
+        ]
+      }
+    },
+    {
+      "source": "step:trajectory-comparison",
+      "target": "fact:trajectory-comparison",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/Gronwall.lean#L185-L221",
+        "file": "Mathlib/Analysis/ODE/Gronwall.lean",
+        "lines": [
+          185,
+          221
+        ]
+      }
+    },
+    {
+      "source": "fact:trajectory-comparison",
+      "target": "step:one-sided-principle",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L194-L205",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          194,
+          205
+        ]
+      }
+    },
+    {
+      "source": "step:one-sided-principle",
+      "target": "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]",
+      "relation": "applies",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L194-L205",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          194,
+          205
+        ]
+      }
+    },
+    {
+      "source": "step:one-sided-principle",
+      "target": "fact:one-sided-principle",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L194-L205",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          194,
+          205
+        ]
+      }
+    },
+    {
+      "source": "fact:uniqueness-hypotheses",
+      "target": "step:split-interval",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L263-L276",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          263,
+          276
+        ]
+      }
+    },
+    {
+      "source": "step:split-interval",
+      "target": "fact:split-interval",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L263-L276",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          263,
+          276
+        ]
+      }
+    },
+    {
+      "source": "fact:one-sided-principle",
+      "target": "step:forward-agreement",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L271-L276",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          271,
+          276
+        ]
+      }
+    },
+    {
+      "source": "fact:split-interval",
+      "target": "step:forward-agreement",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L271-L276",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          271,
+          276
+        ]
+      }
+    },
+    {
+      "source": "fact:same-initial-value",
+      "target": "step:forward-agreement",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L271-L276",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          271,
+          276
+        ]
+      }
+    },
+    {
+      "source": "step:forward-agreement",
+      "target": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
+      "relation": "applies",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L271-L276",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          271,
+          276
+        ]
+      }
+    },
+    {
+      "source": "step:forward-agreement",
+      "target": "fact:forward-agreement",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L271-L276",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          271,
+          276
+        ]
+      }
+    },
+    {
+      "source": "fact:one-sided-principle",
+      "target": "step:backward-agreement",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L209-L270",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          209,
+          270
+        ]
+      }
+    },
+    {
+      "source": "fact:split-interval",
+      "target": "step:backward-agreement",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L209-L270",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          209,
+          270
+        ]
+      }
+    },
+    {
+      "source": "fact:same-initial-value",
+      "target": "step:backward-agreement",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L209-L270",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          209,
+          270
+        ]
+      }
+    },
+    {
+      "source": "step:backward-agreement",
+      "target": "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
+      "relation": "applies",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L209-L270",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          209,
+          270
+        ]
+      }
+    },
+    {
+      "source": "step:backward-agreement",
+      "target": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
+      "relation": "summarizes",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L209-L270",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          209,
+          270
+        ]
+      }
+    },
+    {
+      "source": "step:backward-agreement",
+      "target": "fact:backward-agreement",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L209-L270",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          209,
+          270
+        ]
+      }
+    },
+    {
+      "source": "fact:forward-agreement",
+      "target": "step:agreement-on-interval",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L252-L276",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          252,
+          276
+        ]
+      }
+    },
+    {
+      "source": "fact:backward-agreement",
+      "target": "step:agreement-on-interval",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L252-L276",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          252,
+          276
+        ]
+      }
+    },
+    {
+      "source": "fact:split-interval",
+      "target": "step:agreement-on-interval",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L252-L276",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          252,
+          276
+        ]
+      }
+    },
+    {
+      "source": "step:agreement-on-interval",
+      "target": "fact:agreement-on-interval",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L252-L276",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          252,
+          276
+        ]
+      }
+    },
+    {
+      "source": "fact:agreement-on-interval",
+      "target": "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
+      "relation": "concludes",
+      "evidence": {
+        "kind": "source_curated",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean#L252-L276",
+        "file": "Mathlib/Analysis/ODE/ExistUnique.lean",
+        "lines": [
+          252,
+          276
+        ]
+      }
+    }
+  ],
+  "annotations": {
+    "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]": {
+      "title": "Existence of an ODE solution",
+      "summary": "Under the Picard–Lindelöf hypotheses, every initial point in the smaller closed ball gives a solution on the specified closed time interval.",
+      "compact_latex": "\\exists\\alpha:\\mathbb R\\to E,\\quad \\alpha(t_0)=x\\quad\\land\\quad \\forall t\\in[t_{\\min},t_{\\max}],\\ \\operatorname{HasDerivWithinAt}\\!\\left(\\alpha,f(t,\\alpha(t)),[t_{\\min},t_{\\max}],t\\right).",
+      "concepts": [
+        "picard-existence"
+      ],
+      "why_here": "This is the existence conclusion produced by the fixed-curve construction.",
+      "support_edges": [
+        32
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      },
+      "statement_latex": "\\begin{gathered} E\\text{ is a complete real normed space},\\quad I=[t_{\\min},t_{\\max}],\\quad t_0\\in I,\\\\ \\operatorname{IsPicardLindelof}(f,t_0,x_0,a,r,L,K)\\ \\land\\ x\\in\\overline B(x_0,r)\\ \\Longrightarrow\\ \\exists\\alpha:\\mathbb R\\to E,\\ \\alpha(t_0)=x\\ \\land\\ \\forall t\\in[t_{\\min},t_{\\max}],\\ \\operatorname{HasDerivWithinAt}\\!\\left(\\alpha,f(t,\\alpha(t)),[t_{\\min},t_{\\max}],t\\right).\\end{gathered}",
+      "field_provenance": {
+        "statement_latex": {
+          "kind": "model",
+          "provider": "Codex CLI",
+          "auth": "ChatGPT",
+          "model": "gpt-6.1-terra",
+          "prompt_version": 3,
+          "review": "Implicit type and interval context transcribed from the pinned Lean source.",
+          "bundle": "root-statements.terra.annotations.json"
+        },
+        "compact_latex": {
+          "kind": "model",
+          "provider": "Codex CLI",
+          "auth": "ChatGPT",
+          "model": "gpt-6.1-terra",
+          "prompt_version": 3,
+          "bundle": "root-statements.terra.annotations.json"
+        }
+      }
+    },
+    "lean:[\"ODE_solution_unique_of_mem_Icc\"]": {
+      "title": "Uniqueness on a closed interval",
+      "summary": "Two continuous trajectories that solve the same locally constrained Lipschitz ODE and agree at an interior time agree throughout the interval.",
+      "compact_latex": "\\forall t\\in[a,b],\\quad f(t)=g(t).",
+      "concepts": [
+        "ode-uniqueness"
+      ],
+      "why_here": "This is the conclusion obtained by combining agreement on both sides of the initial time.",
+      "support_edges": [
+        56
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      },
+      "statement_latex": "\\begin{gathered} E\\text{ is a real normed space},\\quad v:\\mathbb R\\times E\\to E,\\quad s:\\mathbb R\\to\\mathcal P(E),\\quad K\\ge0,\\\\ t_0\\in(a,b),\\quad \\forall t\\in(a,b),\\ \\operatorname{LipschitzOnWith}(K,v(t),s(t)),\\\\ f,g\\in C([a,b]),\\quad \\forall t\\in(a,b),\\ \\operatorname{HasDerivAt}(f,v(t,f(t)),t)\\ \\land\\ f(t)\\in s(t),\\\\ \\forall t\\in(a,b),\\ \\operatorname{HasDerivAt}(g,v(t,g(t)),t)\\ \\land\\ g(t)\\in s(t),\\quad f(t_0)=g(t_0)\\\\ \\Longrightarrow\\quad \\forall t\\in[a,b],\\ f(t)=g(t).\\end{gathered}",
+      "field_provenance": {
+        "statement_latex": {
+          "kind": "model",
+          "provider": "Codex CLI",
+          "auth": "ChatGPT",
+          "model": "gpt-6.1-terra",
+          "prompt_version": 3,
+          "review": "Implicit type and interval context transcribed from the pinned Lean source.",
+          "bundle": "root-statements.terra.annotations.json"
+        },
+        "compact_latex": {
+          "kind": "model",
+          "provider": "Codex CLI",
+          "auth": "ChatGPT",
+          "model": "gpt-6.1-terra",
+          "prompt_version": 3,
+          "bundle": "root-statements.terra.annotations.json"
+        }
+      }
+    },
+    "lean:[\"IsPicardLindelof\"]": {
+      "title": "Picard–Lindelöf hypotheses",
+      "summary": "Packages conditions on the vector field and the time interval for the existence construction.",
+      "concepts": [
+        "picard-existence"
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "lean:[\"ODE\",\"FunSpace\"]": {
+      "title": "Admissible curve space",
+      "summary": "Interval curves are Lipschitz and have their value at the initial time in the prescribed ball.",
+      "concepts": [
+        "curve-space"
+      ],
+      "why_here": "The curve-space construction summarizes this definition.",
+      "support_edges": [
+        1
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]": {
+      "title": "Completeness of the curve space",
+      "summary": "The admissible curves form a complete space when the state space is complete.",
+      "concepts": [
+        "curve-space",
+        "fixed-point"
+      ],
+      "why_here": "Completeness supplies the setting for the fixed-point argument.",
+      "support_edges": [
+        2
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "lean:[\"ODE\",\"picard\"]": {
+      "title": "Picard integral operator",
+      "compact_latex": "(T\\alpha)(t)=x+\\int_{t_0}^{t}f(s,\\alpha(s))\\,ds.",
+      "concepts": [
+        "picard-iteration"
+      ],
+      "why_here": "The self-map construction uses this integral formula.",
+      "support_edges": [
+        6
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "lean:[\"ODE\",\"FunSpace\",\"next\"]": {
+      "title": "Picard self-map",
+      "summary": "The Picard integral operator maps admissible curves back into the curve space.",
+      "concepts": [
+        "picard-iteration",
+        "curve-space"
+      ],
+      "why_here": "It is the self-map whose fixed-point identity yields the integral equation.",
+      "support_edges": [
+        7,
+        25
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]": {
+      "title": "Pointwise factorial estimate",
+      "summary": "The distance between iterated Picard curves has a factorial denominator and a power of elapsed time.",
+      "concepts": [
+        "factorial-bound"
+      ],
+      "why_here": "It supplies the pointwise estimate summarized by the factorial-bound step.",
+      "support_edges": [
+        11
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]": {
+      "title": "Uniform factorial estimate",
+      "compact_latex": "d(T^n\\alpha,T^n\\beta)\\leq\\frac{(KR)^n}{n!}\\,d(\\alpha,\\beta).",
+      "concepts": [
+        "factorial-bound"
+      ],
+      "why_here": "Taking a uniform bound over the interval gives an estimate in the curve-space metric.",
+      "support_edges": [
+        12
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]": {
+      "title": "A Picard iterate is contracting",
+      "summary": "A sufficiently high iterate is a contraction, with a choice independent of the initial point in the smaller ball.",
+      "concepts": [
+        "factorial-bound",
+        "fixed-point"
+      ],
+      "why_here": "The factorial estimate gives a coefficient below one for a suitable iterate.",
+      "support_edges": [
+        15
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "lean:[\"ContractingWith\",\"isFixedPt_fixedPoint_iterate\"]": {
+      "title": "Fixed point of a contracting iterate",
+      "summary": "The fixed point of a contracting iterate is also fixed by the original map.",
+      "concepts": [
+        "fixed-point"
+      ],
+      "why_here": "The existence argument applies this result to the Picard self-map.",
+      "support_edges": [
+        19
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]": {
+      "title": "Existence of a fixed Picard curve",
+      "summary": "The Picard self-map has a fixed point in the admissible curve space.",
+      "concepts": [
+        "fixed-point",
+        "picard-iteration"
+      ],
+      "why_here": "This is the fixed-curve result used to construct the solution.",
+      "support_edges": [
+        20
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "lean:[\"ODE\",\"FunSpace\",\"compProj\"]": {
+      "title": "Endpoint extension",
+      "summary": "Extends an interval curve to the real line by keeping its endpoint values constant outside the interval.",
+      "concepts": [
+        "picard-existence"
+      ],
+      "why_here": "The fixed interval curve is extended before its integral equation is used.",
+      "support_edges": [
+        24
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]": {
+      "title": "Derivative of the Picard integral",
+      "summary": "Under the stated continuity and range hypotheses, differentiating the Picard integral within the interval recovers the vector field.",
+      "concepts": [
+        "picard-existence"
+      ],
+      "why_here": "The final existence step applies this derivative result.",
+      "support_edges": [
+        30
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]": {
+      "title": "Forward one-sided uniqueness",
+      "summary": "Solutions agreeing at the left endpoint agree on the closed interval under the one-sided Lipschitz and derivative hypotheses.",
+      "concepts": [
+        "ode-uniqueness"
+      ],
+      "why_here": "The forward half of the interval uses this theorem.",
+      "support_edges": [
+        44,
+        50
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]": {
+      "title": "Backward one-sided uniqueness",
+      "summary": "Solutions agreeing at the right endpoint agree on the closed interval; the proof uses time reversal.",
+      "concepts": [
+        "ode-uniqueness",
+        "time-reversal"
+      ],
+      "why_here": "The backward half of the interval uses this theorem.",
+      "support_edges": [
+        49
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]": {
+      "title": "Trajectory distance estimate",
+      "summary": "A bound on initial separation propagates exponentially along two solutions under the one-sided hypotheses.",
+      "compact_latex": "d(f(t),g(t))\\leq\\delta e^{K(t-a)}\\qquad(t\\in[a,b]).",
+      "concepts": [
+        "gronwall",
+        "ode-uniqueness"
+      ],
+      "why_here": "Setting the initial distance bound to zero yields one-sided uniqueness.",
+      "support_edges": [
+        34,
+        37
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "lean:[\"norm_le_gronwallBound_of_norm_deriv_right_le\"]": {
+      "title": "Differential Grönwall bound",
+      "summary": "A right-derivative bound controls the norm of a continuous curve by a Grönwall bound.",
+      "concepts": [
+        "gronwall"
+      ],
+      "why_here": "The trajectory-comparison step summarizes this background inequality.",
+      "support_edges": [
+        33
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "fact:state-space": {
+      "title": "Complete state space and time interval",
+      "concepts": [
+        "curve-space"
+      ],
+      "why_here": "These assumptions support both the complete curve space and the final differentiation step.",
+      "support_edges": [
+        0,
+        29
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "fact:existence-hypotheses": {
+      "title": "Field and interval bounds",
+      "summary": "Lipschitz continuity, time continuity, a field bound, and the interval-size condition make the Picard construction admissible.",
+      "concepts": [
+        "picard-existence"
+      ],
+      "why_here": "These hypotheses support the self-map, its iterated estimate, and the solution step.",
+      "support_edges": [
+        4,
+        10,
+        28
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "step:curve-space": {
+      "title": "Build the complete curve space",
+      "concepts": [
+        "curve-space"
+      ],
+      "why_here": "It produces the complete admissible space used by the fixed-point argument.",
+      "support_edges": [
+        0,
+        3
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "fact:curve-space": {
+      "title": "Complete admissible curve space",
+      "concepts": [
+        "curve-space",
+        "fixed-point"
+      ],
+      "why_here": "It is the domain of the Picard self-map and the fixed-point argument.",
+      "support_edges": [
+        3,
+        5,
+        18
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "step:picard-self-map": {
+      "title": "Construct the Picard self-map",
+      "concepts": [
+        "picard-iteration"
+      ],
+      "why_here": "The field and interval bounds make the integral operator a self-map.",
+      "support_edges": [
+        4,
+        5,
+        8
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "fact:picard-self-map": {
+      "title": "Admissible Picard operator",
+      "compact_latex": "(T\\alpha)(t)=x+\\int_{t_0}^{t}f(s,\\alpha(s))\\,ds.",
+      "concepts": [
+        "picard-iteration"
+      ],
+      "why_here": "This operator is estimated under iteration and later rewritten as an integral equation.",
+      "support_edges": [
+        8,
+        9,
+        23
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "step:factorial-bound": {
+      "title": "Estimate iterated Picard maps",
+      "summary": "Induction, the state Lipschitz bound, and integration yield the factorial estimate.",
+      "concepts": [
+        "factorial-bound"
+      ],
+      "why_here": "It produces the estimate used to select a contracting iterate.",
+      "support_edges": [
+        9,
+        10,
+        13
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "fact:factorial-bound": {
+      "title": "Factorial decay of iterate bounds",
+      "compact_latex": "d(T^n\\alpha,T^n\\beta)\\leq\\frac{(KR)^n}{n!}d(\\alpha,\\beta).",
+      "concepts": [
+        "factorial-bound"
+      ],
+      "why_here": "Its coefficient tends to zero, enabling the contraction step.",
+      "support_edges": [
+        13,
+        14
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "step:contracting-iterate": {
+      "title": "Choose a contracting iterate",
+      "concepts": [
+        "factorial-bound",
+        "fixed-point"
+      ],
+      "why_here": "Factorial decay provides an iterate with Lipschitz constant below one.",
+      "support_edges": [
+        14,
+        16
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "fact:contracting-iterate": {
+      "title": "Contracting Picard iterate",
+      "concepts": [
+        "fixed-point"
+      ],
+      "why_here": "This enables the fixed-point argument on the complete curve space.",
+      "support_edges": [
+        16,
+        17
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "step:fixed-curve": {
+      "title": "Obtain a fixed curve",
+      "concepts": [
+        "fixed-point"
+      ],
+      "why_here": "The contracting iterate and completeness yield a fixed point of the original Picard map.",
+      "support_edges": [
+        17,
+        18,
+        19,
+        21
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "fact:fixed-curve": {
+      "title": "Picard fixed curve",
+      "compact_latex": "T\\alpha=\\alpha.",
+      "concepts": [
+        "fixed-point",
+        "picard-iteration"
+      ],
+      "why_here": "The fixed-point identity gives the integral equation on the interval.",
+      "support_edges": [
+        21,
+        22
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "step:integral-equation": {
+      "title": "Recover the integral equation",
+      "summary": "Extend the fixed curve by constant endpoint values and rewrite its fixed-point identity on the interval.",
+      "concepts": [
+        "picard-iteration"
+      ],
+      "why_here": "It turns the fixed curve into an extended curve satisfying the Picard integral equation.",
+      "support_edges": [
+        22,
+        23,
+        26
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "fact:integral-equation": {
+      "title": "Integral equation for the extended curve",
+      "compact_latex": "g(t)=x+\\int_{t_0}^{t}f(s,g(s))\\,ds\\qquad(t\\in I).",
+      "concepts": [
+        "picard-iteration"
+      ],
+      "why_here": "Differentiating this equation gives the ODE solution.",
+      "support_edges": [
+        26,
+        27
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "step:ode-solution": {
+      "title": "Differentiate the integral equation",
+      "summary": "Evaluate at the initial time and differentiate within the interval.",
+      "concepts": [
+        "picard-existence"
+      ],
+      "why_here": "This step produces the required initial value and derivative.",
+      "support_edges": [
+        27,
+        28,
+        29,
+        30,
+        31
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "fact:ode-solution": {
+      "title": "Existence conclusion",
+      "summary": "An extended curve has the prescribed initial value and solves the ODE within the interval.",
+      "concepts": [
+        "picard-existence"
+      ],
+      "why_here": "It concludes the existence declaration.",
+      "support_edges": [
+        31,
+        32
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "fact:uniqueness-hypotheses": {
+      "title": "Uniqueness hypotheses",
+      "summary": "The initial time is interior, both trajectories solve the ODE and remain in the permitted sets, and the field is uniformly Lipschitz there.",
+      "concepts": [
+        "ode-uniqueness"
+      ],
+      "why_here": "The hypotheses restrict to the two half-intervals.",
+      "support_edges": [
+        39
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "fact:same-initial-value": {
+      "title": "Common initial value",
+      "compact_latex": "f(t_0)=g(t_0).",
+      "concepts": [
+        "ode-uniqueness"
+      ],
+      "why_here": "The common value supplies the endpoint equality for both one-sided arguments.",
+      "support_edges": [
+        43,
+        48
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "step:trajectory-comparison": {
+      "title": "Compare trajectory distances",
+      "summary": "A differential Grönwall estimate gives a reusable forward bound on the separation of two trajectories.",
+      "concepts": [
+        "gronwall"
+      ],
+      "why_here": "It produces the comparison estimate used for one-sided uniqueness.",
+      "support_edges": [
+        33,
+        34,
+        35
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "fact:trajectory-comparison": {
+      "title": "Exponential separation bound",
+      "summary": "Under the forward comparison hypotheses, an initial distance at most δ grows by at most the factor exp(K(t−a)).",
+      "concepts": [
+        "gronwall"
+      ],
+      "why_here": "The one-sided uniqueness proof applies it with zero initial separation.",
+      "support_edges": [
+        35,
+        36
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "step:one-sided-principle": {
+      "title": "Derive forward uniqueness",
+      "summary": "Set the initial distance bound to zero and conclude equality from zero distance.",
+      "concepts": [
+        "ode-uniqueness",
+        "gronwall"
+      ],
+      "why_here": "It produces the reusable one-sided uniqueness principle.",
+      "support_edges": [
+        36,
+        37,
+        38
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "fact:one-sided-principle": {
+      "title": "Forward uniqueness principle",
+      "summary": "Solutions with the same left-endpoint value agree on the forward interval under the one-sided hypotheses.",
+      "concepts": [
+        "ode-uniqueness"
+      ],
+      "why_here": "It supports the forward argument and, via time reversal, the backward argument.",
+      "support_edges": [
+        38,
+        41,
+        46
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "step:split-interval": {
+      "title": "Split at the initial time",
+      "concepts": [
+        "ode-uniqueness"
+      ],
+      "why_here": "The interior hypotheses restrict to the two covering half-intervals.",
+      "support_edges": [
+        39,
+        40
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "fact:split-interval": {
+      "title": "Two admissible half-intervals",
+      "compact_latex": "[a,b]=[a,t_0]\\cup[t_0,b].",
+      "concepts": [
+        "ode-uniqueness"
+      ],
+      "why_here": "The two one-sided results apply on these halves, which cover the interval.",
+      "support_edges": [
+        40,
+        42,
+        47,
+        54
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "step:forward-agreement": {
+      "title": "Prove forward agreement",
+      "concepts": [
+        "ode-uniqueness"
+      ],
+      "why_here": "One-sided uniqueness gives equality on the right half.",
+      "support_edges": [
+        41,
+        42,
+        43,
+        44,
+        45
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "fact:forward-agreement": {
+      "title": "Agreement after the initial time",
+      "compact_latex": "f=g\\text{ on }[t_0,b].",
+      "concepts": [
+        "ode-uniqueness"
+      ],
+      "why_here": "It supplies one half of the final interval agreement.",
+      "support_edges": [
+        45,
+        52
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "step:backward-agreement": {
+      "title": "Prove backward agreement",
+      "summary": "Apply the left-sided theorem, whose proof reflects time and uses forward uniqueness.",
+      "concepts": [
+        "ode-uniqueness",
+        "time-reversal"
+      ],
+      "why_here": "It gives equality on the left half of the interval.",
+      "support_edges": [
+        46,
+        47,
+        48,
+        49,
+        51
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "fact:backward-agreement": {
+      "title": "Agreement before the initial time",
+      "compact_latex": "f=g\\text{ on }[a,t_0].",
+      "concepts": [
+        "ode-uniqueness"
+      ],
+      "why_here": "It supplies the other half of the final interval agreement.",
+      "support_edges": [
+        51,
+        53
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "step:agreement-on-interval": {
+      "title": "Combine the two agreements",
+      "concepts": [
+        "ode-uniqueness"
+      ],
+      "why_here": "Equality on the two covering halves gives equality on the whole interval.",
+      "support_edges": [
+        52,
+        53,
+        54,
+        55
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    "fact:agreement-on-interval": {
+      "title": "Agreement on the closed interval",
+      "compact_latex": "f=g\\text{ on }[a,b].",
+      "concepts": [
+        "ode-uniqueness"
+      ],
+      "why_here": "It concludes the uniqueness declaration.",
+      "support_edges": [
+        55,
+        56
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    }
+  },
+  "concepts": [
+    {
+      "id": "picard-existence",
+      "title": "Picard–Lindelöf existence",
+      "summary": "Construct an ODE solution from a fixed point of an integral operator under suitable field and interval bounds.",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "id": "curve-space",
+      "title": "Complete space of admissible curves",
+      "summary": "Lipschitz curves with an initial-ball constraint form the complete metric setting for the existence proof.",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "id": "picard-iteration",
+      "title": "Picard integral operator",
+      "summary": "Integrating the vector field along a candidate curve turns the ODE into a fixed-point problem.",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "id": "factorial-bound",
+      "title": "Factorial estimate for iterates",
+      "summary": "Repeated integration gives a factorial denominator, so a sufficiently high Picard iterate is contracting.",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "id": "fixed-point",
+      "title": "Fixed point of a contracting iterate",
+      "summary": "On a complete metric space, a contracting iterate supplies a fixed point of the original map.",
+      "detail": "foundation",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "id": "gronwall",
+      "title": "Grönwall comparison",
+      "summary": "A differential growth bound controls trajectory separation by an exponential factor.",
+      "detail": "foundation",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "id": "ode-uniqueness",
+      "title": "Uniqueness of ODE trajectories",
+      "summary": "Lipschitz control and equality at an initial time force two solutions to agree on the interval.",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "id": "time-reversal",
+      "title": "Time reversal",
+      "summary": "Reflecting time and negating the transformed vector field converts a backward uniqueness problem into a forward one.",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    }
+  ],
+  "groups": [
+    {
+      "id": "existence-construction",
+      "title": "Construct a solution by Picard iteration",
+      "steps": [
+        "step:curve-space",
+        "step:picard-self-map",
+        "step:factorial-bound",
+        "step:contracting-iterate",
+        "step:fixed-curve",
+        "step:integral-equation",
+        "step:ode-solution"
+      ],
+      "kind": "block",
+      "annotation_provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      },
+      "inputs": [
+        "fact:existence-hypotheses",
+        "fact:state-space"
+      ],
+      "outputs": [
+        "fact:ode-solution"
+      ]
+    },
+    {
+      "id": "uniqueness-comparison",
+      "title": "Derive one-sided uniqueness by comparison",
+      "steps": [
+        "step:trajectory-comparison",
+        "step:one-sided-principle"
+      ],
+      "kind": "block",
+      "annotation_provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      },
+      "inputs": [],
+      "outputs": [
+        "fact:one-sided-principle"
+      ]
+    },
+    {
+      "id": "uniqueness-interval",
+      "title": "Combine uniqueness on both sides",
+      "steps": [
+        "step:split-interval",
+        "step:forward-agreement",
+        "step:backward-agreement",
+        "step:agreement-on-interval"
+      ],
+      "kind": "block",
+      "annotation_provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      },
+      "inputs": [
+        "fact:one-sided-principle",
+        "fact:same-initial-value",
+        "fact:uniqueness-hypotheses"
+      ],
+      "outputs": [
+        "fact:agreement-on-interval"
+      ]
+    }
+  ],
+  "semantic_edges": [
+    {
+      "source": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
+      "target": "picard-existence",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
+      "target": "ode-uniqueness",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"IsPicardLindelof\"]",
+      "target": "picard-existence",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"ODE\",\"FunSpace\"]",
+      "target": "curve-space",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
+      "target": "curve-space",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
+      "target": "fixed-point",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"ODE\",\"picard\"]",
+      "target": "picard-iteration",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
+      "target": "picard-iteration",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
+      "target": "curve-space",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]",
+      "target": "factorial-bound",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]",
+      "target": "factorial-bound",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]",
+      "target": "factorial-bound",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]",
+      "target": "fixed-point",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"ContractingWith\",\"isFixedPt_fixedPoint_iterate\"]",
+      "target": "fixed-point",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]",
+      "target": "fixed-point",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]",
+      "target": "picard-iteration",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"ODE\",\"FunSpace\",\"compProj\"]",
+      "target": "picard-existence",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]",
+      "target": "picard-existence",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
+      "target": "ode-uniqueness",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
+      "target": "ode-uniqueness",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
+      "target": "time-reversal",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]",
+      "target": "gronwall",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]",
+      "target": "ode-uniqueness",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "lean:[\"norm_le_gronwallBound_of_norm_deriv_right_le\"]",
+      "target": "gronwall",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "fact:state-space",
+      "target": "curve-space",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "fact:existence-hypotheses",
+      "target": "picard-existence",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "step:curve-space",
+      "target": "curve-space",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "fact:curve-space",
+      "target": "curve-space",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "fact:curve-space",
+      "target": "fixed-point",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "step:picard-self-map",
+      "target": "picard-iteration",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "fact:picard-self-map",
+      "target": "picard-iteration",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "step:factorial-bound",
+      "target": "factorial-bound",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "fact:factorial-bound",
+      "target": "factorial-bound",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "step:contracting-iterate",
+      "target": "factorial-bound",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "step:contracting-iterate",
+      "target": "fixed-point",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "fact:contracting-iterate",
+      "target": "fixed-point",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "step:fixed-curve",
+      "target": "fixed-point",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "fact:fixed-curve",
+      "target": "fixed-point",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "fact:fixed-curve",
+      "target": "picard-iteration",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "step:integral-equation",
+      "target": "picard-iteration",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "fact:integral-equation",
+      "target": "picard-iteration",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "step:ode-solution",
+      "target": "picard-existence",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "fact:ode-solution",
+      "target": "picard-existence",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "fact:uniqueness-hypotheses",
+      "target": "ode-uniqueness",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "fact:same-initial-value",
+      "target": "ode-uniqueness",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "step:trajectory-comparison",
+      "target": "gronwall",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "fact:trajectory-comparison",
+      "target": "gronwall",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "step:one-sided-principle",
+      "target": "ode-uniqueness",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "step:one-sided-principle",
+      "target": "gronwall",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "fact:one-sided-principle",
+      "target": "ode-uniqueness",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "step:split-interval",
+      "target": "ode-uniqueness",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "fact:split-interval",
+      "target": "ode-uniqueness",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "step:forward-agreement",
+      "target": "ode-uniqueness",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "fact:forward-agreement",
+      "target": "ode-uniqueness",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "step:backward-agreement",
+      "target": "ode-uniqueness",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "step:backward-agreement",
+      "target": "time-reversal",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "fact:backward-agreement",
+      "target": "ode-uniqueness",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "step:agreement-on-interval",
+      "target": "ode-uniqueness",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    },
+    {
+      "source": "fact:agreement-on-interval",
+      "target": "ode-uniqueness",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "model": "gpt-6.1-terra",
+        "prompt_version": 2
+      }
+    }
+  ],
+  "view": {
+    "level": "ideas",
+    "group_depth": 1,
+    "hide_shared_above": null,
+    "nodes": [
+      "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
+      "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
+      "lean:[\"IsPicardLindelof\"]",
+      "lean:[\"ODE\",\"FunSpace\"]",
+      "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
+      "lean:[\"ODE\",\"picard\"]",
+      "lean:[\"ODE\",\"FunSpace\",\"next\"]",
+      "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]",
+      "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]",
+      "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]",
+      "lean:[\"ContractingWith\",\"isFixedPt_fixedPoint_iterate\"]",
+      "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]",
+      "lean:[\"ODE\",\"FunSpace\",\"compProj\"]",
+      "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]",
+      "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
+      "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
+      "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]",
+      "lean:[\"norm_le_gronwallBound_of_norm_deriv_right_le\"]",
+      "fact:state-space",
+      "fact:existence-hypotheses",
+      "fact:ode-solution",
+      "fact:uniqueness-hypotheses",
+      "fact:same-initial-value",
+      "fact:one-sided-principle",
+      "fact:agreement-on-interval",
+      "picard-existence",
+      "curve-space",
+      "picard-iteration",
+      "factorial-bound",
+      "fixed-point",
+      "gronwall",
+      "ode-uniqueness",
+      "time-reversal",
+      "existence-construction",
+      "uniqueness-comparison",
+      "uniqueness-interval"
+    ],
+    "size_roles": {
+      "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]": "root",
+      "lean:[\"ODE_solution_unique_of_mem_Icc\"]": "root",
+      "lean:[\"IsPicardLindelof\"]": "support",
+      "lean:[\"ODE\",\"FunSpace\"]": "support",
+      "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]": "support",
+      "lean:[\"ODE\",\"picard\"]": "support",
+      "lean:[\"ODE\",\"FunSpace\",\"next\"]": "support",
+      "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]": "support",
+      "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]": "support",
+      "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]": "support",
+      "lean:[\"ContractingWith\",\"isFixedPt_fixedPoint_iterate\"]": "support",
+      "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]": "support",
+      "lean:[\"ODE\",\"FunSpace\",\"compProj\"]": "support",
+      "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]": "support",
+      "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]": "support",
+      "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]": "support",
+      "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]": "support",
+      "lean:[\"norm_le_gronwallBound_of_norm_deriv_right_le\"]": "support",
+      "fact:state-space": "standard",
+      "fact:existence-hypotheses": "standard",
+      "fact:ode-solution": "standard",
+      "fact:uniqueness-hypotheses": "standard",
+      "fact:same-initial-value": "standard",
+      "fact:one-sided-principle": "standard",
+      "fact:agreement-on-interval": "standard",
+      "picard-existence": "standard",
+      "curve-space": "standard",
+      "picard-iteration": "standard",
+      "factorial-bound": "standard",
+      "fixed-point": "standard",
+      "gronwall": "standard",
+      "ode-uniqueness": "standard",
+      "time-reversal": "standard",
+      "existence-construction": "block",
+      "uniqueness-comparison": "block",
+      "uniqueness-interval": "block"
+    },
+    "hidden": [],
+    "collapsed_into": {
+      "step:curve-space": "existence-construction",
+      "step:picard-self-map": "existence-construction",
+      "step:factorial-bound": "existence-construction",
+      "step:contracting-iterate": "existence-construction",
+      "step:fixed-curve": "existence-construction",
+      "step:integral-equation": "existence-construction",
+      "step:ode-solution": "existence-construction",
+      "step:trajectory-comparison": "uniqueness-comparison",
+      "step:one-sided-principle": "uniqueness-comparison",
+      "step:split-interval": "uniqueness-interval",
+      "step:forward-agreement": "uniqueness-interval",
+      "step:backward-agreement": "uniqueness-interval",
+      "step:agreement-on-interval": "uniqueness-interval",
+      "fact:curve-space": "existence-construction",
+      "fact:picard-self-map": "existence-construction",
+      "fact:factorial-bound": "existence-construction",
+      "fact:contracting-iterate": "existence-construction",
+      "fact:fixed-curve": "existence-construction",
+      "fact:integral-equation": "existence-construction",
+      "fact:trajectory-comparison": "uniqueness-comparison",
+      "fact:split-interval": "uniqueness-interval",
+      "fact:forward-agreement": "uniqueness-interval",
+      "fact:backward-agreement": "uniqueness-interval"
+    },
+    "edges": [
+      {
+        "source": "fact:state-space",
+        "target": "existence-construction",
+        "relation": "premise_of",
+        "edge_indices": [
+          0,
+          29
+        ]
+      },
+      {
+        "source": "existence-construction",
+        "target": "lean:[\"ODE\",\"FunSpace\"]",
+        "relation": "summarizes",
+        "edge_indices": [
+          1
+        ]
+      },
+      {
+        "source": "existence-construction",
+        "target": "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
+        "relation": "summarizes",
+        "edge_indices": [
+          2
+        ]
+      },
+      {
+        "source": "fact:existence-hypotheses",
+        "target": "existence-construction",
+        "relation": "premise_of",
+        "edge_indices": [
+          4,
+          10,
+          28
+        ]
+      },
+      {
+        "source": "existence-construction",
+        "target": "lean:[\"ODE\",\"picard\"]",
+        "relation": "summarizes",
+        "edge_indices": [
+          6
+        ]
+      },
+      {
+        "source": "existence-construction",
+        "target": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
+        "relation": "summarizes",
+        "edge_indices": [
+          7,
+          25
+        ]
+      },
+      {
+        "source": "existence-construction",
+        "target": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]",
+        "relation": "summarizes",
+        "edge_indices": [
+          11
+        ]
+      },
+      {
+        "source": "existence-construction",
+        "target": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]",
+        "relation": "summarizes",
+        "edge_indices": [
+          12
+        ]
+      },
+      {
+        "source": "existence-construction",
+        "target": "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]",
+        "relation": "summarizes",
+        "edge_indices": [
+          15
+        ]
+      },
+      {
+        "source": "existence-construction",
+        "target": "lean:[\"ContractingWith\",\"isFixedPt_fixedPoint_iterate\"]",
+        "relation": "applies",
+        "edge_indices": [
+          19
+        ]
+      },
+      {
+        "source": "existence-construction",
+        "target": "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]",
+        "relation": "summarizes",
+        "edge_indices": [
+          20
+        ]
+      },
+      {
+        "source": "existence-construction",
+        "target": "lean:[\"ODE\",\"FunSpace\",\"compProj\"]",
+        "relation": "summarizes",
+        "edge_indices": [
+          24
+        ]
+      },
+      {
+        "source": "existence-construction",
+        "target": "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]",
+        "relation": "applies",
+        "edge_indices": [
+          30
+        ]
+      },
+      {
+        "source": "existence-construction",
+        "target": "fact:ode-solution",
+        "relation": "produces",
+        "edge_indices": [
+          31
+        ]
+      },
+      {
+        "source": "fact:ode-solution",
+        "target": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
+        "relation": "concludes",
+        "edge_indices": [
+          32
+        ]
+      },
+      {
+        "source": "uniqueness-comparison",
+        "target": "lean:[\"norm_le_gronwallBound_of_norm_deriv_right_le\"]",
+        "relation": "summarizes",
+        "edge_indices": [
+          33
+        ]
+      },
+      {
+        "source": "uniqueness-comparison",
+        "target": "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]",
+        "relation": "summarizes",
+        "edge_indices": [
+          34
+        ]
+      },
+      {
+        "source": "uniqueness-comparison",
+        "target": "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]",
+        "relation": "applies",
+        "edge_indices": [
+          37
+        ]
+      },
+      {
+        "source": "uniqueness-comparison",
+        "target": "fact:one-sided-principle",
+        "relation": "produces",
+        "edge_indices": [
+          38
+        ]
+      },
+      {
+        "source": "fact:uniqueness-hypotheses",
+        "target": "uniqueness-interval",
+        "relation": "premise_of",
+        "edge_indices": [
+          39
+        ]
+      },
+      {
+        "source": "fact:one-sided-principle",
+        "target": "uniqueness-interval",
+        "relation": "premise_of",
+        "edge_indices": [
+          41,
+          46
+        ]
+      },
+      {
+        "source": "fact:same-initial-value",
+        "target": "uniqueness-interval",
+        "relation": "premise_of",
+        "edge_indices": [
+          43,
+          48
+        ]
+      },
+      {
+        "source": "uniqueness-interval",
+        "target": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
+        "relation": "applies",
+        "edge_indices": [
+          44
+        ]
+      },
+      {
+        "source": "uniqueness-interval",
+        "target": "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
+        "relation": "applies",
+        "edge_indices": [
+          49
+        ]
+      },
+      {
+        "source": "uniqueness-interval",
+        "target": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
+        "relation": "summarizes",
+        "edge_indices": [
+          50
+        ]
+      },
+      {
+        "source": "uniqueness-interval",
+        "target": "fact:agreement-on-interval",
+        "relation": "produces",
+        "edge_indices": [
+          55
+        ]
+      },
+      {
+        "source": "fact:agreement-on-interval",
+        "target": "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
+        "relation": "concludes",
+        "edge_indices": [
+          56
+        ]
+      },
+      {
+        "source": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
+        "target": "picard-existence",
+        "relation": "about",
+        "semantic_edge_indices": [
+          0
+        ]
+      },
+      {
+        "source": "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
+        "target": "ode-uniqueness",
+        "relation": "about",
+        "semantic_edge_indices": [
+          1
+        ]
+      },
+      {
+        "source": "lean:[\"IsPicardLindelof\"]",
+        "target": "picard-existence",
+        "relation": "about",
+        "semantic_edge_indices": [
+          2
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"FunSpace\"]",
+        "target": "curve-space",
+        "relation": "about",
+        "semantic_edge_indices": [
+          3
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
+        "target": "curve-space",
+        "relation": "about",
+        "semantic_edge_indices": [
+          4
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
+        "target": "fixed-point",
+        "relation": "about",
+        "semantic_edge_indices": [
+          5
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"picard\"]",
+        "target": "picard-iteration",
+        "relation": "about",
+        "semantic_edge_indices": [
+          6
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
+        "target": "picard-iteration",
+        "relation": "about",
+        "semantic_edge_indices": [
+          7
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
+        "target": "curve-space",
+        "relation": "about",
+        "semantic_edge_indices": [
+          8
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]",
+        "target": "factorial-bound",
+        "relation": "about",
+        "semantic_edge_indices": [
+          9
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]",
+        "target": "factorial-bound",
+        "relation": "about",
+        "semantic_edge_indices": [
+          10
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]",
+        "target": "factorial-bound",
+        "relation": "about",
+        "semantic_edge_indices": [
+          11
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]",
+        "target": "fixed-point",
+        "relation": "about",
+        "semantic_edge_indices": [
+          12
+        ]
+      },
+      {
+        "source": "lean:[\"ContractingWith\",\"isFixedPt_fixedPoint_iterate\"]",
+        "target": "fixed-point",
+        "relation": "about",
+        "semantic_edge_indices": [
+          13
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]",
+        "target": "fixed-point",
+        "relation": "about",
+        "semantic_edge_indices": [
+          14
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]",
+        "target": "picard-iteration",
+        "relation": "about",
+        "semantic_edge_indices": [
+          15
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"FunSpace\",\"compProj\"]",
+        "target": "picard-existence",
+        "relation": "about",
+        "semantic_edge_indices": [
+          16
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]",
+        "target": "picard-existence",
+        "relation": "about",
+        "semantic_edge_indices": [
+          17
+        ]
+      },
+      {
+        "source": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
+        "target": "ode-uniqueness",
+        "relation": "about",
+        "semantic_edge_indices": [
+          18
+        ]
+      },
+      {
+        "source": "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
+        "target": "ode-uniqueness",
+        "relation": "about",
+        "semantic_edge_indices": [
+          19
+        ]
+      },
+      {
+        "source": "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
+        "target": "time-reversal",
+        "relation": "about",
+        "semantic_edge_indices": [
+          20
+        ]
+      },
+      {
+        "source": "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]",
+        "target": "gronwall",
+        "relation": "about",
+        "semantic_edge_indices": [
+          21
+        ]
+      },
+      {
+        "source": "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]",
+        "target": "ode-uniqueness",
+        "relation": "about",
+        "semantic_edge_indices": [
+          22
+        ]
+      },
+      {
+        "source": "lean:[\"norm_le_gronwallBound_of_norm_deriv_right_le\"]",
+        "target": "gronwall",
+        "relation": "about",
+        "semantic_edge_indices": [
+          23
+        ]
+      },
+      {
+        "source": "fact:state-space",
+        "target": "curve-space",
+        "relation": "about",
+        "semantic_edge_indices": [
+          24
+        ]
+      },
+      {
+        "source": "fact:existence-hypotheses",
+        "target": "picard-existence",
+        "relation": "about",
+        "semantic_edge_indices": [
+          25
+        ]
+      },
+      {
+        "source": "existence-construction",
+        "target": "curve-space",
+        "relation": "about",
+        "semantic_edge_indices": [
+          26,
+          27
+        ]
+      },
+      {
+        "source": "existence-construction",
+        "target": "fixed-point",
+        "relation": "about",
+        "semantic_edge_indices": [
+          28,
+          34,
+          35,
+          36,
+          37
+        ]
+      },
+      {
+        "source": "existence-construction",
+        "target": "picard-iteration",
+        "relation": "about",
+        "semantic_edge_indices": [
+          29,
+          30,
+          38,
+          39,
+          40
+        ]
+      },
+      {
+        "source": "existence-construction",
+        "target": "factorial-bound",
+        "relation": "about",
+        "semantic_edge_indices": [
+          31,
+          32,
+          33
+        ]
+      },
+      {
+        "source": "existence-construction",
+        "target": "picard-existence",
+        "relation": "about",
+        "semantic_edge_indices": [
+          41
+        ]
+      },
+      {
+        "source": "fact:ode-solution",
+        "target": "picard-existence",
+        "relation": "about",
+        "semantic_edge_indices": [
+          42
+        ]
+      },
+      {
+        "source": "fact:uniqueness-hypotheses",
+        "target": "ode-uniqueness",
+        "relation": "about",
+        "semantic_edge_indices": [
+          43
+        ]
+      },
+      {
+        "source": "fact:same-initial-value",
+        "target": "ode-uniqueness",
+        "relation": "about",
+        "semantic_edge_indices": [
+          44
+        ]
+      },
+      {
+        "source": "uniqueness-comparison",
+        "target": "gronwall",
+        "relation": "about",
+        "semantic_edge_indices": [
+          45,
+          46,
+          48
+        ]
+      },
+      {
+        "source": "uniqueness-comparison",
+        "target": "ode-uniqueness",
+        "relation": "about",
+        "semantic_edge_indices": [
+          47
+        ]
+      },
+      {
+        "source": "fact:one-sided-principle",
+        "target": "ode-uniqueness",
+        "relation": "about",
+        "semantic_edge_indices": [
+          49
+        ]
+      },
+      {
+        "source": "uniqueness-interval",
+        "target": "ode-uniqueness",
+        "relation": "about",
+        "semantic_edge_indices": [
+          50,
+          51,
+          52,
+          53,
+          54,
+          56,
+          57
+        ]
+      },
+      {
+        "source": "uniqueness-interval",
+        "target": "time-reversal",
+        "relation": "about",
+        "semantic_edge_indices": [
+          55
+        ]
+      },
+      {
+        "source": "fact:agreement-on-interval",
+        "target": "ode-uniqueness",
+        "relation": "about",
+        "semantic_edge_indices": [
+          58
+        ]
+      }
+    ]
+  },
+  "formal_evidence": {
+    "declaration_graph": "declarations.graph.json.gz",
+    "kernel_export": "lean-export.ndjson.gz",
+    "raw_export_sha256": "bb88b3483b2be4d506b83fc42f4a9296297ddb075466a34855f9c35c530177ff",
+    "declaration_ids": "Shared lean: IDs identify the same pinned Lean names in both graphs."
+  }
+}
