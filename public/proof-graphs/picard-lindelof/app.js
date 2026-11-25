@@ -553,9 +553,7 @@ function perimeterRoute(a, b, obstacles, portrait) {
   return best;
 }
 
-function routeEdge({ a, b }, nodes, portrait) {
-  const obstacles = nodes.filter((node) => node !== a && node !== b)
-    .map(({ x, y, rx, ry }) => ({ cx: x, cy: y, rx: rx + 17, ry: ry + 17 }));
+function routeEdge({ a, b }, obstacles, portrait) {
   const start = [a.x, a.y];
   const end = [b.x, b.y];
   if (!portrait && segmentClear(start, end, obstacles)) return [start, end];
@@ -605,7 +603,8 @@ function roundedRoute(points, offset = 0) {
   const coords = ([x, y]) => `${x} ${y + offset}`;
   const shorten = ([x, y], [u, v]) => {
     const distance = Math.hypot(u - x, v - y) || 1;
-    const fraction = Math.min(.35, 8 / distance);
+    // A quadratic cuts in by at most a quarter of this trim.
+    const fraction = Math.min(.35, 32 / distance);
     return [x + (u - x) * fraction, y + (v - y) * fraction];
   };
   let path = `M${coords(points[0])}`;
@@ -616,9 +615,80 @@ function roundedRoute(points, offset = 0) {
   return `${path} L${coords(points.at(-1))}`;
 }
 
+function bezierSamples([start, first, second, end]) {
+  return Array.from({ length: 33 }, (_, i) => {
+    const t = i / 32;
+    const u = 1 - t;
+    return start.map((value, axis) => u ** 3 * value + 3 * u ** 2 * t * first[axis] +
+      3 * u * t ** 2 * second[axis] + t ** 3 * end[axis]);
+  });
+}
+
+function smoothRoute({ a, b, bend }, points, obstacles, portrait) {
+  const cross = portrait ? 0 : 1;
+  const along = 1 - cross;
+  const start = points[0];
+  const end = points.at(-1);
+  const candidates = [];
+  if (points.length === 4 && points[1][cross] === points[2][cross]) {
+    const side = portrait ? 1 : -1;
+    const rail = points[1][cross];
+    const span = end[along] - start[along];
+    for (const extra of [0, 24, 48, 72, 104, 144, 192]) {
+      const first = [];
+      const second = [];
+      first[cross] = second[cross] = rail + side * extra;
+      first[along] = start[along] + span * .25;
+      second[along] = end[along] - span * .18;
+      candidates.push([first, second]);
+    }
+  } else if (points.length === 2) {
+    const dx = end[0] - start[0];
+    const dy = end[1] - start[1];
+    const span = Math.hypot(dx, dy) || 1;
+    const side = Math.sign(bend) || 1;
+    for (const extra of [20, -20, 10, -10]) {
+      const x = -dy * extra * side / span;
+      const y = dx * extra * side / span;
+      candidates.push([[start[0] + dx / 3 + x, start[1] + dy / 3 + y],
+        [end[0] - dx / 3 + x, end[1] - dy / 3 + y]]);
+    }
+  }
+  for (const [first, second] of candidates) {
+    const curve = [
+      pointOutsideNode(a, Math.atan2(first[1] - a.y, first[0] - a.x)),
+      first,
+      second,
+      pointOutsideNode(b, Math.atan2(second[1] - b.y, second[0] - b.x)),
+    ];
+    const samples = bezierSamples(curve);
+    if (samples.slice(1).every((point, i) => segmentClear(samples[i], point, obstacles))) {
+      return { curve, samples };
+    }
+  }
+  return null;
+}
+
+function bezierPath([start, first, second, end], offset = 0) {
+  const coords = ([x, y]) => `${x} ${y + offset}`;
+  return `M${coords(start)} C${coords(first)} ${coords(second)} ${coords(end)}`;
+}
+
 function paintRoutedEdge(edge, nodes) {
-  const points = routeEdge(edge, nodes, layout.portrait);
+  const obstacles = nodes.filter((node) => node !== edge.a && node !== edge.b)
+    .map(({ x, y, rx, ry }) => ({ cx: x, cy: y, rx: rx + 17, ry: ry + 17 }));
+  const points = routeEdge(edge, obstacles, layout.portrait);
   if (!points) return false;
+  const smooth = smoothRoute(edge, points, obstacles, layout.portrait);
+  if (smooth) {
+    const { curve, samples } = smooth;
+    const [x, y] = curve.at(-1);
+    const [u, v] = curve.at(-2);
+    edge.routePoints = samples;
+    paintEdgePaths(edge.paths, bezierPath(curve), bezierPath(curve, .8),
+      x, y, Math.atan2(y - v, x - u), Math.hypot(x - u, y - v));
+    return true;
+  }
   const angleTo = ([x, y], [u, v]) => Math.atan2(v - y, u - x);
   const sourceAngle = angleTo(points[0], points[1]);
   const targetAngle = angleTo(points.at(-1), points.at(-2));
