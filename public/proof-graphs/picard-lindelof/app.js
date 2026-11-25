@@ -139,9 +139,20 @@ function buildProjection(detail) {
   for (const edge of flow) {
     if (edge.relation === "produces") producer.set(edge.target, edge.source);
   }
-  const idFor = (id) => detail === "overview" ? producer.get(id) || id : id;
+  const merged = new Map();
+  if (detail !== "references") {
+    for (const [id, annotation] of Object.entries(annotations)) {
+      if (annotation.display_as) merged.set(id, annotation.display_as);
+    }
+  }
+  const retained = new Set(merged.values());
+  const idFor = (id) => {
+    const canonical = detail === "overview" && !retained.has(id) ? producer.get(id) || id : id;
+    return merged.get(id) || merged.get(canonical) || canonical;
+  };
   const nodes = [...evidence.values()].filter((node) => {
-    if (roots.includes(node.id)) return true;
+    if (roots.includes(node.id) || retained.has(node.id)) return true;
+    if (merged.has(node.id)) return false;
     if (node.kind === "declaration") return detail === "references";
     return detail !== "overview" || node.kind === "inference" || node.role === "assumption";
   });
@@ -154,8 +165,11 @@ function buildProjection(detail) {
   };
   for (const edge of flow) {
     const source = idFor(edge.source);
-    const relation = edge.relation === "premise_of" && source !== edge.source ? "supports" : edge.relation;
-    addLink(source, idFor(edge.target), relation, source !== edge.source ? edge.source : null);
+    const target = idFor(edge.target);
+    let relation = edge.relation;
+    if (relation === "premise_of" && source !== edge.source) relation = "supports";
+    if (relation === "produces" && roots.includes(target)) relation = "concludes";
+    addLink(source, target, relation, source !== edge.source ? edge.source : null);
   }
   if (detail === "references") {
     for (const edge of proof.edges) {
@@ -163,7 +177,7 @@ function buildProjection(detail) {
       if (referenceRelations.has(edge.relation)) addLink(edge.target, edge.source, edge.relation);
     }
   }
-  return { nodes, links: [...mapped.values()], producer };
+  return { nodes, links: [...mapped.values()], producer, merged };
 }
 
 function positionFor(node, projection) {
@@ -186,7 +200,7 @@ function positionFor(node, projection) {
   return [Math.cos(angle) * 640, Math.sin(angle) * 325];
 }
 
-function rankPositions({ nodes, links }) {
+function rankPositions({ nodes, links }, portrait) {
   const consumers = new Map(nodes.map((node) => [node.id, []]));
   for (const { source, target } of links) consumers.get(source).push(target);
   const rootRanks = roots.map((root) => {
@@ -230,7 +244,7 @@ function rankPositions({ nodes, links }) {
     members.forEach((id, i) => positions.set(id, [x, y + (i - (members.length - 1) / 2) * 151]));
   }
   if (sharedLane.length) {
-    const outside = Math.min(...Array.from(positions.values(), ([, y]) => y)) - 140;
+    const outside = Math.min(...Array.from(positions.values(), ([, y]) => y)) - (portrait ? 104 : 140);
     sharedLane.forEach((id, i) => positions.set(id, [(i - (sharedLane.length - 1) / 2) * 151, outside]));
   }
   return { positions, shared };
@@ -256,7 +270,8 @@ function ellipsePath(rx, ry, seed, offset = 0) {
 function createNode(item, projection, portrait) {
   const isRoot = roots.includes(item.id);
   const [x, y] = projection.positions?.get(item.id) || positionFor(item, projection);
-  const [ax, ay] = portrait ? [y * .82, x] : [x, y];
+  const widePortrait = portrait && useProofRanks && roots.length === 2;
+  const [ax, ay] = widePortrait ? [-y * 1.28, x * .72] : portrait ? [y * .82, x] : [x, y];
   const [title, formula] = shortLabel(item.id);
   const rx = isRoot ? 93 : prominent.has(item.id) ? 72 :
     item.kind === "inference" ? 64 : item.role === "assumption" ? 59 : 57;
@@ -313,8 +328,8 @@ function createLayout() {
   touchPoints.clear();
   diagram.classList.remove("is-dragging");
   const projection = buildProjection(mode);
-  if (useProofRanks) Object.assign(projection, rankPositions(projection));
   const portrait = portraitLayout.matches;
+  if (useProofRanks) Object.assign(projection, rankPositions(projection, portrait));
   nodeLayer.replaceChildren();
   edgeLayer.replaceChildren();
   labelWorld.replaceChildren();
@@ -331,7 +346,7 @@ function createLayout() {
     neighbors.get(edge.source).add(edge.target);
     neighbors.get(edge.target).add(edge.source);
   }
-  layout = { nodes, nodeMap, edges, neighbors, producer: projection.producer, portrait };
+  layout = { nodes, nodeMap, edges, neighbors, producer: projection.producer, merged: projection.merged, portrait };
   fitLabels(nodes);
   for (let i = 0; i < 160; i++) forceStep(.36 + .64 * (1 - i / 160));
   separateNodes(40);
@@ -506,16 +521,52 @@ function segmentClear([x, y], [endX, endY], obstacles) {
   });
 }
 
-function routeEdge({ a, b }, nodes) {
+function perimeterRoute(a, b, obstacles, portrait) {
+  const cross = portrait ? "x" : "y";
+  const along = portrait ? "y" : "x";
+  const radius = portrait ? "rx" : "ry";
+  const center = portrait ? "cx" : "cy";
+  const side = portrait ? 1 : -1;
+  const rail = side * (Math.max(side * a[cross] + a[radius] + 17, side * b[cross] + b[radius] + 17,
+    ...obstacles.map((node) => side * node[center] + node[radius])) + 5);
+  const onRail = (position) => portrait ? [rail, position] : [position, rail];
+  const start = [a.x, a.y];
+  const end = [b.x, b.y];
+  const direction = Math.sign(b[along] - a[along]) || 1;
+  const lead = Math.min(54, Math.abs(b[along] - a[along]) / 3);
+  const entries = [onRail(a[along] + lead * direction), onRail(a[along])];
+  const exits = [0, -36, 36, -72, 72, -112, 112].map((offset) => onRail(b[along] + offset));
+  let best = null;
+  let bestLength = Infinity;
+  for (const entry of entries) {
+    if (!segmentClear(start, entry, obstacles)) continue;
+    for (const exit of exits) {
+      if (!segmentClear(exit, end, obstacles)) continue;
+      const length = Math.hypot(start[0] - entry[0], start[1] - entry[1]) +
+        Math.hypot(entry[0] - exit[0], entry[1] - exit[1]) +
+        Math.hypot(exit[0] - end[0], exit[1] - end[1]);
+      if (length >= bestLength) continue;
+      best = [start, entry, exit, end];
+      bestLength = length;
+    }
+  }
+  return best;
+}
+
+function routeEdge({ a, b }, nodes, portrait) {
   const obstacles = nodes.filter((node) => node !== a && node !== b)
     .map(({ x, y, rx, ry }) => ({ cx: x, cy: y, rx: rx + 17, ry: ry + 17 }));
   const start = [a.x, a.y];
   const end = [b.x, b.y];
+  if (!portrait && segmentClear(start, end, obstacles)) return [start, end];
+  const outside = perimeterRoute(a, b, obstacles, portrait);
+  if (outside) return outside;
   if (segmentClear(start, end, obstacles)) return [start, end];
 
+  const terminals = [a, b].map(({ x, y, rx, ry }) => ({ cx: x, cy: y, rx: rx + 9, ry: ry + 9 }));
   const corners = obstacles.flatMap(({ cx, cy, rx, ry }) => [
     [cx - rx, cy - ry], [cx + rx, cy - ry], [cx - rx, cy + ry], [cx + rx, cy + ry],
-  ]);
+  ]).filter((point) => segmentClear(point, point, terminals));
   const points = [start, end, ...corners];
   const distance = ([x, y], [u, v]) => Math.hypot(x - u, y - v);
   const estimate = points.map((point) => distance(point, end));
@@ -566,13 +617,14 @@ function roundedRoute(points, offset = 0) {
 }
 
 function paintRoutedEdge(edge, nodes) {
-  const points = routeEdge(edge, nodes);
+  const points = routeEdge(edge, nodes, layout.portrait);
   if (!points) return false;
   const angleTo = ([x, y], [u, v]) => Math.atan2(v - y, u - x);
   const sourceAngle = angleTo(points[0], points[1]);
   const targetAngle = angleTo(points.at(-1), points.at(-2));
   points[0] = pointOutsideNode(edge.a, sourceAngle);
   points[points.length - 1] = pointOutsideNode(edge.b, targetAngle);
+  edge.routePoints = points;
   const [x, y] = points.at(-1);
   const [u, v] = points.at(-2);
   paintEdgePaths(edge.paths, roundedRoute(points), roundedRoute(points, .8),
@@ -582,6 +634,7 @@ function paintRoutedEdge(edge, nodes) {
 
 function paintEdge(edge) {
   const { a, b, paths, avoidNodes } = edge;
+  edge.routePoints = null;
   const angle = Math.atan2(b.y - a.y, b.x - a.x);
   const span = Math.hypot(b.x - a.x, b.y - a.y);
   const gap = span - ellipseRadius(a, angle) - ellipseRadius(b, angle + Math.PI) - 8;
@@ -648,16 +701,18 @@ function paintCamera() {
 function fitGraph(initial = false) {
   if (!layout) return;
   const box = stage.getBoundingClientRect();
-  const left = Math.min(...layout.nodes.map((n) => n.x - n.rx));
-  const right = Math.max(...layout.nodes.map((n) => n.x + n.rx));
-  const top = Math.min(...layout.nodes.map((n) => n.y - n.ry));
-  const bottom = Math.max(...layout.nodes.map((n) => n.y + n.ry));
+  const route = layout.edges.flatMap((edge) => edge.routePoints || []);
+  const left = Math.min(...layout.nodes.map((n) => n.x - n.rx), ...route.map(([x]) => x));
+  const right = Math.max(...layout.nodes.map((n) => n.x + n.rx), ...route.map(([x]) => x));
+  const top = Math.min(...layout.nodes.map((n) => n.y - n.ry), ...route.map(([, y]) => y));
+  const bottom = Math.max(...layout.nodes.map((n) => n.y + n.ry), ...route.map(([, y]) => y));
   const narrow = box.width < 600;
   const margin = narrow ? 18 : 55;
-  const scale = Math.min(1.32, (box.width - 2 * margin) / (right - left),
+  const leftMargin = narrow && layout.portrait && useProofRanks && roots.length === 2 ? 62 : margin;
+  const scale = Math.min(1.32, (box.width - leftMargin - margin) / (right - left),
     (box.height - 72) / (bottom - top));
   camera.scale = Math.max(initial && narrow && !layout.portrait ? .64 : minZoom, scale);
-  camera.x = box.width / 2 - (left + right) / 2 * camera.scale;
+  camera.x = (box.width + leftMargin - margin) / 2 - (left + right) / 2 * camera.scale;
   camera.y = (box.height - 15) / 2 - (top + bottom) / 2 * camera.scale;
   camera.fitted = true;
   camera.overview = initial;
@@ -754,7 +809,11 @@ function renderInspector(id) {
     drawMath(panel, formula, true);
     inspectorBody.append(panel);
   }
-  if (annotation.summary) inspectorBody.append(html("p", annotation.summary));
+  if (annotation.summary) {
+    for (const paragraph of annotation.summary.split(/\n\s*\n/)) {
+      inspectorBody.append(html("p", paragraph));
+    }
+  }
   if (item.statement && item.statement !== annotation.summary) {
     inspectorBody.append(html("p", item.statement));
   }
@@ -791,11 +850,17 @@ function renderInspector(id) {
   }
   inspectorBody.append(html("h3", "Lean evidence"));
   if (item.name) inspectorBody.append(html("code", item.name));
-  const refs = proof.edges.filter((edge) => edge.source === id && referenceRelations.has(edge.relation));
-  if (refs.length) {
+  const nearbyEvidence = new Set([id]);
+  for (const [other, representative] of layout.merged) {
+    if (representative === id) nearbyEvidence.add(other);
+  }
+  const refs = new Set(proof.edges
+    .filter((edge) => nearbyEvidence.has(edge.source) && referenceRelations.has(edge.relation))
+    .map((edge) => edge.target));
+  if (refs.size) {
     const list = html("ul", null, "concept-list");
-    for (const edge of refs) {
-      const declaration = evidence.get(edge.target);
+    for (const target of refs) {
+      const declaration = evidence.get(target);
       const link = html("a", titleFor(declaration.id));
       link.href = declaration.evidence.url;
       link.target = "_blank";
@@ -807,7 +872,7 @@ function renderInspector(id) {
     inspectorBody.append(list);
   }
   if (item.evidence?.url) {
-    const link = html("a", "Open source in Mathlib", "source-anchor");
+    const link = html("a", "Open Lean source", "source-anchor");
     link.href = item.evidence.url;
     link.target = "_blank";
     link.rel = "noopener";
@@ -987,6 +1052,7 @@ for (const input of settings.querySelectorAll('input[name="detail"]')) {
     if (!proof) return;
     mode = input.value;
     createLayout();
+    selected = layout.merged.get(selected) || selected;
     if (selected && !layout.nodeMap.has(selected)) clearSelection();
     if (selected) renderInspector(selected);
     updateHighlights();

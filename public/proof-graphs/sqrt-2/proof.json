@@ -146,7 +146,8 @@
           101,
           109
         ]
-      }
+      },
+      "lean": "theorem irrational_sqrt_ratCast_iff_of_nonneg {q : ℚ} (hq : 0 ≤ q) :\n    Irrational (√q) ↔ ¬IsSquare q := by\n  refine Iff.not (?_ : Exists _ ↔ Exists _)\n  constructor\n  · rintro ⟨y, hy⟩\n    refine ⟨y, Rat.cast_injective (α := ℝ) ?_⟩\n    rw [Rat.cast_mul, hy, mul_self_sqrt (Rat.cast_nonneg.2 hq)]\n  · rintro ⟨q', rfl⟩\n    exact ⟨|q'|, mod_cast (sqrt_mul_self_eq_abs q').symm⟩"
     },
     {
       "id": "fact:rational-square",
@@ -175,7 +176,8 @@
           128,
           130
         ]
-      }
+      },
+      "lean": "theorem irrational_sqrt_natCast_iff {n : ℕ} : Irrational (√n) ↔ ¬IsSquare n := by\n  rw [← Rat.isSquare_natCast_iff, ← irrational_sqrt_ratCast_iff_of_nonneg n.cast_nonneg,\n    Rat.cast_natCast]"
     },
     {
       "id": "fact:natural-square",
@@ -204,7 +206,8 @@
           136,
           137
         ]
-      }
+      },
+      "lean": "theorem Nat.Prime.irrational_sqrt {p : ℕ} (hp : Nat.Prime p) : Irrational (√p) :=\n  irrational_sqrt_natCast_iff.mpr hp.not_isSquare"
     },
     {
       "id": "fact:prime-root",
@@ -262,7 +265,8 @@
           140,
           141
         ]
-      }
+      },
+      "lean": "theorem irrational_sqrt_two : Irrational (√2) := by\n  simpa using Nat.prime_two.irrational_sqrt"
     },
     {
       "id": "fact:specialize",
@@ -551,26 +555,26 @@
   "annotations": {
     "lean:irrational_sqrt_two": {
       "title": "Irrationality of √2",
-      "summary": "The real square root of two is outside the image of the rational numbers.",
+      "summary": "The real square root of 2 would be rational only if 2 were a square of a rational number. A natural number that is a rational square is already a natural square, and the prime number 2 cannot be a natural square. Mathlib packages this argument as the theorem that the square root of every natural prime is irrational, then applies it to 2.",
       "areas": [
         "Number theory"
       ],
       "compact_latex": "\\sqrt{2}\\notin\\mathbb{Q}",
       "statement_latex": "\\neg\\exists q\\in\\mathbb{Q}:\\ (q:\\mathbb{R})=\\sqrt{2}",
-      "why_here": "The specialized conclusion establishes this theorem.",
+      "why_here": "The final fact establishes this root theorem.",
       "support_edges": [
         18
       ],
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     "lean:Irrational": {
       "title": "Irrational real number",
-      "summary": "Irrationality means the real number is outside the image of rational coercion.",
+      "summary": "The rational numbers sit inside the reals by coercion. A real number is irrational if no rational number has that real value. For a square root, a rational expression such as 3/2 would be a witness of rationality.",
       "areas": [
         "Number theory"
       ],
@@ -578,20 +582,20 @@
       "concepts": [
         "rational-squares"
       ],
-      "why_here": "Unfolding the definition expresses rationality of the square root as the existence of a rational witness.",
+      "why_here": "Unfolding the definition makes it possible to reason about a rational witness for the square root.",
       "support_edges": [
         2
       ],
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     "lean:irrational_sqrt_ratCast_iff_of_nonneg": {
       "title": "Rational square criterion",
-      "summary": "Pass between a rational square root and a rational square witness.",
+      "summary": "For a nonnegative rational q, its real square root is rational exactly when q is a square in the rationals. A rational value for the root squares to q, and a rational square witness r gives the root |r|. For example, the rational square 9/4 gives the root 3/2.",
       "areas": [
         "Number theory"
       ],
@@ -599,20 +603,20 @@
       "concepts": [
         "rational-squares"
       ],
-      "why_here": "The rational-witness inference summarizes this theorem.",
+      "why_here": "The witness argument summarizes the proof of this equivalence.",
       "support_edges": [
         1
       ],
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     "lean:Rat.isSquare_natCast_iff": {
       "title": "Preservation of squarehood",
-      "summary": "Casting a natural number into the rationals preserves and reflects being a square.",
+      "summary": "Viewing a natural n as a rational allows more candidate roots, but no new square witnesses for n. If n = (a/b)² with a/b reduced and b > 0, the fraction a²/b² is still reduced. Since n has denominator 1, b = 1, and |a| is a natural square root.",
       "areas": [
         "Number theory"
       ],
@@ -620,25 +624,25 @@
       "concepts": [
         "coercion"
       ],
-      "why_here": "The transfer inference uses this equivalence to express the square condition in the naturals.",
+      "why_here": "This equivalence lets the natural-number criterion express squarehood entirely in the naturals.",
       "support_edges": [
         6
       ],
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     "lean:irrational_sqrt_natCast_iff": {
       "title": "Natural square criterion",
-      "summary": "Specialize the rational criterion and transport the square predicate through the natural cast.",
+      "summary": "Apply the nonnegative rational criterion to n, viewed as a rational number. The squarehood transfer turns the condition about rational squares into a condition about natural squares. The natural-to-rational-to-real cast represents the same real n as the direct natural-to-real cast.",
       "areas": [
         "Number theory"
       ],
       "compact_latex": "\\sqrt n\\notin\\mathbb Q\\iff\\neg\\operatorname{IsSquare}_{\\mathbb N}(n)",
-      "why_here": "The transfer inference summarizes this theorem, and the prime-root inference applies it.",
+      "why_here": "The transfer step establishes the criterion, and the prime-root step uses its direction from nonsquare to irrational.",
       "support_edges": [
         5,
         10
@@ -646,13 +650,13 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     "lean:Nat.Prime.irrational_sqrt": {
       "title": "Square roots of primes",
-      "summary": "A natural prime is not a square, so the natural square criterion applies.",
+      "summary": "A prime p is greater than 1. If it were a natural square k², then k would be a proper divisor with 1 < k < p. The natural square criterion therefore makes √p irrational.",
       "areas": [
         "Number theory"
       ],
@@ -660,7 +664,7 @@
       "concepts": [
         "primality"
       ],
-      "why_here": "The prime-root inference summarizes the theorem, and the final inference applies it at 2.",
+      "why_here": "This is the general theorem instantiated at 2 in the final step.",
       "support_edges": [
         9,
         17
@@ -668,13 +672,13 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     "lean:Irreducible.not_isSquare": {
       "title": "Irreducible elements are nonsquares",
-      "summary": "The exported proof term calls the irreducible-nonsquare lemma. For natural numbers, primality supplies irreducibility.",
+      "summary": "A square factors into two equal factors. Irreducibility would make one of those factors a unit, and then their product would also be a unit, contrary to irreducibility. For natural numbers, primality supplies the irreducibility used here.",
       "areas": [
         "Number theory"
       ],
@@ -682,20 +686,20 @@
       "concepts": [
         "primality"
       ],
-      "why_here": "The prime-root inference uses this lemma to rule out a square representation of a natural prime.",
+      "why_here": "This supplies the nonsquare property used in the prime-root argument.",
       "support_edges": [
         11
       ],
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     "lean:Nat.prime_two": {
       "title": "Two is prime",
-      "summary": "Lean discharges primality of two by decidability.",
+      "summary": "The number 2 is greater than 1, and its only positive divisors are 1 and 2. This library result supplies the hypothesis needed to apply the prime square-root theorem.",
       "areas": [
         "Number theory"
       ],
@@ -703,20 +707,20 @@
       "concepts": [
         "primality"
       ],
-      "why_here": "The primality inference applies this theorem to supply the hypothesis for specialization.",
+      "why_here": "The primality step uses this theorem to supply the concrete premise for specialization.",
       "support_edges": [
         13
       ],
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     "step:rational-square": {
       "title": "Square the rational witness",
-      "summary": "A rational value of the root gives a square witness by squaring and using cast injectivity. Conversely, a rational square witness gives its absolute value as a rational root. Negate the equivalence.",
+      "summary": "Start with a nonnegative rational q. If its real square root is the image of a rational r, squaring gives r² = q in the rationals, because the embedding into the reals preserves multiplication and is injective. In the other direction, r² = q gives the real square root |r|, again rational.",
       "areas": [
         "Number theory"
       ],
@@ -724,7 +728,7 @@
       "concepts": [
         "rational-squares"
       ],
-      "why_here": "Unfolding irrationality and relating the two types of witnesses yields the nonnegative rational criterion.",
+      "why_here": "This establishes the rational criterion by unfolding irrationality and translating the witnesses in both directions.",
       "support_edges": [
         0,
         1,
@@ -733,13 +737,13 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     "fact:rational-square": {
       "title": "Nonnegative rational criterion",
-      "summary": "The criterion applies to nonnegative rational q.",
+      "summary": "The criterion gives two equivalent ways to supply a rational witness. You can write the real number √q as a fraction or exhibit a rational number whose square is q. For instance, 9/4 = (−3/2)² and √(9/4) = 3/2. Negating the equivalence makes a rational nonsquare exactly a nonnegative rational with an irrational square root.",
       "areas": [
         "Number theory"
       ],
@@ -747,7 +751,7 @@
       "concepts": [
         "rational-squares"
       ],
-      "why_here": "This criterion supplies the premise for passing from rational squares to natural squares.",
+      "why_here": "This is the criterion carried over to natural inputs in the next step.",
       "support_edges": [
         0,
         3
@@ -755,13 +759,13 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     "step:natural-square": {
       "title": "Transfer squarehood to ℕ",
-      "summary": "Apply the rational criterion to the nonnegative rational cast of a natural number and rewrite squarehood and the iterated cast.",
+      "summary": "Write a candidate rational square root of n as a reduced fraction a/b with b > 0. In its square, a² and b² are still coprime. Since n has denominator 1, b must be 1 and |a| is a natural root. A natural square witness also works as a rational witness by coercion.",
       "areas": [
         "Number theory"
       ],
@@ -769,7 +773,7 @@
       "concepts": [
         "coercion"
       ],
-      "why_here": "This transfer yields the criterion in terms of natural squares that the prime case needs.",
+      "why_here": "This turns the rational criterion into the natural-number premise used for primes.",
       "support_edges": [
         3,
         4,
@@ -779,13 +783,13 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     "fact:natural-square": {
       "title": "Natural square criterion",
-      "summary": "For natural n, the question reduces to squarehood in the naturals.",
+      "summary": "For a natural radicand n, the previous criteria combine into a test using only natural numbers. If n = k², the root is k. If there is no such natural k, the reduced-fraction argument rules out any rational root too.",
       "areas": [
         "Number theory"
       ],
@@ -793,7 +797,7 @@
       "concepts": [
         "coercion"
       ],
-      "why_here": "This criterion lets the prime-root inference deduce irrationality from the absence of a natural square witness.",
+      "why_here": "The prime-root inference uses this fact after ruling out a natural square witness.",
       "support_edges": [
         4,
         7
@@ -801,13 +805,13 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     "step:prime-root": {
       "title": "A prime is not a square",
-      "summary": "The proof feeds hp.not_isSquare into the reverse direction of the natural square criterion.",
+      "summary": "If a natural prime p were k², then p > 1 would force k > 1. The equality p = k·k would make k a divisor strictly between 1 and p. This contradicts primality, so the natural square criterion applies.",
       "areas": [
         "Number theory"
       ],
@@ -815,7 +819,7 @@
       "concepts": [
         "primality"
       ],
-      "why_here": "This inference combines the natural square criterion with the nonsquare lemma to obtain the general result for primes.",
+      "why_here": "This combines the natural criterion with the nonsquare property to derive the general prime-root result.",
       "support_edges": [
         7,
         8,
@@ -826,13 +830,13 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     "fact:prime-root": {
       "title": "Prime square roots are irrational",
-      "summary": "The argument works uniformly for every natural prime.",
+      "summary": "The argument applies uniformly to any natural prime p. Primality excludes a natural square witness, and the squarehood transfer excludes a rational one. Thus √p is irrational.",
       "areas": [
         "Number theory"
       ],
@@ -840,7 +844,7 @@
       "concepts": [
         "primality"
       ],
-      "why_here": "This general result supplies one premise of the final specialization.",
+      "why_here": "This general implication is one of the two premises for the final specialization.",
       "support_edges": [
         8,
         14
@@ -848,13 +852,13 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     "step:two-prime": {
       "title": "Check primality of 2",
-      "summary": "Use the library theorem computing that two is prime.",
+      "summary": "Apply the existing result that 2 is prime. Two is greater than 1 and has no positive divisor other than 1 or itself.",
       "areas": [
         "Number theory"
       ],
@@ -862,21 +866,22 @@
       "concepts": [
         "primality"
       ],
-      "why_here": "The lemma that 2 is prime supplies the primality fact used in the final inference.",
+      "why_here": "This makes the concrete primality premise available to the final inference.",
       "support_edges": [
         12,
         13
       ],
+      "display_as": "fact:two-prime",
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     "fact:two-prime": {
-      "title": "Primality of two",
-      "summary": "Two provides the instance needed for the general theorem.",
+      "title": "Two is prime",
+      "summary": "Two is greater than 1 and has only the positive divisors 1 and 2. So it satisfies the premise of the general result about square roots of primes.",
       "areas": [
         "Number theory"
       ],
@@ -884,7 +889,7 @@
       "concepts": [
         "primality"
       ],
-      "why_here": "This fact discharges the primality hypothesis of the general theorem at 2.",
+      "why_here": "This supplies the specific instance of primality used in the final step.",
       "support_edges": [
         12,
         15
@@ -892,18 +897,18 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     "step:specialize": {
       "title": "Specialize at two",
-      "summary": "Apply the prime square-root theorem to two and simplify the casts.",
+      "summary": "Use p = 2 in the general result that √p is irrational for a natural prime p. The fact that 2 is prime supplies the sole hypothesis of that result.",
       "areas": [
         "Number theory"
       ],
       "compact_latex": "p=2",
-      "why_here": "This inference combines the general theorem with the primality fact to produce the desired conclusion.",
+      "why_here": "This combines the general implication and the concrete primality fact to produce the conclusion.",
       "support_edges": [
         14,
         15,
@@ -913,27 +918,28 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     "fact:specialize": {
       "title": "√2 is irrational",
-      "summary": "The irrationality statement follows.",
+      "summary": "The specialization p = 2 gives the concrete claim √2 ∉ ℚ, which is the statement of the named Lean theorem.",
       "areas": [
         "Number theory"
       ],
       "compact_latex": "\\sqrt 2\\notin\\mathbb Q",
-      "why_here": "The result of specialization is the statement of the root theorem.",
+      "why_here": "This records the result of specialization and concludes the root theorem.",
       "support_edges": [
         16,
         18
       ],
+      "display_as": "lean:irrational_sqrt_two",
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     }
   },
@@ -947,8 +953,8 @@
       "annotation_provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     {
@@ -960,8 +966,8 @@
       "annotation_provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     {
@@ -973,8 +979,8 @@
       "annotation_provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     }
   ],
@@ -991,8 +997,8 @@
       "annotation_provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       },
       "inputs": [],
       "outputs": [
@@ -1012,8 +1018,8 @@
       "annotation_provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       },
       "inputs": [
         "fact:natural-square"
@@ -1031,8 +1037,8 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     {
@@ -1042,8 +1048,8 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     {
@@ -1053,8 +1059,8 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     {
@@ -1064,8 +1070,8 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     {
@@ -1075,8 +1081,8 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     {
@@ -1086,8 +1092,8 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     {
@@ -1097,8 +1103,8 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     {
@@ -1108,8 +1114,8 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     {
@@ -1119,8 +1125,8 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     {
@@ -1130,8 +1136,8 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     {
@@ -1141,8 +1147,8 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     {
@@ -1152,8 +1158,8 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     {
@@ -1163,8 +1169,8 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     },
     {
@@ -1174,8 +1180,8 @@
       "provenance": {
         "kind": "supplied_response",
         "file": "argument.response.json",
-        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
-        "prompt_version": 3
+        "author": "Source-reviewed explanations and ChatGPT proof roles",
+        "prompt_version": 4
       }
     }
   ],
