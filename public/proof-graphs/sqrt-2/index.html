@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <base href="/proof-graphs/sqrt-2/">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Irrationality of √2 · Proof graph</title>
+  <meta name="description" content="Follow the Mathlib proof of the irrationality of the square root of two.">
+  <link rel="icon" type="image/svg+xml" href="../picard-lindelof/notebook.svg">
+  <link rel="stylesheet" href="../picard-lindelof/vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="../picard-lindelof/notebook.css">
+  <script defer src="../picard-lindelof/vendor/katex/katex.min.js"></script>
+  <script defer src="../picard-lindelof/app.js"></script>
+</head>
+<body>
+  <header class="masthead">
+    <div class="brand">
+      <img src="../picard-lindelof/notebook.svg" width="33" height="33" alt="">
+      <div>
+        <h1>Irrationality of √2</h1>
+        <p>Lean source summary</p>
+      </div>
+    </div>
+    <a class="source-link" href="https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L139-L141" target="_blank" rel="noopener">Lean source</a>
+  </header>
+
+  <main class="workspace">
+    <section id="stage" class="stage" aria-label="Interactive proof diagram">
+      <svg class="diagram" id="diagram" data-proof-ranks xmlns="http://www.w3.org/2000/svg" aria-label="Irrationality of √2 proof nodes and arrows">
+        <defs>
+          <pattern id="paper-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+            <path d="M24 0H0V24" fill="none" stroke="#e6e5de" stroke-width="1"/>
+          </pattern>
+          <pattern id="paper-grid-major" width="120" height="120" patternUnits="userSpaceOnUse">
+            <path d="M120 0H0V120" fill="none" stroke="#d8d8d0" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect class="paper" width="100%" height="100%" fill="url(#paper-grid)"/>
+        <rect class="paper" width="100%" height="100%" fill="url(#paper-grid-major)"/>
+        <g id="world">
+          <g id="edges" aria-hidden="true"></g>
+          <g id="nodes"></g>
+        </g>
+      </svg>
+      <div class="diagram-labels" aria-hidden="true">
+        <div class="label-world" id="label-world"></div>
+      </div>
+      <div class="tools" role="toolbar" aria-label="Graph controls">
+        <button class="tool" id="zoom-in" type="button" data-tooltip="Zoom in" aria-label="Zoom in">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.1q-.6 6.8-.2 13.9M5 12.1q7 .6 13.9-.3"/></svg>
+        </button>
+        <button class="tool" id="zoom-out" type="button" data-tooltip="Zoom out" aria-label="Zoom out">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.2q6.9 .5 14-.3"/></svg>
+        </button>
+        <button class="tool" id="fit" type="button" data-tooltip="Fit graph" aria-label="Fit graph">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 10 5.1 5.2 10 5M14 4.8l4.9.3.2 5M19 14l-.2 4.9-4.9.1M10 19l-4.9-.2L5 14.1"/></svg>
+        </button>
+        <button class="tool" id="settings-button" type="button" data-tooltip="Graph settings" aria-label="Graph settings" aria-expanded="false" aria-controls="settings">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6.5q6.9-.4 14 0M5 12.1q7 .3 14-.3M5 17.4q7.2.3 14 .1M9 4.4l-.2 4.3M15.2 9.8l-.4 4.6M9.8 15.2l-.2 4.8"/></svg>
+        </button>
+      </div>
+      <section class="settings" id="settings" aria-label="Graph settings" hidden>
+        <fieldset>
+          <legend>Show</legend>
+          <label><input type="radio" name="detail" value="overview"> Overview</label>
+          <label><input type="radio" name="detail" value="steps" checked> Proof steps and facts</label>
+          <label><input type="radio" name="detail" value="references"> Lean references</label>
+        </fieldset>
+        <label class="setting-check"><input id="formula-toggle" type="checkbox" checked> Formulas on nodes</label>
+        <button type="button" class="text-button" id="reset-layout">Reset layout</button>
+      </section>
+      <p class="canvas-notice" id="canvas-notice" role="status">Loading proof graph…</p>
+      <div class="stage-footer">
+        <span class="graph-help">Drag nodes · Pan the grid · <span class="scroll-help">Scroll to zoom</span><span class="pinch-help">Pinch to zoom</span></span>
+        <span id="graph-count" class="graph-count" aria-live="polite"></span>
+      </div>
+    </section>
+
+    <aside class="inspector" id="inspector" aria-label="Selected node" hidden>
+      <div class="inspector-top">
+        <span id="node-kind" class="node-kind"></span>
+        <button class="close-button" id="close-inspector" type="button" aria-label="Close and deselect" title="Close and deselect">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6.3q6 5.4 12.1 11.6M18.2 5.8 6 18.2"/></svg>
+        </button>
+      </div>
+      <div class="inspector-body" id="inspector-body"></div>
+    </aside>
+  </main>
+</body>
+</html>

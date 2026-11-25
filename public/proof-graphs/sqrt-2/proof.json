@@ -1,0 +1,1487 @@
+{
+  "schema_version": 1,
+  "root": "lean:irrational_sqrt_two",
+  "roots": [
+    "lean:irrational_sqrt_two"
+  ],
+  "coverage": "source_curated_argument",
+  "source": {
+    "kind": "source_curated",
+    "project": "leanprover-community/mathlib4",
+    "project_revision": "bce3fc3a37ff1790b2e3b0ccf8f941053aefde19",
+    "catalogue": "https://leanprover-community.github.io/100.html",
+    "scope": "Source-aligned argument for irrational_sqrt_two and its square criteria. Edges summarize selected proof steps and source references."
+  },
+  "nodes": [
+    {
+      "id": "lean:irrational_sqrt_two",
+      "kind": "declaration",
+      "name": "irrational_sqrt_two",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L139-L141",
+        "lines": [
+          139,
+          141
+        ]
+      },
+      "type": "theorem",
+      "lean": "theorem irrational_sqrt_two : Irrational (√2) := by\n  simpa using Nat.prime_two.irrational_sqrt"
+    },
+    {
+      "id": "lean:Irrational",
+      "kind": "declaration",
+      "name": "Irrational",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L33-L36",
+        "lines": [
+          33,
+          36
+        ]
+      },
+      "type": "definition"
+    },
+    {
+      "id": "lean:irrational_sqrt_ratCast_iff_of_nonneg",
+      "kind": "declaration",
+      "name": "irrational_sqrt_ratCast_iff_of_nonneg",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L101-L109",
+        "lines": [
+          101,
+          109
+        ]
+      },
+      "type": "theorem"
+    },
+    {
+      "id": "lean:Rat.isSquare_natCast_iff",
+      "kind": "declaration",
+      "name": "Rat.isSquare_natCast_iff",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/Data/Rat/Lemmas.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/Data/Rat/Lemmas.lean#L167-L174",
+        "lines": [
+          167,
+          174
+        ]
+      },
+      "type": "theorem"
+    },
+    {
+      "id": "lean:irrational_sqrt_natCast_iff",
+      "kind": "declaration",
+      "name": "irrational_sqrt_natCast_iff",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L128-L130",
+        "lines": [
+          128,
+          130
+        ]
+      },
+      "type": "theorem"
+    },
+    {
+      "id": "lean:Nat.Prime.irrational_sqrt",
+      "kind": "declaration",
+      "name": "Nat.Prime.irrational_sqrt",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L136-L137",
+        "lines": [
+          136,
+          137
+        ]
+      },
+      "type": "theorem"
+    },
+    {
+      "id": "lean:Irreducible.not_isSquare",
+      "kind": "declaration",
+      "name": "Irreducible.not_isSquare",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/Algebra/Group/Irreducible/Lemmas.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/Algebra/Group/Irreducible/Lemmas.lean#L104-L108",
+        "lines": [
+          104,
+          108
+        ]
+      },
+      "type": "theorem"
+    },
+    {
+      "id": "lean:Nat.prime_two",
+      "kind": "declaration",
+      "name": "Nat.prime_two",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/Data/Nat/Prime/Defs.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/Data/Nat/Prime/Defs.lean#L171-L171",
+        "lines": [
+          171,
+          171
+        ]
+      },
+      "type": "theorem"
+    },
+    {
+      "id": "step:rational-square",
+      "kind": "inference",
+      "name": "Square the rational witness",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L101-L109",
+        "lines": [
+          101,
+          109
+        ]
+      }
+    },
+    {
+      "id": "fact:rational-square",
+      "kind": "fact",
+      "name": "Nonnegative rational criterion",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L101-L109",
+        "lines": [
+          101,
+          109
+        ]
+      },
+      "role": "intermediate"
+    },
+    {
+      "id": "step:natural-square",
+      "kind": "inference",
+      "name": "Transfer squarehood to ℕ",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L128-L130",
+        "lines": [
+          128,
+          130
+        ]
+      }
+    },
+    {
+      "id": "fact:natural-square",
+      "kind": "fact",
+      "name": "Natural square criterion",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L128-L130",
+        "lines": [
+          128,
+          130
+        ]
+      },
+      "role": "intermediate"
+    },
+    {
+      "id": "step:prime-root",
+      "kind": "inference",
+      "name": "A prime is not a square",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L136-L137",
+        "lines": [
+          136,
+          137
+        ]
+      }
+    },
+    {
+      "id": "fact:prime-root",
+      "kind": "fact",
+      "name": "Prime square roots are irrational",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L136-L137",
+        "lines": [
+          136,
+          137
+        ]
+      },
+      "role": "intermediate"
+    },
+    {
+      "id": "step:two-prime",
+      "kind": "inference",
+      "name": "Check primality of 2",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/Data/Nat/Prime/Defs.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/Data/Nat/Prime/Defs.lean#L171-L171",
+        "lines": [
+          171,
+          171
+        ]
+      }
+    },
+    {
+      "id": "fact:two-prime",
+      "kind": "fact",
+      "name": "Primality of two",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/Data/Nat/Prime/Defs.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/Data/Nat/Prime/Defs.lean#L171-L171",
+        "lines": [
+          171,
+          171
+        ]
+      },
+      "role": "intermediate"
+    },
+    {
+      "id": "step:specialize",
+      "kind": "inference",
+      "name": "Specialize at two",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L140-L141",
+        "lines": [
+          140,
+          141
+        ]
+      }
+    },
+    {
+      "id": "fact:specialize",
+      "kind": "fact",
+      "name": "√2 is irrational",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L140-L141",
+        "lines": [
+          140,
+          141
+        ]
+      },
+      "role": "conclusion"
+    }
+  ],
+  "edges": [
+    {
+      "source": "step:rational-square",
+      "target": "fact:rational-square",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L101-L109",
+        "lines": [
+          101,
+          109
+        ]
+      }
+    },
+    {
+      "source": "step:rational-square",
+      "target": "lean:irrational_sqrt_ratCast_iff_of_nonneg",
+      "relation": "summarizes",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L101-L109",
+        "lines": [
+          101,
+          109
+        ]
+      }
+    },
+    {
+      "source": "step:rational-square",
+      "target": "lean:Irrational",
+      "relation": "unfolds",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L101-L109",
+        "lines": [
+          101,
+          109
+        ]
+      }
+    },
+    {
+      "source": "fact:rational-square",
+      "target": "step:natural-square",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L128-L130",
+        "lines": [
+          128,
+          130
+        ]
+      }
+    },
+    {
+      "source": "step:natural-square",
+      "target": "fact:natural-square",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L128-L130",
+        "lines": [
+          128,
+          130
+        ]
+      }
+    },
+    {
+      "source": "step:natural-square",
+      "target": "lean:irrational_sqrt_natCast_iff",
+      "relation": "summarizes",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L128-L130",
+        "lines": [
+          128,
+          130
+        ]
+      }
+    },
+    {
+      "source": "step:natural-square",
+      "target": "lean:Rat.isSquare_natCast_iff",
+      "relation": "applies",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L128-L130",
+        "lines": [
+          128,
+          130
+        ]
+      }
+    },
+    {
+      "source": "fact:natural-square",
+      "target": "step:prime-root",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L136-L137",
+        "lines": [
+          136,
+          137
+        ]
+      }
+    },
+    {
+      "source": "step:prime-root",
+      "target": "fact:prime-root",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L136-L137",
+        "lines": [
+          136,
+          137
+        ]
+      }
+    },
+    {
+      "source": "step:prime-root",
+      "target": "lean:Nat.Prime.irrational_sqrt",
+      "relation": "summarizes",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L136-L137",
+        "lines": [
+          136,
+          137
+        ]
+      }
+    },
+    {
+      "source": "step:prime-root",
+      "target": "lean:irrational_sqrt_natCast_iff",
+      "relation": "applies",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L136-L137",
+        "lines": [
+          136,
+          137
+        ]
+      }
+    },
+    {
+      "source": "step:prime-root",
+      "target": "lean:Irreducible.not_isSquare",
+      "relation": "applies",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L136-L137",
+        "lines": [
+          136,
+          137
+        ]
+      }
+    },
+    {
+      "source": "step:two-prime",
+      "target": "fact:two-prime",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/Data/Nat/Prime/Defs.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/Data/Nat/Prime/Defs.lean#L171-L171",
+        "lines": [
+          171,
+          171
+        ]
+      }
+    },
+    {
+      "source": "step:two-prime",
+      "target": "lean:Nat.prime_two",
+      "relation": "applies",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/Data/Nat/Prime/Defs.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/Data/Nat/Prime/Defs.lean#L171-L171",
+        "lines": [
+          171,
+          171
+        ]
+      }
+    },
+    {
+      "source": "fact:prime-root",
+      "target": "step:specialize",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L140-L141",
+        "lines": [
+          140,
+          141
+        ]
+      }
+    },
+    {
+      "source": "fact:two-prime",
+      "target": "step:specialize",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L140-L141",
+        "lines": [
+          140,
+          141
+        ]
+      }
+    },
+    {
+      "source": "step:specialize",
+      "target": "fact:specialize",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L140-L141",
+        "lines": [
+          140,
+          141
+        ]
+      }
+    },
+    {
+      "source": "step:specialize",
+      "target": "lean:Nat.Prime.irrational_sqrt",
+      "relation": "applies",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L140-L141",
+        "lines": [
+          140,
+          141
+        ]
+      }
+    },
+    {
+      "source": "fact:specialize",
+      "target": "lean:irrational_sqrt_two",
+      "relation": "concludes",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Mathlib/NumberTheory/Real/Irrational.lean",
+        "url": "https://github.com/leanprover-community/mathlib4/blob/bce3fc3a37ff1790b2e3b0ccf8f941053aefde19/Mathlib/NumberTheory/Real/Irrational.lean#L140-L141",
+        "lines": [
+          140,
+          141
+        ]
+      }
+    }
+  ],
+  "annotations": {
+    "lean:irrational_sqrt_two": {
+      "title": "Irrationality of √2",
+      "summary": "The real square root of two is outside the image of the rational numbers.",
+      "areas": [
+        "Number theory"
+      ],
+      "compact_latex": "\\sqrt{2}\\notin\\mathbb{Q}",
+      "statement_latex": "\\neg\\exists q\\in\\mathbb{Q}:\\ (q:\\mathbb{R})=\\sqrt{2}",
+      "why_here": "The specialized conclusion establishes this theorem.",
+      "support_edges": [
+        18
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "lean:Irrational": {
+      "title": "Irrational real number",
+      "summary": "Irrationality means the real number is outside the image of rational coercion.",
+      "areas": [
+        "Number theory"
+      ],
+      "compact_latex": "x\\notin\\operatorname{im}(\\mathbb{Q}\\to\\mathbb{R})",
+      "concepts": [
+        "rational-squares"
+      ],
+      "why_here": "Unfolding the definition expresses rationality of the square root as the existence of a rational witness.",
+      "support_edges": [
+        2
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "lean:irrational_sqrt_ratCast_iff_of_nonneg": {
+      "title": "Rational square criterion",
+      "summary": "Pass between a rational square root and a rational square witness.",
+      "areas": [
+        "Number theory"
+      ],
+      "compact_latex": "q\\ge 0\\implies (\\sqrt q\\notin\\mathbb Q\\iff\\neg\\operatorname{IsSquare}_{\\mathbb Q}(q))",
+      "concepts": [
+        "rational-squares"
+      ],
+      "why_here": "The rational-witness inference summarizes this theorem.",
+      "support_edges": [
+        1
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "lean:Rat.isSquare_natCast_iff": {
+      "title": "Preservation of squarehood",
+      "summary": "Casting a natural number into the rationals preserves and reflects being a square.",
+      "areas": [
+        "Number theory"
+      ],
+      "compact_latex": "\\operatorname{IsSquare}_{\\mathbb Q}(n)\\iff\\operatorname{IsSquare}_{\\mathbb N}(n)",
+      "concepts": [
+        "coercion"
+      ],
+      "why_here": "The transfer inference uses this equivalence to express the square condition in the naturals.",
+      "support_edges": [
+        6
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "lean:irrational_sqrt_natCast_iff": {
+      "title": "Natural square criterion",
+      "summary": "Specialize the rational criterion and transport the square predicate through the natural cast.",
+      "areas": [
+        "Number theory"
+      ],
+      "compact_latex": "\\sqrt n\\notin\\mathbb Q\\iff\\neg\\operatorname{IsSquare}_{\\mathbb N}(n)",
+      "why_here": "The transfer inference summarizes this theorem, and the prime-root inference applies it.",
+      "support_edges": [
+        5,
+        10
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "lean:Nat.Prime.irrational_sqrt": {
+      "title": "Square roots of primes",
+      "summary": "A natural prime is not a square, so the natural square criterion applies.",
+      "areas": [
+        "Number theory"
+      ],
+      "compact_latex": "\\operatorname{Prime}(p)\\implies\\sqrt p\\notin\\mathbb Q",
+      "concepts": [
+        "primality"
+      ],
+      "why_here": "The prime-root inference summarizes the theorem, and the final inference applies it at 2.",
+      "support_edges": [
+        9,
+        17
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "lean:Irreducible.not_isSquare": {
+      "title": "Irreducible elements are nonsquares",
+      "summary": "The exported proof term calls the irreducible-nonsquare lemma. For natural numbers, primality supplies irreducibility.",
+      "areas": [
+        "Number theory"
+      ],
+      "compact_latex": "\\operatorname{Irreducible}(p)\\implies\\neg\\operatorname{IsSquare}(p)",
+      "concepts": [
+        "primality"
+      ],
+      "why_here": "The prime-root inference uses this lemma to rule out a square representation of a natural prime.",
+      "support_edges": [
+        11
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "lean:Nat.prime_two": {
+      "title": "Two is prime",
+      "summary": "Lean discharges primality of two by decidability.",
+      "areas": [
+        "Number theory"
+      ],
+      "compact_latex": "\\operatorname{Prime}(2)",
+      "concepts": [
+        "primality"
+      ],
+      "why_here": "The primality inference applies this theorem to supply the hypothesis for specialization.",
+      "support_edges": [
+        13
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "step:rational-square": {
+      "title": "Square the rational witness",
+      "summary": "A rational value of the root gives a square witness by squaring and using cast injectivity. Conversely, a rational square witness gives its absolute value as a rational root. Negate the equivalence.",
+      "areas": [
+        "Number theory"
+      ],
+      "compact_latex": "(\\sqrt q)^2=q",
+      "concepts": [
+        "rational-squares"
+      ],
+      "why_here": "Unfolding irrationality and relating the two types of witnesses yields the nonnegative rational criterion.",
+      "support_edges": [
+        0,
+        1,
+        2
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:rational-square": {
+      "title": "Nonnegative rational criterion",
+      "summary": "The criterion applies to nonnegative rational q.",
+      "areas": [
+        "Number theory"
+      ],
+      "compact_latex": "\\sqrt q\\notin\\mathbb Q\\iff\\neg\\operatorname{IsSquare}_{\\mathbb Q}(q)",
+      "concepts": [
+        "rational-squares"
+      ],
+      "why_here": "This criterion supplies the premise for passing from rational squares to natural squares.",
+      "support_edges": [
+        0,
+        3
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "step:natural-square": {
+      "title": "Transfer squarehood to ℕ",
+      "summary": "Apply the rational criterion to the nonnegative rational cast of a natural number and rewrite squarehood and the iterated cast.",
+      "areas": [
+        "Number theory"
+      ],
+      "compact_latex": "\\operatorname{IsSquare}_{\\mathbb Q}(n)\\iff\\operatorname{IsSquare}_{\\mathbb N}(n)",
+      "concepts": [
+        "coercion"
+      ],
+      "why_here": "This transfer yields the criterion in terms of natural squares that the prime case needs.",
+      "support_edges": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:natural-square": {
+      "title": "Natural square criterion",
+      "summary": "For natural n, the question reduces to squarehood in the naturals.",
+      "areas": [
+        "Number theory"
+      ],
+      "compact_latex": "\\sqrt n\\notin\\mathbb Q\\iff\\neg\\operatorname{IsSquare}_{\\mathbb N}(n)",
+      "concepts": [
+        "coercion"
+      ],
+      "why_here": "This criterion lets the prime-root inference deduce irrationality from the absence of a natural square witness.",
+      "support_edges": [
+        4,
+        7
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "step:prime-root": {
+      "title": "A prime is not a square",
+      "summary": "The proof feeds hp.not_isSquare into the reverse direction of the natural square criterion.",
+      "areas": [
+        "Number theory"
+      ],
+      "compact_latex": "\\operatorname{Prime}(p)\\implies\\neg\\operatorname{IsSquare}_{\\mathbb N}(p)",
+      "concepts": [
+        "primality"
+      ],
+      "why_here": "This inference combines the natural square criterion with the nonsquare lemma to obtain the general result for primes.",
+      "support_edges": [
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:prime-root": {
+      "title": "Prime square roots are irrational",
+      "summary": "The argument works uniformly for every natural prime.",
+      "areas": [
+        "Number theory"
+      ],
+      "compact_latex": "\\operatorname{Prime}(p)\\implies\\sqrt p\\notin\\mathbb Q",
+      "concepts": [
+        "primality"
+      ],
+      "why_here": "This general result supplies one premise of the final specialization.",
+      "support_edges": [
+        8,
+        14
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "step:two-prime": {
+      "title": "Check primality of 2",
+      "summary": "Use the library theorem computing that two is prime.",
+      "areas": [
+        "Number theory"
+      ],
+      "compact_latex": "\\operatorname{Prime}(2)",
+      "concepts": [
+        "primality"
+      ],
+      "why_here": "The lemma that 2 is prime supplies the primality fact used in the final inference.",
+      "support_edges": [
+        12,
+        13
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:two-prime": {
+      "title": "Primality of two",
+      "summary": "Two provides the instance needed for the general theorem.",
+      "areas": [
+        "Number theory"
+      ],
+      "compact_latex": "\\operatorname{Prime}(2)",
+      "concepts": [
+        "primality"
+      ],
+      "why_here": "This fact discharges the primality hypothesis of the general theorem at 2.",
+      "support_edges": [
+        12,
+        15
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "step:specialize": {
+      "title": "Specialize at two",
+      "summary": "Apply the prime square-root theorem to two and simplify the casts.",
+      "areas": [
+        "Number theory"
+      ],
+      "compact_latex": "p=2",
+      "why_here": "This inference combines the general theorem with the primality fact to produce the desired conclusion.",
+      "support_edges": [
+        14,
+        15,
+        16,
+        17
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:specialize": {
+      "title": "√2 is irrational",
+      "summary": "The irrationality statement follows.",
+      "areas": [
+        "Number theory"
+      ],
+      "compact_latex": "\\sqrt 2\\notin\\mathbb Q",
+      "why_here": "The result of specialization is the statement of the root theorem.",
+      "support_edges": [
+        16,
+        18
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    }
+  },
+  "concepts": [
+    {
+      "id": "rational-squares",
+      "title": "Rational squares and square roots",
+      "summary": "A nonnegative rational has a rational real square root exactly when it is a square in the rationals.",
+      "detail": "standard",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "id": "coercion",
+      "title": "Coercions between number systems",
+      "summary": "Cast identities and injectivity transfer square equations between naturals, rationals and reals.",
+      "detail": "foundation",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "id": "primality",
+      "title": "Prime nonsquares",
+      "summary": "A natural prime cannot be a square in the natural numbers.",
+      "detail": "standard",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    }
+  ],
+  "groups": [
+    {
+      "id": "group:square-criteria",
+      "title": "Reduce irrationality to squarehood",
+      "summary": "Prove the rational criterion and transport it to naturals.",
+      "steps": [
+        "step:rational-square",
+        "step:natural-square"
+      ],
+      "kind": "block",
+      "annotation_provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      },
+      "inputs": [],
+      "outputs": [
+        "fact:natural-square"
+      ]
+    },
+    {
+      "id": "group:specialization",
+      "title": "Specialize the prime theorem",
+      "summary": "Use prime nonsquarehood, then primality of two.",
+      "steps": [
+        "step:prime-root",
+        "step:two-prime",
+        "step:specialize"
+      ],
+      "kind": "block",
+      "annotation_provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      },
+      "inputs": [
+        "fact:natural-square"
+      ],
+      "outputs": [
+        "fact:specialize"
+      ]
+    }
+  ],
+  "semantic_edges": [
+    {
+      "source": "lean:Irrational",
+      "target": "rational-squares",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "lean:irrational_sqrt_ratCast_iff_of_nonneg",
+      "target": "rational-squares",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "lean:Rat.isSquare_natCast_iff",
+      "target": "coercion",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "lean:Nat.Prime.irrational_sqrt",
+      "target": "primality",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "lean:Irreducible.not_isSquare",
+      "target": "primality",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "lean:Nat.prime_two",
+      "target": "primality",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:rational-square",
+      "target": "rational-squares",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:rational-square",
+      "target": "rational-squares",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:natural-square",
+      "target": "coercion",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:natural-square",
+      "target": "coercion",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:prime-root",
+      "target": "primality",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:prime-root",
+      "target": "primality",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:two-prime",
+      "target": "primality",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:two-prime",
+      "target": "primality",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    }
+  ],
+  "view": {
+    "level": "steps",
+    "group_depth": 0,
+    "hide_shared_above": null,
+    "nodes": [
+      "lean:irrational_sqrt_two",
+      "lean:irrational_sqrt_ratCast_iff_of_nonneg",
+      "lean:Rat.isSquare_natCast_iff",
+      "lean:irrational_sqrt_natCast_iff",
+      "lean:Nat.Prime.irrational_sqrt",
+      "lean:Irreducible.not_isSquare",
+      "lean:Nat.prime_two",
+      "step:rational-square",
+      "fact:rational-square",
+      "step:natural-square",
+      "fact:natural-square",
+      "step:prime-root",
+      "fact:prime-root",
+      "step:two-prime",
+      "fact:two-prime",
+      "step:specialize",
+      "fact:specialize",
+      "rational-squares",
+      "coercion",
+      "primality"
+    ],
+    "size_roles": {
+      "lean:irrational_sqrt_two": "root",
+      "lean:irrational_sqrt_ratCast_iff_of_nonneg": "support",
+      "lean:Rat.isSquare_natCast_iff": "support",
+      "lean:irrational_sqrt_natCast_iff": "support",
+      "lean:Nat.Prime.irrational_sqrt": "support",
+      "lean:Irreducible.not_isSquare": "support",
+      "lean:Nat.prime_two": "support",
+      "step:rational-square": "standard",
+      "fact:rational-square": "standard",
+      "step:natural-square": "standard",
+      "fact:natural-square": "standard",
+      "step:prime-root": "standard",
+      "fact:prime-root": "standard",
+      "step:two-prime": "standard",
+      "fact:two-prime": "standard",
+      "step:specialize": "standard",
+      "fact:specialize": "standard",
+      "rational-squares": "standard",
+      "coercion": "standard",
+      "primality": "standard"
+    },
+    "hidden": [
+      "group:specialization",
+      "group:square-criteria",
+      "lean:Irrational"
+    ],
+    "collapsed_into": {},
+    "edges": [
+      {
+        "source": "step:rational-square",
+        "target": "fact:rational-square",
+        "relation": "produces",
+        "edge_indices": [
+          0
+        ]
+      },
+      {
+        "source": "step:rational-square",
+        "target": "lean:irrational_sqrt_ratCast_iff_of_nonneg",
+        "relation": "summarizes",
+        "edge_indices": [
+          1
+        ]
+      },
+      {
+        "source": "fact:rational-square",
+        "target": "step:natural-square",
+        "relation": "premise_of",
+        "edge_indices": [
+          3
+        ]
+      },
+      {
+        "source": "step:natural-square",
+        "target": "fact:natural-square",
+        "relation": "produces",
+        "edge_indices": [
+          4
+        ]
+      },
+      {
+        "source": "step:natural-square",
+        "target": "lean:irrational_sqrt_natCast_iff",
+        "relation": "summarizes",
+        "edge_indices": [
+          5
+        ]
+      },
+      {
+        "source": "step:natural-square",
+        "target": "lean:Rat.isSquare_natCast_iff",
+        "relation": "applies",
+        "edge_indices": [
+          6
+        ]
+      },
+      {
+        "source": "fact:natural-square",
+        "target": "step:prime-root",
+        "relation": "premise_of",
+        "edge_indices": [
+          7
+        ]
+      },
+      {
+        "source": "step:prime-root",
+        "target": "fact:prime-root",
+        "relation": "produces",
+        "edge_indices": [
+          8
+        ]
+      },
+      {
+        "source": "step:prime-root",
+        "target": "lean:Nat.Prime.irrational_sqrt",
+        "relation": "summarizes",
+        "edge_indices": [
+          9
+        ]
+      },
+      {
+        "source": "step:prime-root",
+        "target": "lean:irrational_sqrt_natCast_iff",
+        "relation": "applies",
+        "edge_indices": [
+          10
+        ]
+      },
+      {
+        "source": "step:prime-root",
+        "target": "lean:Irreducible.not_isSquare",
+        "relation": "applies",
+        "edge_indices": [
+          11
+        ]
+      },
+      {
+        "source": "step:two-prime",
+        "target": "fact:two-prime",
+        "relation": "produces",
+        "edge_indices": [
+          12
+        ]
+      },
+      {
+        "source": "step:two-prime",
+        "target": "lean:Nat.prime_two",
+        "relation": "applies",
+        "edge_indices": [
+          13
+        ]
+      },
+      {
+        "source": "fact:prime-root",
+        "target": "step:specialize",
+        "relation": "premise_of",
+        "edge_indices": [
+          14
+        ]
+      },
+      {
+        "source": "fact:two-prime",
+        "target": "step:specialize",
+        "relation": "premise_of",
+        "edge_indices": [
+          15
+        ]
+      },
+      {
+        "source": "step:specialize",
+        "target": "fact:specialize",
+        "relation": "produces",
+        "edge_indices": [
+          16
+        ]
+      },
+      {
+        "source": "step:specialize",
+        "target": "lean:Nat.Prime.irrational_sqrt",
+        "relation": "applies",
+        "edge_indices": [
+          17
+        ]
+      },
+      {
+        "source": "fact:specialize",
+        "target": "lean:irrational_sqrt_two",
+        "relation": "concludes",
+        "edge_indices": [
+          18
+        ]
+      },
+      {
+        "source": "lean:irrational_sqrt_ratCast_iff_of_nonneg",
+        "target": "rational-squares",
+        "relation": "about",
+        "semantic_edge_indices": [
+          1
+        ]
+      },
+      {
+        "source": "lean:Rat.isSquare_natCast_iff",
+        "target": "coercion",
+        "relation": "about",
+        "semantic_edge_indices": [
+          2
+        ]
+      },
+      {
+        "source": "lean:Nat.Prime.irrational_sqrt",
+        "target": "primality",
+        "relation": "about",
+        "semantic_edge_indices": [
+          3
+        ]
+      },
+      {
+        "source": "lean:Irreducible.not_isSquare",
+        "target": "primality",
+        "relation": "about",
+        "semantic_edge_indices": [
+          4
+        ]
+      },
+      {
+        "source": "lean:Nat.prime_two",
+        "target": "primality",
+        "relation": "about",
+        "semantic_edge_indices": [
+          5
+        ]
+      },
+      {
+        "source": "step:rational-square",
+        "target": "rational-squares",
+        "relation": "about",
+        "semantic_edge_indices": [
+          6
+        ]
+      },
+      {
+        "source": "fact:rational-square",
+        "target": "rational-squares",
+        "relation": "about",
+        "semantic_edge_indices": [
+          7
+        ]
+      },
+      {
+        "source": "step:natural-square",
+        "target": "coercion",
+        "relation": "about",
+        "semantic_edge_indices": [
+          8
+        ]
+      },
+      {
+        "source": "fact:natural-square",
+        "target": "coercion",
+        "relation": "about",
+        "semantic_edge_indices": [
+          9
+        ]
+      },
+      {
+        "source": "step:prime-root",
+        "target": "primality",
+        "relation": "about",
+        "semantic_edge_indices": [
+          10
+        ]
+      },
+      {
+        "source": "fact:prime-root",
+        "target": "primality",
+        "relation": "about",
+        "semantic_edge_indices": [
+          11
+        ]
+      },
+      {
+        "source": "step:two-prime",
+        "target": "primality",
+        "relation": "about",
+        "semantic_edge_indices": [
+          12
+        ]
+      },
+      {
+        "source": "fact:two-prime",
+        "target": "primality",
+        "relation": "about",
+        "semantic_edge_indices": [
+          13
+        ]
+      }
+    ]
+  }
+}

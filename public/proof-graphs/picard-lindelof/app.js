@@ -11,6 +11,7 @@ const labelWorld = bySelector("#label-world");
 const inspector = bySelector("#inspector");
 const inspectorBody = bySelector("#inspector-body");
 const portraitLayout = window.matchMedia("(orientation: portrait) and (max-width: 1024px)");
+const useProofRanks = diagram.hasAttribute("data-proof-ranks");
 
 const proofRelations = new Set(["premise_of", "produces", "concludes"]);
 const referenceRelations = new Set(["applies", "summarizes", "unfolds"]);
@@ -114,6 +115,7 @@ function titleFor(id) {
 }
 
 function shortLabel(id) {
+  if (useProofRanks) return [titleFor(id), annotations[id]?.compact_latex];
   const rootIndex = roots.indexOf(id);
   if (rootIndex === 0) {
     return ["Existence of a solution", "\\begin{gathered}\\exists\\,g:\\ g(t_0)=x,\\\\g'_I(t)=f(t,g(t))\\end{gathered}"];
@@ -184,6 +186,47 @@ function positionFor(node, projection) {
   return [Math.cos(angle) * 640, Math.sin(angle) * 325];
 }
 
+function rankPositions({ nodes, links }) {
+  const consumers = new Map(nodes.map((node) => [node.id, []]));
+  for (const { source, target } of links) consumers.get(source).push(target);
+  const rootRanks = roots.map((root) => {
+    const ranks = new Map([[root, 0]]);
+    function rank(id) {
+      if (ranks.has(id)) return ranks.get(id);
+      const next = consumers.get(id).map(rank);
+      const depth = next.length ? 1 + Math.max(...next) : -Infinity;
+      ranks.set(id, depth);
+      return depth;
+    }
+    for (const { id } of nodes) rank(id);
+    return ranks;
+  });
+
+  const lanes = new Map();
+  for (const { id } of nodes) {
+    const distances = rootRanks.map((ranks) => ranks.get(id));
+    const depth = Math.max(...distances);
+    const branch = distances.filter(Number.isFinite).length > 1 ? -1 : distances.indexOf(depth);
+    const column = [branch, Number.isFinite(depth) ? depth : 0];
+    const key = column.join("/");
+    if (!lanes.has(key)) lanes.set(key, { column, members: [] });
+    lanes.get(key).members.push(id);
+  }
+
+  const positions = new Map();
+  const twoBranches = roots.length === 2;
+  for (const { column: [branch, depth], members } of lanes.values()) {
+    const branchDirection = branch ? 1 : -1;
+    const x = twoBranches ? branchDirection * (116 + depth * 80) : -depth * 121;
+    const stagger = depth % 2 ? 32 : -32;
+    const y = twoBranches ? Math.sin(depth * 1.08) * 160 + stagger : stagger;
+    const columnX = branch === -1 ? 0 : x;
+    const columnY = branch === -1 ? -260 : y;
+    members.forEach((id, i) => positions.set(id, [columnX, columnY + (i - (members.length - 1) / 2) * 151]));
+  }
+  return positions;
+}
+
 function ellipsePath(rx, ry, seed, offset = 0) {
   const points = Array.from({ length: 24 }, (_, i) => {
     const angle = i * Math.PI / 12;
@@ -203,7 +246,7 @@ function ellipsePath(rx, ry, seed, offset = 0) {
 
 function createNode(item, projection, portrait) {
   const isRoot = roots.includes(item.id);
-  const [x, y] = positionFor(item, projection);
+  const [x, y] = projection.positions?.get(item.id) || positionFor(item, projection);
   const [ax, ay] = portrait ? [y * .82, x] : [x, y];
   const [title, formula] = shortLabel(item.id);
   const rx = isRoot ? 93 : prominent.has(item.id) ? 72 :
@@ -261,6 +304,7 @@ function createLayout() {
   touchPoints.clear();
   diagram.classList.remove("is-dragging");
   const projection = buildProjection(mode);
+  if (useProofRanks) projection.positions = rankPositions(projection);
   const portrait = portraitLayout.matches;
   nodeLayer.replaceChildren();
   edgeLayer.replaceChildren();

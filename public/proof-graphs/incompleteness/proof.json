@@ -1,0 +1,3736 @@
+{
+  "schema_version": 1,
+  "root": "lean:LO.FirstOrder.Arithmetic.incomplete",
+  "roots": [
+    "lean:LO.FirstOrder.Arithmetic.incomplete",
+    "lean:LO.FirstOrder.Arithmetic.consistent_unprovable"
+  ],
+  "coverage": "source_curated_argument",
+  "source": {
+    "kind": "source_curated",
+    "project": "FormalizedFormalLogic/Foundation",
+    "project_revision": "7c74089c2442ee211abfa1e2dd5a75091800f57b",
+    "catalogue": "https://leanprover-community.github.io/100.html",
+    "scope": "Source-aligned arguments for incomplete and consistent_unprovable. The first expands the self-substitution proof. The second expands the generic provability argument and its arithmetic instantiation."
+  },
+  "nodes": [
+    {
+      "id": "lean:LO.FirstOrder.Arithmetic.incomplete",
+      "kind": "declaration",
+      "name": "LO.FirstOrder.Arithmetic.incomplete",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L24-L53",
+        "lines": [
+          24,
+          53
+        ]
+      },
+      "type": "theorem",
+      "lean": "theorem incomplete (T : ArithmeticTheory) [T.Δ₁] [𝗥₀ ⪯ T] [T.SoundOnHierarchy 𝚺 1] : Incomplete T"
+    },
+    {
+      "id": "lean:LO.FirstOrder.Arithmetic.consistent_unprovable",
+      "kind": "declaration",
+      "name": "LO.FirstOrder.Arithmetic.consistent_unprovable",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/Second.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/Second.lean#L13-L18",
+        "lines": [
+          13,
+          18
+        ]
+      },
+      "type": "theorem",
+      "lean": "theorem consistent_unprovable [Consistent T] : T ⊬ ↑T.consistent :=\n  T.standardProvability.con_unprovable"
+    },
+    {
+      "id": "lean:LO.FirstOrder.Arithmetic.re_iff_sigma1",
+      "kind": "declaration",
+      "name": "LO.FirstOrder.Arithmetic.re_iff_sigma1",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L10-L20",
+        "lines": [
+          10,
+          20
+        ]
+      },
+      "type": "theorem"
+    },
+    {
+      "id": "lean:LO.FirstOrder.Theory.standardProvability",
+      "kind": "declaration",
+      "name": "LO.FirstOrder.Theory.standardProvability",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean#L35-L43",
+        "lines": [
+          35,
+          43
+        ]
+      },
+      "type": "definition"
+    },
+    {
+      "id": "lean:LO.FirstOrder.Theory.consistent",
+      "kind": "declaration",
+      "name": "LO.FirstOrder.Theory.consistent",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Bootstrapping/Consistency.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Bootstrapping/Consistency.lean#L31-L37",
+        "lines": [
+          31,
+          37
+        ]
+      },
+      "type": "definition"
+    },
+    {
+      "id": "lean:LO.FirstOrder.Arithmetic.provable_D3",
+      "kind": "declaration",
+      "name": "LO.FirstOrder.Arithmetic.provable_D3",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean#L59-L63",
+        "lines": [
+          59,
+          63
+        ]
+      },
+      "type": "theorem"
+    },
+    {
+      "id": "lean:LO.FirstOrder.Arithmetic.re_complete",
+      "kind": "declaration",
+      "name": "LO.FirstOrder.Arithmetic.re_complete",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Arithmetic/R0/Representation.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Arithmetic/R0/Representation.lean#L255-L261",
+        "lines": [
+          255,
+          261
+        ]
+      },
+      "type": "theorem"
+    },
+    {
+      "id": "lean:LO.ProvabilityLogic.Provability.gödel_spec",
+      "kind": "declaration",
+      "name": "LO.ProvabilityLogic.Provability.gödel_spec",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L160-L169",
+        "lines": [
+          160,
+          169
+        ]
+      },
+      "type": "theorem"
+    },
+    {
+      "id": "lean:LO.ProvabilityLogic.Provability.con_unprovable",
+      "kind": "declaration",
+      "name": "LO.ProvabilityLogic.Provability.con_unprovable",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L236-L240",
+        "lines": [
+          236,
+          240
+        ]
+      },
+      "type": "theorem"
+    },
+    {
+      "id": "fact:presentation",
+      "kind": "fact",
+      "name": "Δ₁ presentation",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L24-L29",
+        "lines": [
+          24,
+          29
+        ]
+      },
+      "role": "assumption"
+    },
+    {
+      "id": "fact:r0",
+      "kind": "fact",
+      "name": "Arithmetic base R₀",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L24-L34",
+        "lines": [
+          24,
+          34
+        ]
+      },
+      "role": "assumption"
+    },
+    {
+      "id": "fact:soundness",
+      "kind": "fact",
+      "name": "Σ₁-sound theory",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L24-L27",
+        "lines": [
+          24,
+          27
+        ]
+      },
+      "role": "assumption"
+    },
+    {
+      "id": "fact:isigma",
+      "kind": "fact",
+      "name": "Arithmetic base IΣ₁",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/Second.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/Second.lean#L13-L18",
+        "lines": [
+          13,
+          18
+        ]
+      },
+      "role": "assumption"
+    },
+    {
+      "id": "fact:consistency",
+      "kind": "fact",
+      "name": "External consistency",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/Second.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/Second.lean#L13-L18",
+        "lines": [
+          13,
+          18
+        ]
+      },
+      "role": "assumption"
+    },
+    {
+      "id": "step:define-D",
+      "kind": "inference",
+      "name": "Code refutation after substitution",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L28-L37",
+        "lines": [
+          28,
+          37
+        ]
+      }
+    },
+    {
+      "id": "fact:define-D",
+      "kind": "fact",
+      "name": "The predicate D",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L28-L37",
+        "lines": [
+          28,
+          37
+        ]
+      },
+      "role": "intermediate"
+    },
+    {
+      "id": "step:enumerate-D",
+      "kind": "inference",
+      "name": "Show D is recursively enumerable",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L30-L34",
+        "lines": [
+          30,
+          34
+        ]
+      }
+    },
+    {
+      "id": "fact:enumerate-D",
+      "kind": "fact",
+      "name": "D is recursively enumerable",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L30-L34",
+        "lines": [
+          30,
+          34
+        ]
+      },
+      "role": "intermediate"
+    },
+    {
+      "id": "step:represent-D",
+      "kind": "inference",
+      "name": "Represent D by a formula",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L38-L40",
+        "lines": [
+          38,
+          40
+        ]
+      }
+    },
+    {
+      "id": "fact:represent-D",
+      "kind": "fact",
+      "name": "Provability represents D",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L38-L40",
+        "lines": [
+          38,
+          40
+        ]
+      },
+      "role": "intermediate"
+    },
+    {
+      "id": "step:self-substitute",
+      "kind": "inference",
+      "name": "Substitute δ’s own code",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L41-L46",
+        "lines": [
+          41,
+          46
+        ]
+      }
+    },
+    {
+      "id": "fact:self-substitute",
+      "kind": "fact",
+      "name": "Opposite provability claims coincide",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L41-L46",
+        "lines": [
+          41,
+          46
+        ]
+      },
+      "role": "intermediate"
+    },
+    {
+      "id": "step:exclude-both",
+      "kind": "inference",
+      "name": "Rule out both derivations",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L47-L53",
+        "lines": [
+          47,
+          53
+        ]
+      }
+    },
+    {
+      "id": "fact:exclude-both",
+      "kind": "fact",
+      "name": "An undecided sentence",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L47-L53",
+        "lines": [
+          47,
+          53
+        ]
+      },
+      "role": "conclusion"
+    },
+    {
+      "id": "step:standard-provability",
+      "kind": "inference",
+      "name": "Form standard provability",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean#L24-L46",
+        "lines": [
+          24,
+          46
+        ]
+      }
+    },
+    {
+      "id": "fact:standard-provability",
+      "kind": "fact",
+      "name": "Standard provability for T",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean#L24-L46",
+        "lines": [
+          24,
+          46
+        ]
+      },
+      "role": "intermediate"
+    },
+    {
+      "id": "step:hbl-conditions",
+      "kind": "inference",
+      "name": "Supply derivability conditions",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean#L59-L85",
+        "lines": [
+          59,
+          85
+        ]
+      }
+    },
+    {
+      "id": "fact:hbl-conditions",
+      "kind": "fact",
+      "name": "Hilbert–Bernays–Löb structure",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean#L59-L85",
+        "lines": [
+          59,
+          85
+        ]
+      },
+      "role": "intermediate"
+    },
+    {
+      "id": "step:consistency-sentence",
+      "kind": "inference",
+      "name": "Express consistency internally",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Bootstrapping/Consistency.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Bootstrapping/Consistency.lean#L31-L37",
+        "lines": [
+          31,
+          37
+        ]
+      }
+    },
+    {
+      "id": "fact:consistency-sentence",
+      "kind": "fact",
+      "name": "Internal Con(T)",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Bootstrapping/Consistency.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Bootstrapping/Consistency.lean#L31-L37",
+        "lines": [
+          31,
+          37
+        ]
+      },
+      "role": "intermediate"
+    },
+    {
+      "id": "step:godel-sentence",
+      "kind": "inference",
+      "name": "Diagonalize the provability predicate",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L160-L169",
+        "lines": [
+          160,
+          169
+        ]
+      }
+    },
+    {
+      "id": "fact:godel-sentence",
+      "kind": "fact",
+      "name": "A Gödel sentence for T",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L160-L169",
+        "lines": [
+          160,
+          169
+        ]
+      },
+      "role": "intermediate"
+    },
+    {
+      "id": "step:godel-unprovable",
+      "kind": "inference",
+      "name": "Rule out a proof of G",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L180-L192",
+        "lines": [
+          180,
+          192
+        ]
+      }
+    },
+    {
+      "id": "fact:godel-unprovable",
+      "kind": "fact",
+      "name": "External unprovability of G",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L180-L192",
+        "lines": [
+          180,
+          192
+        ]
+      },
+      "role": "intermediate"
+    },
+    {
+      "id": "step:internal-unprovability",
+      "kind": "inference",
+      "name": "Formalize the implication",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L222-L228",
+        "lines": [
+          222,
+          228
+        ]
+      }
+    },
+    {
+      "id": "fact:internal-unprovability",
+      "kind": "fact",
+      "name": "Internal implication",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L222-L228",
+        "lines": [
+          222,
+          228
+        ]
+      },
+      "role": "intermediate"
+    },
+    {
+      "id": "step:equate-godel-consistency",
+      "kind": "inference",
+      "name": "Relate G to consistency",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L216-L234",
+        "lines": [
+          216,
+          234
+        ]
+      }
+    },
+    {
+      "id": "fact:equate-godel-consistency",
+      "kind": "fact",
+      "name": "Gödel sentence equivalent to consistency",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L216-L234",
+        "lines": [
+          216,
+          234
+        ]
+      },
+      "role": "intermediate"
+    },
+    {
+      "id": "step:generic-unprovability",
+      "kind": "inference",
+      "name": "Reduce a proof of consistency to G",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L236-L240",
+        "lines": [
+          236,
+          240
+        ]
+      }
+    },
+    {
+      "id": "fact:generic-unprovability",
+      "kind": "fact",
+      "name": "T cannot prove Con(T)",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L236-L240",
+        "lines": [
+          236,
+          240
+        ]
+      },
+      "role": "conclusion"
+    }
+  ],
+  "edges": [
+    {
+      "source": "fact:presentation",
+      "target": "step:define-D",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L28-L37",
+        "lines": [
+          28,
+          37
+        ]
+      }
+    },
+    {
+      "source": "step:define-D",
+      "target": "fact:define-D",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L28-L37",
+        "lines": [
+          28,
+          37
+        ]
+      }
+    },
+    {
+      "source": "fact:define-D",
+      "target": "step:enumerate-D",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L30-L34",
+        "lines": [
+          30,
+          34
+        ]
+      }
+    },
+    {
+      "source": "step:enumerate-D",
+      "target": "fact:enumerate-D",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L30-L34",
+        "lines": [
+          30,
+          34
+        ]
+      }
+    },
+    {
+      "source": "step:enumerate-D",
+      "target": "lean:LO.FirstOrder.Arithmetic.re_iff_sigma1",
+      "relation": "applies",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L30-L34",
+        "lines": [
+          30,
+          34
+        ]
+      }
+    },
+    {
+      "source": "fact:enumerate-D",
+      "target": "step:represent-D",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L38-L40",
+        "lines": [
+          38,
+          40
+        ]
+      }
+    },
+    {
+      "source": "fact:r0",
+      "target": "step:represent-D",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L38-L40",
+        "lines": [
+          38,
+          40
+        ]
+      }
+    },
+    {
+      "source": "step:represent-D",
+      "target": "fact:represent-D",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L38-L40",
+        "lines": [
+          38,
+          40
+        ]
+      }
+    },
+    {
+      "source": "step:represent-D",
+      "target": "lean:LO.FirstOrder.Arithmetic.re_complete",
+      "relation": "applies",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L38-L40",
+        "lines": [
+          38,
+          40
+        ]
+      }
+    },
+    {
+      "source": "fact:define-D",
+      "target": "step:self-substitute",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L41-L46",
+        "lines": [
+          41,
+          46
+        ]
+      }
+    },
+    {
+      "source": "fact:represent-D",
+      "target": "step:self-substitute",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L41-L46",
+        "lines": [
+          41,
+          46
+        ]
+      }
+    },
+    {
+      "source": "step:self-substitute",
+      "target": "fact:self-substitute",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L41-L46",
+        "lines": [
+          41,
+          46
+        ]
+      }
+    },
+    {
+      "source": "fact:self-substitute",
+      "target": "step:exclude-both",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L47-L53",
+        "lines": [
+          47,
+          53
+        ]
+      }
+    },
+    {
+      "source": "fact:soundness",
+      "target": "step:exclude-both",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L47-L53",
+        "lines": [
+          47,
+          53
+        ]
+      }
+    },
+    {
+      "source": "step:exclude-both",
+      "target": "fact:exclude-both",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L47-L53",
+        "lines": [
+          47,
+          53
+        ]
+      }
+    },
+    {
+      "source": "fact:exclude-both",
+      "target": "lean:LO.FirstOrder.Arithmetic.incomplete",
+      "relation": "concludes",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Incompleteness/First.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Incompleteness/First.lean#L47-L53",
+        "lines": [
+          47,
+          53
+        ]
+      }
+    },
+    {
+      "source": "fact:presentation",
+      "target": "step:standard-provability",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean#L24-L46",
+        "lines": [
+          24,
+          46
+        ]
+      }
+    },
+    {
+      "source": "fact:isigma",
+      "target": "step:standard-provability",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean#L24-L46",
+        "lines": [
+          24,
+          46
+        ]
+      }
+    },
+    {
+      "source": "step:standard-provability",
+      "target": "fact:standard-provability",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean#L24-L46",
+        "lines": [
+          24,
+          46
+        ]
+      }
+    },
+    {
+      "source": "step:standard-provability",
+      "target": "lean:LO.FirstOrder.Theory.standardProvability",
+      "relation": "unfolds",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean#L24-L46",
+        "lines": [
+          24,
+          46
+        ]
+      }
+    },
+    {
+      "source": "fact:standard-provability",
+      "target": "step:hbl-conditions",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean#L59-L85",
+        "lines": [
+          59,
+          85
+        ]
+      }
+    },
+    {
+      "source": "fact:isigma",
+      "target": "step:hbl-conditions",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean#L59-L85",
+        "lines": [
+          59,
+          85
+        ]
+      }
+    },
+    {
+      "source": "step:hbl-conditions",
+      "target": "fact:hbl-conditions",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean#L59-L85",
+        "lines": [
+          59,
+          85
+        ]
+      }
+    },
+    {
+      "source": "step:hbl-conditions",
+      "target": "lean:LO.FirstOrder.Arithmetic.provable_D3",
+      "relation": "summarizes",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Bootstrapping/DerivabilityCondition.lean#L59-L85",
+        "lines": [
+          59,
+          85
+        ]
+      }
+    },
+    {
+      "source": "fact:standard-provability",
+      "target": "step:consistency-sentence",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Bootstrapping/Consistency.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Bootstrapping/Consistency.lean#L31-L37",
+        "lines": [
+          31,
+          37
+        ]
+      }
+    },
+    {
+      "source": "step:consistency-sentence",
+      "target": "fact:consistency-sentence",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Bootstrapping/Consistency.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Bootstrapping/Consistency.lean#L31-L37",
+        "lines": [
+          31,
+          37
+        ]
+      }
+    },
+    {
+      "source": "step:consistency-sentence",
+      "target": "lean:LO.FirstOrder.Theory.consistent",
+      "relation": "unfolds",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/FirstOrder/Bootstrapping/Consistency.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/FirstOrder/Bootstrapping/Consistency.lean#L31-L37",
+        "lines": [
+          31,
+          37
+        ]
+      }
+    },
+    {
+      "source": "fact:standard-provability",
+      "target": "step:godel-sentence",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L160-L169",
+        "lines": [
+          160,
+          169
+        ]
+      }
+    },
+    {
+      "source": "fact:isigma",
+      "target": "step:godel-sentence",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L160-L169",
+        "lines": [
+          160,
+          169
+        ]
+      }
+    },
+    {
+      "source": "step:godel-sentence",
+      "target": "fact:godel-sentence",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L160-L169",
+        "lines": [
+          160,
+          169
+        ]
+      }
+    },
+    {
+      "source": "step:godel-sentence",
+      "target": "lean:LO.ProvabilityLogic.Provability.gödel_spec",
+      "relation": "summarizes",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L160-L169",
+        "lines": [
+          160,
+          169
+        ]
+      }
+    },
+    {
+      "source": "fact:godel-sentence",
+      "target": "step:godel-unprovable",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L180-L192",
+        "lines": [
+          180,
+          192
+        ]
+      }
+    },
+    {
+      "source": "fact:consistency",
+      "target": "step:godel-unprovable",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L180-L192",
+        "lines": [
+          180,
+          192
+        ]
+      }
+    },
+    {
+      "source": "step:godel-unprovable",
+      "target": "fact:godel-unprovable",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L180-L192",
+        "lines": [
+          180,
+          192
+        ]
+      }
+    },
+    {
+      "source": "fact:godel-sentence",
+      "target": "step:internal-unprovability",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L222-L228",
+        "lines": [
+          222,
+          228
+        ]
+      }
+    },
+    {
+      "source": "fact:hbl-conditions",
+      "target": "step:internal-unprovability",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L222-L228",
+        "lines": [
+          222,
+          228
+        ]
+      }
+    },
+    {
+      "source": "fact:consistency-sentence",
+      "target": "step:internal-unprovability",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L222-L228",
+        "lines": [
+          222,
+          228
+        ]
+      }
+    },
+    {
+      "source": "step:internal-unprovability",
+      "target": "fact:internal-unprovability",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L222-L228",
+        "lines": [
+          222,
+          228
+        ]
+      }
+    },
+    {
+      "source": "fact:internal-unprovability",
+      "target": "step:equate-godel-consistency",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L216-L234",
+        "lines": [
+          216,
+          234
+        ]
+      }
+    },
+    {
+      "source": "fact:godel-sentence",
+      "target": "step:equate-godel-consistency",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L216-L234",
+        "lines": [
+          216,
+          234
+        ]
+      }
+    },
+    {
+      "source": "step:equate-godel-consistency",
+      "target": "fact:equate-godel-consistency",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L216-L234",
+        "lines": [
+          216,
+          234
+        ]
+      }
+    },
+    {
+      "source": "fact:equate-godel-consistency",
+      "target": "step:generic-unprovability",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L236-L240",
+        "lines": [
+          236,
+          240
+        ]
+      }
+    },
+    {
+      "source": "fact:godel-unprovable",
+      "target": "step:generic-unprovability",
+      "relation": "premise_of",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L236-L240",
+        "lines": [
+          236,
+          240
+        ]
+      }
+    },
+    {
+      "source": "step:generic-unprovability",
+      "target": "fact:generic-unprovability",
+      "relation": "produces",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L236-L240",
+        "lines": [
+          236,
+          240
+        ]
+      }
+    },
+    {
+      "source": "step:generic-unprovability",
+      "target": "lean:LO.ProvabilityLogic.Provability.con_unprovable",
+      "relation": "summarizes",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L236-L240",
+        "lines": [
+          236,
+          240
+        ]
+      }
+    },
+    {
+      "source": "fact:generic-unprovability",
+      "target": "lean:LO.FirstOrder.Arithmetic.consistent_unprovable",
+      "relation": "concludes",
+      "evidence": {
+        "kind": "source_curated",
+        "file": "Foundation/ProvabilityLogic/Provability.lean",
+        "url": "https://github.com/FormalizedFormalLogic/Foundation/blob/7c74089c2442ee211abfa1e2dd5a75091800f57b/Foundation/ProvabilityLogic/Provability.lean#L236-L240",
+        "lines": [
+          236,
+          240
+        ]
+      }
+    }
+  ],
+  "annotations": {
+    "lean:LO.FirstOrder.Arithmetic.incomplete": {
+      "title": "First incompleteness theorem",
+      "summary": "A Δ₁-presented, Σ₁-sound arithmetic theory at least as strong as R₀ leaves a sentence and its negation unprovable.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "\\exists\\pi\\;(T\\nvdash\\pi\\land T\\nvdash\\neg\\pi)",
+      "statement_latex": "\\Delta_1\\text{-presented}(T)\\land\\mathsf R_0\\preceq T\\land\\Sigma_1\\text{-sound}(T)\\;\\Longrightarrow\\;\\exists\\pi\\,(T\\nvdash\\pi\\land T\\nvdash\\neg\\pi)",
+      "concepts": [
+        "diagonalization",
+        "metatheory"
+      ],
+      "aliases": [
+        "Gödel’s first incompleteness theorem"
+      ],
+      "why_here": "The proof concludes incompleteness by exhibiting an undecided sentence.",
+      "support_edges": [
+        15
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "lean:LO.FirstOrder.Arithmetic.consistent_unprovable": {
+      "title": "Second incompleteness theorem",
+      "summary": "A consistent Δ₁-presented arithmetic theory at least as strong as IΣ₁ cannot prove its standard consistency sentence.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "T\\nvdash\\operatorname{Con}(T)",
+      "statement_latex": "\\Delta_1\\text{-presented}(T)\\land\\mathsf I\\Sigma_1\\preceq T\\land\\operatorname{Consistent}_{\\mathrm{meta}}(T)\\;\\Longrightarrow\\;T\\nvdash\\operatorname{Con}(T)",
+      "concepts": [
+        "hbl",
+        "metatheory"
+      ],
+      "aliases": [
+        "Gödel’s second incompleteness theorem"
+      ],
+      "why_here": "The arithmetic theorem specializes the generic result to the standard provability predicate of T.",
+      "support_edges": [
+        45
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "lean:LO.FirstOrder.Arithmetic.re_iff_sigma1": {
+      "title": "Σ₁ and recursive enumerability",
+      "summary": "A predicate on natural numbers is recursively enumerable exactly when it has a Σ₁ definition.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "\\operatorname{RE}(D)\\iff\\Sigma_1\\text{-definable}(D)",
+      "concepts": [
+        "coded-provability"
+      ],
+      "why_here": "The proof applies this characterization to establish recursive enumerability of D.",
+      "support_edges": [
+        4
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "lean:LO.FirstOrder.Theory.standardProvability": {
+      "title": "Standard provability structure",
+      "summary": "The arithmetic provability predicate is packaged as a reusable provability structure.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "\\Box_T\\varphi=\\operatorname{Prov}_T(\\ulcorner\\varphi\\urcorner)",
+      "concepts": [
+        "coded-provability"
+      ],
+      "why_here": "The construction step unfolds this definition to obtain the arithmetic provability predicate.",
+      "support_edges": [
+        19
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "lean:LO.FirstOrder.Theory.consistent": {
+      "title": "Internal consistency sentence",
+      "summary": "The standard consistency assertion is a Π₁ sentence asserting that no proof of contradiction exists.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "\\operatorname{Con}(T)\\equiv\\neg\\Box_T\\bot",
+      "concepts": [
+        "coded-provability",
+        "metatheory"
+      ],
+      "why_here": "The consistency-sentence step unfolds this definition.",
+      "support_edges": [
+        26
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "lean:LO.FirstOrder.Arithmetic.provable_D3": {
+      "title": "Positive introspection",
+      "summary": "The third derivability condition comes from arithmetic Σ₁-completeness.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "\\Box_T\\varphi\\to\\Box_T\\Box_T\\varphi",
+      "concepts": [
+        "hbl"
+      ],
+      "why_here": "The graph includes D3 in its summary of the derivability conditions.",
+      "support_edges": [
+        23
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "lean:LO.FirstOrder.Arithmetic.re_complete": {
+      "title": "Represent recursively enumerable predicates",
+      "summary": "The representability result connects membership of n in an enumerated predicate to provability of the coded numeral instance.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "D(n)\\iff T\\vdash\\delta(\\bar n)",
+      "concepts": [
+        "coded-provability"
+      ],
+      "why_here": "The representation step applies this result to D.",
+      "support_edges": [
+        8
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "lean:LO.ProvabilityLogic.Provability.gödel_spec": {
+      "title": "Gödel sentence specification",
+      "summary": "The diagonalization theorem produces a formula equivalent to its own unprovability in the base theory.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "T_0\\vdash G\\leftrightarrow\\neg\\Box_T G",
+      "concepts": [
+        "diagonalization"
+      ],
+      "why_here": "The diagonalization step summarizes this fixed-point result.",
+      "support_edges": [
+        30
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "lean:LO.ProvabilityLogic.Provability.con_unprovable": {
+      "title": "Generic consistency unprovability",
+      "summary": "The generic second incompleteness result derives a proof of G from a hypothetical proof of Con(T).",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "T\\nvdash\\operatorname{Con}(T)",
+      "concepts": [
+        "hbl",
+        "metatheory"
+      ],
+      "why_here": "The graph summarizes this theorem by reducing a proof of consistency to a proof of G.",
+      "support_edges": [
+        44
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:presentation": {
+      "title": "Δ₁ presentation",
+      "summary": "The theory has the definable presentation assumed by both formalizations. This is a shared input schema for the two branches.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "T.\\Delta_1",
+      "concepts": [
+        "coded-provability"
+      ],
+      "why_here": "It is a premise for defining D and forming standard provability.",
+      "support_edges": [
+        0,
+        16
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:r0": {
+      "title": "Arithmetic base R₀",
+      "summary": "The first proof assumes sufficient arithmetic strength for the representability argument.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "\\mathsf R_0\\preceq T",
+      "why_here": "The base extension is a premise for representing D by provability in T.",
+      "support_edges": [
+        6
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:soundness": {
+      "title": "Σ₁-sound theory",
+      "summary": "This is a hypothesis of the first theorem in the catalogue, sufficient in particular for metatheoretic consistency.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "\\Sigma_1\\text{-sound}(T)",
+      "concepts": [
+        "metatheory"
+      ],
+      "why_here": "The final diagonal argument uses soundness to rule out both derivations.",
+      "support_edges": [
+        13
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:isigma": {
+      "title": "Arithmetic base IΣ₁",
+      "summary": "The second theorem assumes this stronger arithmetic base for the standard provability machinery.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "\\mathsf I\\Sigma_1\\preceq T",
+      "why_here": "The graph uses this base for standard provability, the derivability conditions, and the Gödel sentence.",
+      "support_edges": [
+        17,
+        21,
+        28
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:consistency": {
+      "title": "External consistency",
+      "summary": "The second theorem assumes metatheoretic consistency as a typeclass.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "T\\nvdash\\bot",
+      "concepts": [
+        "metatheory"
+      ],
+      "why_here": "External consistency is a premise for excluding a proof of G.",
+      "support_edges": [
+        32
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "step:define-D": {
+      "title": "Code refutation after substitution",
+      "summary": "Define D on codes of one-variable formulas. A code qualifies when T proves the negation of that formula after self-substitution.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "D(\\ulcorner\\varphi\\urcorner)\\iff T\\vdash\\neg\\varphi(\\ulcorner\\varphi\\urcorner)",
+      "concepts": [
+        "coded-provability",
+        "diagonalization"
+      ],
+      "why_here": "This introduces the predicate used in the enumerability and self-substitution arguments.",
+      "support_edges": [
+        0,
+        1
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:define-D": {
+      "title": "The predicate D",
+      "summary": "D specifies which self-instantiated formulas are refutable in T.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "D(\\ulcorner\\varphi\\urcorner)\\iff T\\vdash\\neg\\varphi(\\ulcorner\\varphi\\urcorner)",
+      "concepts": [
+        "coded-provability",
+        "diagonalization"
+      ],
+      "why_here": "Its definition is used both to show enumerability and to identify the diagonal instance.",
+      "support_edges": [
+        1,
+        2,
+        9
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "step:enumerate-D": {
+      "title": "Show D is recursively enumerable",
+      "summary": "The definability tactic establishes a Σ₁ definition. Apply the equivalence between Σ₁ predicates and recursively enumerable predicates.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "\\operatorname{RE}(D)",
+      "concepts": [
+        "coded-provability"
+      ],
+      "why_here": "This establishes the hypothesis needed for the representation step.",
+      "support_edges": [
+        2,
+        3,
+        4
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:enumerate-D": {
+      "title": "D is recursively enumerable",
+      "summary": "D can be represented using the library’s enumeration machinery.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "\\operatorname{RE}(D)",
+      "concepts": [
+        "coded-provability"
+      ],
+      "why_here": "This makes the representation theorem applicable to D.",
+      "support_edges": [
+        3,
+        5
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "step:represent-D": {
+      "title": "Represent D by a formula",
+      "summary": "Choose δ with codeOfREPred D and use re_complete to characterize when each numeral instance is provable.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "D(n)\\iff T\\vdash\\delta(\\bar n)",
+      "concepts": [
+        "coded-provability"
+      ],
+      "why_here": "This supplies the formula later evaluated at its own code.",
+      "support_edges": [
+        5,
+        6,
+        7,
+        8
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:represent-D": {
+      "title": "Provability represents D",
+      "summary": "The representation is about provability in T, with n ranging over natural numbers.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "\\forall n\\;(D(n)\\iff T\\vdash\\delta(\\bar n))",
+      "concepts": [
+        "coded-provability"
+      ],
+      "why_here": "The self-substitution step uses this characterization at the code of δ.",
+      "support_edges": [
+        7,
+        10
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "step:self-substitute": {
+      "title": "Substitute δ’s own code",
+      "summary": "Specializing the representation and the specification of D to δ yields equivalent provability of π and its negation.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "\\pi=\\delta(\\ulcorner\\delta\\urcorner)",
+      "concepts": [
+        "diagonalization"
+      ],
+      "why_here": "The comparison yields equivalence of the external provability claims for the diagonal sentence and its negation.",
+      "support_edges": [
+        9,
+        10,
+        11
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:self-substitute": {
+      "title": "Opposite provability claims coincide",
+      "summary": "This is a metatheoretic equivalence between two provability claims.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "T\\vdash\\pi\\iff T\\vdash\\neg\\pi",
+      "concepts": [
+        "diagonalization"
+      ],
+      "why_here": "Any proof on either side would give proofs on both sides.",
+      "support_edges": [
+        11,
+        12
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "step:exclude-both": {
+      "title": "Rule out both derivations",
+      "summary": "Either proof would yield the opposite proof and contradict consistency. The soundness hypothesis supplies consistency.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "T\\nvdash\\pi\\land T\\nvdash\\neg\\pi",
+      "concepts": [
+        "metatheory"
+      ],
+      "why_here": "The equivalence forces either proposed proof to yield a contradiction, so the sentence is undecided.",
+      "support_edges": [
+        12,
+        13,
+        14
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:exclude-both": {
+      "title": "An undecided sentence",
+      "summary": "The self-instantiated sentence witnesses incompleteness.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "T\\nvdash\\pi\\land T\\nvdash\\neg\\pi",
+      "concepts": [
+        "metatheory"
+      ],
+      "why_here": "This sentence witnesses the first theorem’s incompleteness conclusion.",
+      "support_edges": [
+        14,
+        15
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "step:standard-provability": {
+      "title": "Form standard provability",
+      "summary": "Package the standard predicate, with the derivability conditions supplied by the arithmetic development.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "\\Box_T\\varphi=\\operatorname{Prov}_T(\\ulcorner\\varphi\\urcorner)",
+      "concepts": [
+        "coded-provability"
+      ],
+      "why_here": "This instantiates the predicate used for derivability, internal consistency, and diagonalization.",
+      "support_edges": [
+        16,
+        17,
+        18,
+        19
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:standard-provability": {
+      "title": "Standard provability for T",
+      "summary": "The boxed formula expresses existence of a T-proof of the coded sentence.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "\\Box_T\\varphi",
+      "concepts": [
+        "coded-provability"
+      ],
+      "why_here": "The same predicate enters the derivability conditions, consistency sentence, and Gödel sentence.",
+      "support_edges": [
+        18,
+        20,
+        24,
+        27
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "step:hbl-conditions": {
+      "title": "Supply derivability conditions",
+      "summary": "The standard structure internalizes derivations and supports internal modus ponens and positive introspection.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "\\mathrm{D1},\\ \\mathrm{D2},\\ \\mathrm{D3}",
+      "concepts": [
+        "hbl"
+      ],
+      "why_here": "These conditions support the internal provability argument.",
+      "support_edges": [
+        20,
+        21,
+        22,
+        23
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:hbl-conditions": {
+      "title": "Hilbert–Bernays–Löb structure",
+      "summary": "The generic provability result can be instantiated with the standard predicate.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "\\mathrm{HBL}(\\Box_T)",
+      "concepts": [
+        "hbl"
+      ],
+      "why_here": "They let the base theory formalize the implication from the consistency sentence to internal unprovability of G.",
+      "support_edges": [
+        22,
+        35
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "step:consistency-sentence": {
+      "title": "Express consistency internally",
+      "summary": "Use the Π₁ sentence formed by negating internal provability of absurdity.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "\\operatorname{Con}(T)=\\neg\\Box_T\\bot",
+      "concepts": [
+        "metatheory",
+        "coded-provability"
+      ],
+      "why_here": "This provides the sentence whose provability the second argument investigates.",
+      "support_edges": [
+        24,
+        25,
+        26
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:consistency-sentence": {
+      "title": "Internal Con(T)",
+      "summary": "This is a sentence of arithmetic, usable inside a judgment about T-provability.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "\\neg\\Box_T\\bot",
+      "concepts": [
+        "metatheory",
+        "coded-provability"
+      ],
+      "why_here": "It appears as the antecedent of the internal implication about G.",
+      "support_edges": [
+        25,
+        36
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "step:godel-sentence": {
+      "title": "Diagonalize the provability predicate",
+      "summary": "Apply diagonalization to the negated standard proof predicate. Here the base theory T₀ is IΣ₁.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "T_0\\vdash G\\leftrightarrow\\neg\\Box_TG",
+      "concepts": [
+        "diagonalization"
+      ],
+      "why_here": "The resulting sentence is used in both the external and internal unprovability arguments.",
+      "support_edges": [
+        27,
+        28,
+        29,
+        30
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:godel-sentence": {
+      "title": "A Gödel sentence for T",
+      "summary": "The equivalence is a theorem inside the arithmetic base, with G separate from the witness used by the first theorem on this page.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "T_0\\vdash G\\leftrightarrow\\neg\\Box_TG",
+      "concepts": [
+        "diagonalization"
+      ],
+      "why_here": "The fixed-point equivalence supports the proof of external unprovability and the internal equivalence with Con(T).",
+      "support_edges": [
+        29,
+        31,
+        34,
+        39
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "step:godel-unprovable": {
+      "title": "Rule out a proof of G",
+      "summary": "A proof of G internalizes as a proof of □G via D1. The Gödel equivalence gives ¬□G from G, contradicting external consistency.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "T\\nvdash G",
+      "concepts": [
+        "metatheory",
+        "diagonalization"
+      ],
+      "why_here": "This establishes the external unprovability later transferred to Con(T).",
+      "support_edges": [
+        31,
+        32,
+        33
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:godel-unprovable": {
+      "title": "External unprovability of G",
+      "summary": "This unprovability claim is made in the metatheory.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "T\\nvdash G",
+      "concepts": [
+        "metatheory",
+        "diagonalization"
+      ],
+      "why_here": "It rules out the proof of G that would follow from a proof of Con(T).",
+      "support_edges": [
+        33,
+        42
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "step:internal-unprovability": {
+      "title": "Formalize the implication",
+      "summary": "Use positive introspection, internalized consequences of the Gödel equivalence, and internal modus ponens to derive that □G entails □⊥. Take its contrapositive.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "T_0\\vdash\\operatorname{Con}(T)\\to\\neg\\Box_TG",
+      "concepts": [
+        "hbl"
+      ],
+      "why_here": "This supplies the implication used to connect Con(T) to G.",
+      "support_edges": [
+        34,
+        35,
+        36,
+        37
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:internal-unprovability": {
+      "title": "Internal implication",
+      "summary": "The base theory proves that consistency implies the unprovability of the Gödel sentence.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "T_0\\vdash\\operatorname{Con}(T)\\to\\neg\\Box_TG",
+      "concepts": [
+        "hbl"
+      ],
+      "why_here": "Combining this implication with the fixed-point specification gives the direction from Con(T) to G.",
+      "support_edges": [
+        37,
+        38
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "step:equate-godel-consistency": {
+      "title": "Relate G to consistency",
+      "summary": "For the reverse direction, any proof of contradiction would prove G, so its internal unprovability implies internal consistency. Combine both directions with the Gödel sentence equivalence.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "T_0\\vdash G\\leftrightarrow\\operatorname{Con}(T)",
+      "concepts": [
+        "hbl",
+        "diagonalization"
+      ],
+      "why_here": "The implication from Con(T) to G transfers a hypothetical proof of Con(T) to G.",
+      "support_edges": [
+        38,
+        39,
+        40
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:equate-godel-consistency": {
+      "title": "Gödel sentence equivalent to consistency",
+      "summary": "The equivalence is provable at the arithmetic base and transfers to T.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "T_0\\vdash G\\leftrightarrow\\operatorname{Con}(T)",
+      "concepts": [
+        "hbl",
+        "diagonalization"
+      ],
+      "why_here": "The generic argument uses the direction from Con(T) to G.",
+      "support_edges": [
+        40,
+        41
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "step:generic-unprovability": {
+      "title": "Reduce a proof of consistency to G",
+      "summary": "Because the base theory is weaker than T, a hypothetical T-proof of its consistency would yield a T-proof of G. This contradicts the earlier external unprovability result.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "T\\vdash\\operatorname{Con}(T)\\Longrightarrow T\\vdash G",
+      "concepts": [
+        "hbl",
+        "metatheory"
+      ],
+      "why_here": "This derives the generic conclusion later instantiated for arithmetic.",
+      "support_edges": [
+        41,
+        42,
+        43,
+        44
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    "fact:generic-unprovability": {
+      "title": "T cannot prove Con(T)",
+      "summary": "The final arithmetic theorem specializes this generic lemma to the standard provability structure.",
+      "areas": [
+        "Mathematical logic"
+      ],
+      "compact_latex": "T\\nvdash\\operatorname{Con}(T)",
+      "concepts": [
+        "hbl",
+        "metatheory"
+      ],
+      "why_here": "This generic conclusion yields the second arithmetic theorem.",
+      "support_edges": [
+        43,
+        45
+      ],
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    }
+  },
+  "concepts": [
+    {
+      "id": "coded-provability",
+      "title": "Arithmetized provability",
+      "summary": "Represent syntax and proof existence by predicates on Gödel codes so that arithmetic can reason about proofs.",
+      "detail": "standard",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "id": "diagonalization",
+      "title": "Diagonal self-substitution",
+      "summary": "Insert the numeral for a formula’s own code as its argument, producing a sentence with a provability relationship to itself.",
+      "detail": "standard",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "id": "metatheory",
+      "title": "Consistency and soundness",
+      "summary": "Consistency rules out an external derivation of contradiction. Σ₁-soundness additionally controls which Σ₁ sentences the theory can prove.",
+      "detail": "standard",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "id": "hbl",
+      "title": "Hilbert–Bernays–Löb conditions",
+      "summary": "Standard provability internalizes proofs, distributes over implication and supports positive introspection.",
+      "detail": "standard",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    }
+  ],
+  "groups": [
+    {
+      "id": "group:representation",
+      "title": "Represent the refutation predicate",
+      "summary": "Show that D is recursively enumerable and represent it in arithmetic.",
+      "steps": [
+        "step:enumerate-D",
+        "step:represent-D"
+      ],
+      "kind": "block",
+      "annotation_provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      },
+      "inputs": [
+        "fact:define-D",
+        "fact:r0"
+      ],
+      "outputs": [
+        "fact:represent-D"
+      ]
+    },
+    {
+      "id": "group:diagonal",
+      "title": "Diagonalize and use consistency",
+      "summary": "Turn representation into opposite provability claims, then rule both out.",
+      "steps": [
+        "step:self-substitute",
+        "step:exclude-both"
+      ],
+      "kind": "block",
+      "annotation_provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      },
+      "inputs": [
+        "fact:define-D",
+        "fact:represent-D",
+        "fact:soundness"
+      ],
+      "outputs": [
+        "fact:exclude-both"
+      ]
+    },
+    {
+      "id": "group:provability",
+      "title": "Properties of standard provability",
+      "summary": "Certify the derivability conditions and encode consistency.",
+      "steps": [
+        "step:hbl-conditions",
+        "step:consistency-sentence"
+      ],
+      "kind": "block",
+      "annotation_provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      },
+      "inputs": [
+        "fact:isigma",
+        "fact:standard-provability"
+      ],
+      "outputs": [
+        "fact:consistency-sentence",
+        "fact:hbl-conditions"
+      ]
+    },
+    {
+      "id": "group:internal-argument",
+      "title": "Relate consistency to the Gödel sentence",
+      "summary": "Prove the equivalence in the base theory.",
+      "steps": [
+        "step:internal-unprovability",
+        "step:equate-godel-consistency"
+      ],
+      "kind": "block",
+      "annotation_provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      },
+      "inputs": [
+        "fact:consistency-sentence",
+        "fact:godel-sentence",
+        "fact:hbl-conditions"
+      ],
+      "outputs": [
+        "fact:equate-godel-consistency"
+      ]
+    }
+  ],
+  "semantic_edges": [
+    {
+      "source": "lean:LO.FirstOrder.Arithmetic.incomplete",
+      "target": "diagonalization",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "lean:LO.FirstOrder.Arithmetic.incomplete",
+      "target": "metatheory",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "lean:LO.FirstOrder.Arithmetic.consistent_unprovable",
+      "target": "hbl",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "lean:LO.FirstOrder.Arithmetic.consistent_unprovable",
+      "target": "metatheory",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "lean:LO.FirstOrder.Arithmetic.re_iff_sigma1",
+      "target": "coded-provability",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "lean:LO.FirstOrder.Theory.standardProvability",
+      "target": "coded-provability",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "lean:LO.FirstOrder.Theory.consistent",
+      "target": "coded-provability",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "lean:LO.FirstOrder.Theory.consistent",
+      "target": "metatheory",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "lean:LO.FirstOrder.Arithmetic.provable_D3",
+      "target": "hbl",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "lean:LO.FirstOrder.Arithmetic.re_complete",
+      "target": "coded-provability",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "lean:LO.ProvabilityLogic.Provability.gödel_spec",
+      "target": "diagonalization",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "lean:LO.ProvabilityLogic.Provability.con_unprovable",
+      "target": "hbl",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "lean:LO.ProvabilityLogic.Provability.con_unprovable",
+      "target": "metatheory",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:presentation",
+      "target": "coded-provability",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:soundness",
+      "target": "metatheory",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:consistency",
+      "target": "metatheory",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:define-D",
+      "target": "coded-provability",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:define-D",
+      "target": "diagonalization",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:define-D",
+      "target": "coded-provability",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:define-D",
+      "target": "diagonalization",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:enumerate-D",
+      "target": "coded-provability",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:enumerate-D",
+      "target": "coded-provability",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:represent-D",
+      "target": "coded-provability",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:represent-D",
+      "target": "coded-provability",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:self-substitute",
+      "target": "diagonalization",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:self-substitute",
+      "target": "diagonalization",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:exclude-both",
+      "target": "metatheory",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:exclude-both",
+      "target": "metatheory",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:standard-provability",
+      "target": "coded-provability",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:standard-provability",
+      "target": "coded-provability",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:hbl-conditions",
+      "target": "hbl",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:hbl-conditions",
+      "target": "hbl",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:consistency-sentence",
+      "target": "metatheory",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:consistency-sentence",
+      "target": "coded-provability",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:consistency-sentence",
+      "target": "metatheory",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:consistency-sentence",
+      "target": "coded-provability",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:godel-sentence",
+      "target": "diagonalization",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:godel-sentence",
+      "target": "diagonalization",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:godel-unprovable",
+      "target": "metatheory",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:godel-unprovable",
+      "target": "diagonalization",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:godel-unprovable",
+      "target": "metatheory",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:godel-unprovable",
+      "target": "diagonalization",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:internal-unprovability",
+      "target": "hbl",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:internal-unprovability",
+      "target": "hbl",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:equate-godel-consistency",
+      "target": "hbl",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:equate-godel-consistency",
+      "target": "diagonalization",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:equate-godel-consistency",
+      "target": "hbl",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:equate-godel-consistency",
+      "target": "diagonalization",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:generic-unprovability",
+      "target": "hbl",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "step:generic-unprovability",
+      "target": "metatheory",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:generic-unprovability",
+      "target": "hbl",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    },
+    {
+      "source": "fact:generic-unprovability",
+      "target": "metatheory",
+      "relation": "about",
+      "provenance": {
+        "kind": "supplied_response",
+        "file": "argument.response.json",
+        "author": "Codex CLI (ChatGPT) with source-reviewed display annotations",
+        "prompt_version": 3
+      }
+    }
+  ],
+  "view": {
+    "level": "steps",
+    "group_depth": 0,
+    "hide_shared_above": null,
+    "nodes": [
+      "lean:LO.FirstOrder.Arithmetic.incomplete",
+      "lean:LO.FirstOrder.Arithmetic.consistent_unprovable",
+      "lean:LO.FirstOrder.Arithmetic.re_iff_sigma1",
+      "lean:LO.FirstOrder.Arithmetic.provable_D3",
+      "lean:LO.FirstOrder.Arithmetic.re_complete",
+      "lean:LO.ProvabilityLogic.Provability.gödel_spec",
+      "lean:LO.ProvabilityLogic.Provability.con_unprovable",
+      "fact:presentation",
+      "fact:r0",
+      "fact:soundness",
+      "fact:isigma",
+      "fact:consistency",
+      "step:define-D",
+      "fact:define-D",
+      "step:enumerate-D",
+      "fact:enumerate-D",
+      "step:represent-D",
+      "fact:represent-D",
+      "step:self-substitute",
+      "fact:self-substitute",
+      "step:exclude-both",
+      "fact:exclude-both",
+      "step:standard-provability",
+      "fact:standard-provability",
+      "step:hbl-conditions",
+      "fact:hbl-conditions",
+      "step:consistency-sentence",
+      "fact:consistency-sentence",
+      "step:godel-sentence",
+      "fact:godel-sentence",
+      "step:godel-unprovable",
+      "fact:godel-unprovable",
+      "step:internal-unprovability",
+      "fact:internal-unprovability",
+      "step:equate-godel-consistency",
+      "fact:equate-godel-consistency",
+      "step:generic-unprovability",
+      "fact:generic-unprovability",
+      "coded-provability",
+      "diagonalization",
+      "metatheory",
+      "hbl"
+    ],
+    "size_roles": {
+      "lean:LO.FirstOrder.Arithmetic.incomplete": "root",
+      "lean:LO.FirstOrder.Arithmetic.consistent_unprovable": "root",
+      "lean:LO.FirstOrder.Arithmetic.re_iff_sigma1": "support",
+      "lean:LO.FirstOrder.Arithmetic.provable_D3": "support",
+      "lean:LO.FirstOrder.Arithmetic.re_complete": "support",
+      "lean:LO.ProvabilityLogic.Provability.gödel_spec": "support",
+      "lean:LO.ProvabilityLogic.Provability.con_unprovable": "support",
+      "fact:presentation": "standard",
+      "fact:r0": "standard",
+      "fact:soundness": "standard",
+      "fact:isigma": "standard",
+      "fact:consistency": "standard",
+      "step:define-D": "standard",
+      "fact:define-D": "standard",
+      "step:enumerate-D": "standard",
+      "fact:enumerate-D": "standard",
+      "step:represent-D": "standard",
+      "fact:represent-D": "standard",
+      "step:self-substitute": "standard",
+      "fact:self-substitute": "standard",
+      "step:exclude-both": "standard",
+      "fact:exclude-both": "standard",
+      "step:standard-provability": "standard",
+      "fact:standard-provability": "standard",
+      "step:hbl-conditions": "standard",
+      "fact:hbl-conditions": "standard",
+      "step:consistency-sentence": "standard",
+      "fact:consistency-sentence": "standard",
+      "step:godel-sentence": "standard",
+      "fact:godel-sentence": "standard",
+      "step:godel-unprovable": "standard",
+      "fact:godel-unprovable": "standard",
+      "step:internal-unprovability": "standard",
+      "fact:internal-unprovability": "standard",
+      "step:equate-godel-consistency": "standard",
+      "fact:equate-godel-consistency": "standard",
+      "step:generic-unprovability": "standard",
+      "fact:generic-unprovability": "standard",
+      "coded-provability": "standard",
+      "diagonalization": "standard",
+      "metatheory": "standard",
+      "hbl": "standard"
+    },
+    "hidden": [
+      "group:diagonal",
+      "group:internal-argument",
+      "group:provability",
+      "group:representation",
+      "lean:LO.FirstOrder.Theory.consistent",
+      "lean:LO.FirstOrder.Theory.standardProvability"
+    ],
+    "collapsed_into": {},
+    "edges": [
+      {
+        "source": "fact:presentation",
+        "target": "step:define-D",
+        "relation": "premise_of",
+        "edge_indices": [
+          0
+        ]
+      },
+      {
+        "source": "step:define-D",
+        "target": "fact:define-D",
+        "relation": "produces",
+        "edge_indices": [
+          1
+        ]
+      },
+      {
+        "source": "fact:define-D",
+        "target": "step:enumerate-D",
+        "relation": "premise_of",
+        "edge_indices": [
+          2
+        ]
+      },
+      {
+        "source": "step:enumerate-D",
+        "target": "fact:enumerate-D",
+        "relation": "produces",
+        "edge_indices": [
+          3
+        ]
+      },
+      {
+        "source": "step:enumerate-D",
+        "target": "lean:LO.FirstOrder.Arithmetic.re_iff_sigma1",
+        "relation": "applies",
+        "edge_indices": [
+          4
+        ]
+      },
+      {
+        "source": "fact:enumerate-D",
+        "target": "step:represent-D",
+        "relation": "premise_of",
+        "edge_indices": [
+          5
+        ]
+      },
+      {
+        "source": "fact:r0",
+        "target": "step:represent-D",
+        "relation": "premise_of",
+        "edge_indices": [
+          6
+        ]
+      },
+      {
+        "source": "step:represent-D",
+        "target": "fact:represent-D",
+        "relation": "produces",
+        "edge_indices": [
+          7
+        ]
+      },
+      {
+        "source": "step:represent-D",
+        "target": "lean:LO.FirstOrder.Arithmetic.re_complete",
+        "relation": "applies",
+        "edge_indices": [
+          8
+        ]
+      },
+      {
+        "source": "fact:define-D",
+        "target": "step:self-substitute",
+        "relation": "premise_of",
+        "edge_indices": [
+          9
+        ]
+      },
+      {
+        "source": "fact:represent-D",
+        "target": "step:self-substitute",
+        "relation": "premise_of",
+        "edge_indices": [
+          10
+        ]
+      },
+      {
+        "source": "step:self-substitute",
+        "target": "fact:self-substitute",
+        "relation": "produces",
+        "edge_indices": [
+          11
+        ]
+      },
+      {
+        "source": "fact:self-substitute",
+        "target": "step:exclude-both",
+        "relation": "premise_of",
+        "edge_indices": [
+          12
+        ]
+      },
+      {
+        "source": "fact:soundness",
+        "target": "step:exclude-both",
+        "relation": "premise_of",
+        "edge_indices": [
+          13
+        ]
+      },
+      {
+        "source": "step:exclude-both",
+        "target": "fact:exclude-both",
+        "relation": "produces",
+        "edge_indices": [
+          14
+        ]
+      },
+      {
+        "source": "fact:exclude-both",
+        "target": "lean:LO.FirstOrder.Arithmetic.incomplete",
+        "relation": "concludes",
+        "edge_indices": [
+          15
+        ]
+      },
+      {
+        "source": "fact:presentation",
+        "target": "step:standard-provability",
+        "relation": "premise_of",
+        "edge_indices": [
+          16
+        ]
+      },
+      {
+        "source": "fact:isigma",
+        "target": "step:standard-provability",
+        "relation": "premise_of",
+        "edge_indices": [
+          17
+        ]
+      },
+      {
+        "source": "step:standard-provability",
+        "target": "fact:standard-provability",
+        "relation": "produces",
+        "edge_indices": [
+          18
+        ]
+      },
+      {
+        "source": "fact:standard-provability",
+        "target": "step:hbl-conditions",
+        "relation": "premise_of",
+        "edge_indices": [
+          20
+        ]
+      },
+      {
+        "source": "fact:isigma",
+        "target": "step:hbl-conditions",
+        "relation": "premise_of",
+        "edge_indices": [
+          21
+        ]
+      },
+      {
+        "source": "step:hbl-conditions",
+        "target": "fact:hbl-conditions",
+        "relation": "produces",
+        "edge_indices": [
+          22
+        ]
+      },
+      {
+        "source": "step:hbl-conditions",
+        "target": "lean:LO.FirstOrder.Arithmetic.provable_D3",
+        "relation": "summarizes",
+        "edge_indices": [
+          23
+        ]
+      },
+      {
+        "source": "fact:standard-provability",
+        "target": "step:consistency-sentence",
+        "relation": "premise_of",
+        "edge_indices": [
+          24
+        ]
+      },
+      {
+        "source": "step:consistency-sentence",
+        "target": "fact:consistency-sentence",
+        "relation": "produces",
+        "edge_indices": [
+          25
+        ]
+      },
+      {
+        "source": "fact:standard-provability",
+        "target": "step:godel-sentence",
+        "relation": "premise_of",
+        "edge_indices": [
+          27
+        ]
+      },
+      {
+        "source": "fact:isigma",
+        "target": "step:godel-sentence",
+        "relation": "premise_of",
+        "edge_indices": [
+          28
+        ]
+      },
+      {
+        "source": "step:godel-sentence",
+        "target": "fact:godel-sentence",
+        "relation": "produces",
+        "edge_indices": [
+          29
+        ]
+      },
+      {
+        "source": "step:godel-sentence",
+        "target": "lean:LO.ProvabilityLogic.Provability.gödel_spec",
+        "relation": "summarizes",
+        "edge_indices": [
+          30
+        ]
+      },
+      {
+        "source": "fact:godel-sentence",
+        "target": "step:godel-unprovable",
+        "relation": "premise_of",
+        "edge_indices": [
+          31
+        ]
+      },
+      {
+        "source": "fact:consistency",
+        "target": "step:godel-unprovable",
+        "relation": "premise_of",
+        "edge_indices": [
+          32
+        ]
+      },
+      {
+        "source": "step:godel-unprovable",
+        "target": "fact:godel-unprovable",
+        "relation": "produces",
+        "edge_indices": [
+          33
+        ]
+      },
+      {
+        "source": "fact:godel-sentence",
+        "target": "step:internal-unprovability",
+        "relation": "premise_of",
+        "edge_indices": [
+          34
+        ]
+      },
+      {
+        "source": "fact:hbl-conditions",
+        "target": "step:internal-unprovability",
+        "relation": "premise_of",
+        "edge_indices": [
+          35
+        ]
+      },
+      {
+        "source": "fact:consistency-sentence",
+        "target": "step:internal-unprovability",
+        "relation": "premise_of",
+        "edge_indices": [
+          36
+        ]
+      },
+      {
+        "source": "step:internal-unprovability",
+        "target": "fact:internal-unprovability",
+        "relation": "produces",
+        "edge_indices": [
+          37
+        ]
+      },
+      {
+        "source": "fact:internal-unprovability",
+        "target": "step:equate-godel-consistency",
+        "relation": "premise_of",
+        "edge_indices": [
+          38
+        ]
+      },
+      {
+        "source": "fact:godel-sentence",
+        "target": "step:equate-godel-consistency",
+        "relation": "premise_of",
+        "edge_indices": [
+          39
+        ]
+      },
+      {
+        "source": "step:equate-godel-consistency",
+        "target": "fact:equate-godel-consistency",
+        "relation": "produces",
+        "edge_indices": [
+          40
+        ]
+      },
+      {
+        "source": "fact:equate-godel-consistency",
+        "target": "step:generic-unprovability",
+        "relation": "premise_of",
+        "edge_indices": [
+          41
+        ]
+      },
+      {
+        "source": "fact:godel-unprovable",
+        "target": "step:generic-unprovability",
+        "relation": "premise_of",
+        "edge_indices": [
+          42
+        ]
+      },
+      {
+        "source": "step:generic-unprovability",
+        "target": "fact:generic-unprovability",
+        "relation": "produces",
+        "edge_indices": [
+          43
+        ]
+      },
+      {
+        "source": "step:generic-unprovability",
+        "target": "lean:LO.ProvabilityLogic.Provability.con_unprovable",
+        "relation": "summarizes",
+        "edge_indices": [
+          44
+        ]
+      },
+      {
+        "source": "fact:generic-unprovability",
+        "target": "lean:LO.FirstOrder.Arithmetic.consistent_unprovable",
+        "relation": "concludes",
+        "edge_indices": [
+          45
+        ]
+      },
+      {
+        "source": "lean:LO.FirstOrder.Arithmetic.incomplete",
+        "target": "diagonalization",
+        "relation": "about",
+        "semantic_edge_indices": [
+          0
+        ]
+      },
+      {
+        "source": "lean:LO.FirstOrder.Arithmetic.incomplete",
+        "target": "metatheory",
+        "relation": "about",
+        "semantic_edge_indices": [
+          1
+        ]
+      },
+      {
+        "source": "lean:LO.FirstOrder.Arithmetic.consistent_unprovable",
+        "target": "hbl",
+        "relation": "about",
+        "semantic_edge_indices": [
+          2
+        ]
+      },
+      {
+        "source": "lean:LO.FirstOrder.Arithmetic.consistent_unprovable",
+        "target": "metatheory",
+        "relation": "about",
+        "semantic_edge_indices": [
+          3
+        ]
+      },
+      {
+        "source": "lean:LO.FirstOrder.Arithmetic.re_iff_sigma1",
+        "target": "coded-provability",
+        "relation": "about",
+        "semantic_edge_indices": [
+          4
+        ]
+      },
+      {
+        "source": "lean:LO.FirstOrder.Arithmetic.provable_D3",
+        "target": "hbl",
+        "relation": "about",
+        "semantic_edge_indices": [
+          8
+        ]
+      },
+      {
+        "source": "lean:LO.FirstOrder.Arithmetic.re_complete",
+        "target": "coded-provability",
+        "relation": "about",
+        "semantic_edge_indices": [
+          9
+        ]
+      },
+      {
+        "source": "lean:LO.ProvabilityLogic.Provability.gödel_spec",
+        "target": "diagonalization",
+        "relation": "about",
+        "semantic_edge_indices": [
+          10
+        ]
+      },
+      {
+        "source": "lean:LO.ProvabilityLogic.Provability.con_unprovable",
+        "target": "hbl",
+        "relation": "about",
+        "semantic_edge_indices": [
+          11
+        ]
+      },
+      {
+        "source": "lean:LO.ProvabilityLogic.Provability.con_unprovable",
+        "target": "metatheory",
+        "relation": "about",
+        "semantic_edge_indices": [
+          12
+        ]
+      },
+      {
+        "source": "fact:presentation",
+        "target": "coded-provability",
+        "relation": "about",
+        "semantic_edge_indices": [
+          13
+        ]
+      },
+      {
+        "source": "fact:soundness",
+        "target": "metatheory",
+        "relation": "about",
+        "semantic_edge_indices": [
+          14
+        ]
+      },
+      {
+        "source": "fact:consistency",
+        "target": "metatheory",
+        "relation": "about",
+        "semantic_edge_indices": [
+          15
+        ]
+      },
+      {
+        "source": "step:define-D",
+        "target": "coded-provability",
+        "relation": "about",
+        "semantic_edge_indices": [
+          16
+        ]
+      },
+      {
+        "source": "step:define-D",
+        "target": "diagonalization",
+        "relation": "about",
+        "semantic_edge_indices": [
+          17
+        ]
+      },
+      {
+        "source": "fact:define-D",
+        "target": "coded-provability",
+        "relation": "about",
+        "semantic_edge_indices": [
+          18
+        ]
+      },
+      {
+        "source": "fact:define-D",
+        "target": "diagonalization",
+        "relation": "about",
+        "semantic_edge_indices": [
+          19
+        ]
+      },
+      {
+        "source": "step:enumerate-D",
+        "target": "coded-provability",
+        "relation": "about",
+        "semantic_edge_indices": [
+          20
+        ]
+      },
+      {
+        "source": "fact:enumerate-D",
+        "target": "coded-provability",
+        "relation": "about",
+        "semantic_edge_indices": [
+          21
+        ]
+      },
+      {
+        "source": "step:represent-D",
+        "target": "coded-provability",
+        "relation": "about",
+        "semantic_edge_indices": [
+          22
+        ]
+      },
+      {
+        "source": "fact:represent-D",
+        "target": "coded-provability",
+        "relation": "about",
+        "semantic_edge_indices": [
+          23
+        ]
+      },
+      {
+        "source": "step:self-substitute",
+        "target": "diagonalization",
+        "relation": "about",
+        "semantic_edge_indices": [
+          24
+        ]
+      },
+      {
+        "source": "fact:self-substitute",
+        "target": "diagonalization",
+        "relation": "about",
+        "semantic_edge_indices": [
+          25
+        ]
+      },
+      {
+        "source": "step:exclude-both",
+        "target": "metatheory",
+        "relation": "about",
+        "semantic_edge_indices": [
+          26
+        ]
+      },
+      {
+        "source": "fact:exclude-both",
+        "target": "metatheory",
+        "relation": "about",
+        "semantic_edge_indices": [
+          27
+        ]
+      },
+      {
+        "source": "step:standard-provability",
+        "target": "coded-provability",
+        "relation": "about",
+        "semantic_edge_indices": [
+          28
+        ]
+      },
+      {
+        "source": "fact:standard-provability",
+        "target": "coded-provability",
+        "relation": "about",
+        "semantic_edge_indices": [
+          29
+        ]
+      },
+      {
+        "source": "step:hbl-conditions",
+        "target": "hbl",
+        "relation": "about",
+        "semantic_edge_indices": [
+          30
+        ]
+      },
+      {
+        "source": "fact:hbl-conditions",
+        "target": "hbl",
+        "relation": "about",
+        "semantic_edge_indices": [
+          31
+        ]
+      },
+      {
+        "source": "step:consistency-sentence",
+        "target": "metatheory",
+        "relation": "about",
+        "semantic_edge_indices": [
+          32
+        ]
+      },
+      {
+        "source": "step:consistency-sentence",
+        "target": "coded-provability",
+        "relation": "about",
+        "semantic_edge_indices": [
+          33
+        ]
+      },
+      {
+        "source": "fact:consistency-sentence",
+        "target": "metatheory",
+        "relation": "about",
+        "semantic_edge_indices": [
+          34
+        ]
+      },
+      {
+        "source": "fact:consistency-sentence",
+        "target": "coded-provability",
+        "relation": "about",
+        "semantic_edge_indices": [
+          35
+        ]
+      },
+      {
+        "source": "step:godel-sentence",
+        "target": "diagonalization",
+        "relation": "about",
+        "semantic_edge_indices": [
+          36
+        ]
+      },
+      {
+        "source": "fact:godel-sentence",
+        "target": "diagonalization",
+        "relation": "about",
+        "semantic_edge_indices": [
+          37
+        ]
+      },
+      {
+        "source": "step:godel-unprovable",
+        "target": "metatheory",
+        "relation": "about",
+        "semantic_edge_indices": [
+          38
+        ]
+      },
+      {
+        "source": "step:godel-unprovable",
+        "target": "diagonalization",
+        "relation": "about",
+        "semantic_edge_indices": [
+          39
+        ]
+      },
+      {
+        "source": "fact:godel-unprovable",
+        "target": "metatheory",
+        "relation": "about",
+        "semantic_edge_indices": [
+          40
+        ]
+      },
+      {
+        "source": "fact:godel-unprovable",
+        "target": "diagonalization",
+        "relation": "about",
+        "semantic_edge_indices": [
+          41
+        ]
+      },
+      {
+        "source": "step:internal-unprovability",
+        "target": "hbl",
+        "relation": "about",
+        "semantic_edge_indices": [
+          42
+        ]
+      },
+      {
+        "source": "fact:internal-unprovability",
+        "target": "hbl",
+        "relation": "about",
+        "semantic_edge_indices": [
+          43
+        ]
+      },
+      {
+        "source": "step:equate-godel-consistency",
+        "target": "hbl",
+        "relation": "about",
+        "semantic_edge_indices": [
+          44
+        ]
+      },
+      {
+        "source": "step:equate-godel-consistency",
+        "target": "diagonalization",
+        "relation": "about",
+        "semantic_edge_indices": [
+          45
+        ]
+      },
+      {
+        "source": "fact:equate-godel-consistency",
+        "target": "hbl",
+        "relation": "about",
+        "semantic_edge_indices": [
+          46
+        ]
+      },
+      {
+        "source": "fact:equate-godel-consistency",
+        "target": "diagonalization",
+        "relation": "about",
+        "semantic_edge_indices": [
+          47
+        ]
+      },
+      {
+        "source": "step:generic-unprovability",
+        "target": "hbl",
+        "relation": "about",
+        "semantic_edge_indices": [
+          48
+        ]
+      },
+      {
+        "source": "step:generic-unprovability",
+        "target": "metatheory",
+        "relation": "about",
+        "semantic_edge_indices": [
+          49
+        ]
+      },
+      {
+        "source": "fact:generic-unprovability",
+        "target": "hbl",
+        "relation": "about",
+        "semantic_edge_indices": [
+          50
+        ]
+      },
+      {
+        "source": "fact:generic-unprovability",
+        "target": "metatheory",
+        "relation": "about",
+        "semantic_edge_indices": [
+          51
+        ]
+      }
+    ]
+  }
+}
