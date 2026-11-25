@@ -203,10 +203,12 @@ function rankPositions({ nodes, links }) {
   });
 
   const lanes = new Map();
+  const shared = new Set();
   for (const { id } of nodes) {
     const distances = rootRanks.map((ranks) => ranks.get(id));
     const depth = Math.max(...distances);
     const branch = distances.filter(Number.isFinite).length > 1 ? -1 : distances.indexOf(depth);
+    if (branch === -1) shared.add(id);
     const column = [branch, Number.isFinite(depth) ? depth : 0];
     const key = column.join("/");
     if (!lanes.has(key)) lanes.set(key, { column, members: [] });
@@ -214,17 +216,24 @@ function rankPositions({ nodes, links }) {
   }
 
   const positions = new Map();
+  const sharedLane = [];
   const twoBranches = roots.length === 2;
   for (const { column: [branch, depth], members } of lanes.values()) {
+    if (branch === -1) {
+      sharedLane.push(...members);
+      continue;
+    }
     const branchDirection = branch ? 1 : -1;
     const x = twoBranches ? branchDirection * (116 + depth * 80) : -depth * 121;
     const stagger = depth % 2 ? 32 : -32;
     const y = twoBranches ? Math.sin(depth * 1.08) * 160 + stagger : stagger;
-    const columnX = branch === -1 ? 0 : x;
-    const columnY = branch === -1 ? -260 : y;
-    members.forEach((id, i) => positions.set(id, [columnX, columnY + (i - (members.length - 1) / 2) * 151]));
+    members.forEach((id, i) => positions.set(id, [x, y + (i - (members.length - 1) / 2) * 151]));
   }
-  return positions;
+  if (sharedLane.length) {
+    const outside = Math.min(...Array.from(positions.values(), ([, y]) => y)) - 140;
+    sharedLane.forEach((id, i) => positions.set(id, [(i - (sharedLane.length - 1) / 2) * 151, outside]));
+  }
+  return { positions, shared };
 }
 
 function ellipsePath(rx, ry, seed, offset = 0) {
@@ -304,14 +313,19 @@ function createLayout() {
   touchPoints.clear();
   diagram.classList.remove("is-dragging");
   const projection = buildProjection(mode);
-  if (useProofRanks) projection.positions = rankPositions(projection);
+  if (useProofRanks) Object.assign(projection, rankPositions(projection));
   const portrait = portraitLayout.matches;
   nodeLayer.replaceChildren();
   edgeLayer.replaceChildren();
   labelWorld.replaceChildren();
   const nodes = projection.nodes.map((n) => createNode(n, projection, portrait));
   const nodeMap = new Map(nodes.map((node) => [node.id, node]));
-  const edges = projection.links.map((e) => createEdge(e, nodeMap));
+  const edges = projection.links.map((link) => {
+    const edge = createEdge(link, nodeMap);
+    edge.avoidNodes = projection.shared?.has(link.source) && link.relation === "premise_of" &&
+      edge.a.item.role === "assumption";
+    return edge;
+  });
   const neighbors = new Map(nodes.map((node) => [node.id, new Set()]));
   for (const edge of edges) {
     neighbors.get(edge.source).add(edge.target);
@@ -470,8 +484,104 @@ function ellipseRadius(node, angle) {
   return 1 / Math.hypot(Math.cos(angle) / node.rx, Math.sin(angle) / node.ry);
 }
 
+function pointOutsideNode(node, angle) {
+  const distance = ellipseRadius(node, angle) + 4;
+  return [node.x + Math.cos(angle) * distance, node.y + Math.sin(angle) * distance];
+}
+
+function segmentClear([x, y], [endX, endY], obstacles) {
+  const minX = Math.min(x, endX);
+  const maxX = Math.max(x, endX);
+  const minY = Math.min(y, endY);
+  const maxY = Math.max(y, endY);
+  return obstacles.every(({ cx, cy, rx, ry }) => {
+    if (maxX < cx - rx || minX > cx + rx || maxY < cy - ry || minY > cy + ry) return true;
+    // In scaled coordinates, the ellipse is a unit circle.
+    const px = (x - cx) / rx;
+    const py = (y - cy) / ry;
+    const dx = (endX - x) / rx;
+    const dy = (endY - y) / ry;
+    const closest = Math.max(0, Math.min(1, -(px * dx + py * dy) / (dx * dx + dy * dy || 1)));
+    return (px + closest * dx) ** 2 + (py + closest * dy) ** 2 >= 1;
+  });
+}
+
+function routeEdge({ a, b }, nodes) {
+  const obstacles = nodes.filter((node) => node !== a && node !== b)
+    .map(({ x, y, rx, ry }) => ({ cx: x, cy: y, rx: rx + 17, ry: ry + 17 }));
+  const start = [a.x, a.y];
+  const end = [b.x, b.y];
+  if (segmentClear(start, end, obstacles)) return [start, end];
+
+  const corners = obstacles.flatMap(({ cx, cy, rx, ry }) => [
+    [cx - rx, cy - ry], [cx + rx, cy - ry], [cx - rx, cy + ry], [cx + rx, cy + ry],
+  ]);
+  const points = [start, end, ...corners];
+  const distance = ([x, y], [u, v]) => Math.hypot(x - u, y - v);
+  const estimate = points.map((point) => distance(point, end));
+  const costs = points.map(() => Infinity);
+  const previous = [];
+  const open = new Set([0]);
+  const seen = new Set();
+  costs[0] = 0;
+
+  // Find the shortest route through the visible corners of the padded obstacles.
+  while (open.size) {
+    let current = open.values().next().value;
+    for (const i of open) {
+      if (costs[i] + estimate[i] < costs[current] + estimate[current]) current = i;
+    }
+    if (current === 1) {
+      const route = [];
+      for (let i = current; i !== undefined; i = previous[i]) route.push(points[i]);
+      return route.reverse();
+    }
+    open.delete(current);
+    seen.add(current);
+    for (let i = 1; i < points.length; i++) {
+      if (seen.has(i)) continue;
+      const cost = costs[current] + distance(points[current], points[i]);
+      if (cost >= costs[i] || !segmentClear(points[current], points[i], obstacles)) continue;
+      costs[i] = cost;
+      previous[i] = current;
+      open.add(i);
+    }
+  }
+  return null;
+}
+
+function roundedRoute(points, offset = 0) {
+  const coords = ([x, y]) => `${x} ${y + offset}`;
+  const shorten = ([x, y], [u, v]) => {
+    const distance = Math.hypot(u - x, v - y) || 1;
+    const fraction = Math.min(.35, 8 / distance);
+    return [x + (u - x) * fraction, y + (v - y) * fraction];
+  };
+  let path = `M${coords(points[0])}`;
+  for (let i = 1; i < points.length - 1; i++) {
+    const corner = points[i];
+    path += ` L${coords(shorten(corner, points[i - 1]))} Q${coords(corner)} ${coords(shorten(corner, points[i + 1]))}`;
+  }
+  return `${path} L${coords(points.at(-1))}`;
+}
+
+function paintRoutedEdge(edge, nodes) {
+  const points = routeEdge(edge, nodes);
+  if (!points) return false;
+  const angleTo = ([x, y], [u, v]) => Math.atan2(v - y, u - x);
+  const sourceAngle = angleTo(points[0], points[1]);
+  const targetAngle = angleTo(points.at(-1), points.at(-2));
+  points[0] = pointOutsideNode(edge.a, sourceAngle);
+  points[points.length - 1] = pointOutsideNode(edge.b, targetAngle);
+  const [x, y] = points.at(-1);
+  const [u, v] = points.at(-2);
+  paintEdgePaths(edge.paths, roundedRoute(points), roundedRoute(points, .8),
+    x, y, targetAngle + Math.PI, Math.hypot(x - u, y - v));
+  return true;
+}
+
 function paintEdge(edge) {
-  const { a, b, paths } = edge;
+  const { a, b, paths, avoidNodes } = edge;
   const angle = Math.atan2(b.y - a.y, b.x - a.x);
   const span = Math.hypot(b.x - a.x, b.y - a.y);
   const gap = span - ellipseRadius(a, angle) - ellipseRadius(b, angle + Math.PI) - 8;
@@ -479,15 +589,12 @@ function paintEdge(edge) {
     for (const path of paths) path.setAttribute("d", "");
     return;
   }
+  if (avoidNodes && paintRoutedEdge(edge, layout.nodes)) return;
   const maxBend = gap * .33;
   const bend = Math.max(-maxBend, Math.min(maxBend, edge.bend));
   const drift = Math.min(.23, Math.max(-.23, bend / span));
-  const point = (node, theta) => {
-    const distance = ellipseRadius(node, theta) + 4;
-    return [node.x + Math.cos(theta) * distance, node.y + Math.sin(theta) * distance];
-  };
-  const [x0, y0] = point(a, angle + drift);
-  const [x1, y1] = point(b, angle + Math.PI - drift);
+  const [x0, y0] = pointOutsideNode(a, angle + drift);
+  const [x1, y1] = pointOutsideNode(b, angle + Math.PI - drift);
   const ox = -Math.sin(angle) * bend;
   const oy = Math.cos(angle) * bend;
   const cx = (x0 + x1) / 2 + ox;
@@ -495,10 +602,14 @@ function paintEdge(edge) {
   const path = `M${x0} ${y0} Q${cx} ${cy} ${x1} ${y1}`;
   const echo = `M${x0} ${y0 + 1.1} Q${cx + 1.5} ${cy - 1.9} ${x1} ${y1 + .8}`;
   const tipAngle = Math.atan2(y1 - cy, x1 - cx);
+  paintEdgePaths(paths, path, echo, x1, y1, tipAngle, Math.hypot(x1 - x0, y1 - y0));
+}
+
+function paintEdgePaths(paths, path, echo, x1, y1, tipAngle, space) {
   const wing = (side, length) => [
     x1 - Math.cos(tipAngle + side) * length, y1 - Math.sin(tipAngle + side) * length,
   ];
-  const headSize = Math.min(10.2, Math.hypot(x1 - x0, y1 - y0) * .36);
+  const headSize = Math.min(10.2, space * .36);
   const [lx, ly] = wing(-.49, headSize);
   const [rx, ry] = wing(.52, headSize * .93);
   const head = `M${lx} ${ly} Q${(lx + x1) / 2} ${(ly + y1) / 2 - .45} ${x1} ${y1} L${rx} ${ry}`;
