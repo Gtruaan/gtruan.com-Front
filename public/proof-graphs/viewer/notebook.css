@@ -41,18 +41,18 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 }
 
 .masthead {
-  height: 72px;
+  min-height: 72px;
   flex: 0 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 0 27px;
+  padding: 8px 27px;
   border-bottom: 1px solid #cac9bf;
 }
-.brand { display: flex; align-items: center; gap: 13px; }
+.brand { display: flex; align-items: center; gap: 13px; min-width: 0; }
 .brand img { flex: 0 0 auto; }
-.brand h1 { margin: 0; font: 600 25px/1.02 var(--serif); letter-spacing: -.035em; }
+.brand h1 { margin: 0; font: 600 25px/1.02 var(--serif); letter-spacing: -.035em; overflow-wrap: anywhere; }
 .brand p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
 .source-link {
   border: 1px solid #b0afa4;
@@ -323,7 +323,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .small { color: var(--muted); font-size: 13px; }
 
 @media (max-width: 690px) {
-  .masthead { height: 65px; padding: 0 15px; }
+  .masthead { min-height: 65px; padding-inline: 15px; }
   .brand { gap: 9px; }
   .brand h1 { font-size: 22px; }
   .tools { top: 13px; left: 11px; }

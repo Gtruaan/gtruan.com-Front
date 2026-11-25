@@ -1,32 +1,29 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <base href="/proof-graphs/picard-lindelof/">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Picard–Lindelöf · Proof graph</title>
-  <meta name="description" content="Explore the existence and uniqueness arguments for Picard–Lindelöf in Mathlib.">
-  <link rel="icon" type="image/svg+xml" href="notebook.svg">
-  <link rel="stylesheet" href="vendor/katex/katex.min.css">
-  <link rel="stylesheet" href="notebook.css">
-  <script defer src="vendor/katex/katex.min.js"></script>
-  <script defer src="app.js"></script>
+  <title>Proof graph</title>
+  <link rel="icon" type="image/svg+xml" href="../viewer/notebook.svg">
+  <link rel="stylesheet" href="../viewer/vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="../viewer/notebook.css">
+  <script defer src="../viewer/vendor/katex/katex.min.js"></script>
+  <script defer src="../viewer/app.js"></script>
 </head>
 <body>
   <header class="masthead">
     <div class="brand">
-      <img src="notebook.svg" width="33" height="33" alt="">
+      <img src="../viewer/notebook.svg" width="33" height="33" alt="">
       <div>
-        <h1>Picard–Lindelöf</h1>
-        <p>Proof graph</p>
+        <h1 id="graph-title">Proof graph</h1>
       </div>
     </div>
-    <a class="source-link" href="https://github.com/leanprover-community/mathlib4/blob/2e2ff720d124dd9b5a7612870665e2984615b52e/Mathlib/Analysis/ODE/ExistUnique.lean" target="_blank" rel="noopener">Lean source</a>
+    <a class="source-link" id="graph-source" target="_blank" rel="noopener" hidden>Lean source</a>
   </header>
 
   <main class="workspace">
     <section id="stage" class="stage" aria-label="Interactive proof diagram">
-      <svg class="diagram" id="diagram" xmlns="http://www.w3.org/2000/svg" aria-label="Picard–Lindelöf proof nodes and arrows">
+      <svg class="diagram" id="diagram" xmlns="http://www.w3.org/2000/svg" aria-label="Proof nodes and arrows">
         <defs>
           <pattern id="paper-grid" width="24" height="24" patternUnits="userSpaceOnUse">
             <path d="M24 0H0V24" fill="none" stroke="#e6e5de" stroke-width="1"/>
@@ -60,14 +57,12 @@
         </button>
       </div>
       <section class="settings" id="settings" aria-label="Graph settings" hidden>
-        <fieldset>
+        <fieldset id="view-settings">
           <legend>Show</legend>
-          <label><input type="radio" name="detail" value="overview"> Overview</label>
-          <label><input type="radio" name="detail" value="steps" checked> Proof steps and facts</label>
-          <label><input type="radio" name="detail" value="references"> Lean references</label>
         </fieldset>
         <label class="setting-check"><input id="formula-toggle" type="checkbox" checked> Formulas on nodes</label>
         <button type="button" class="text-button" id="reset-layout">Reset layout</button>
+        <label class="setting-check">Open graph JSON <input type="file" id="open-graph" accept=".json,application/json"></label>
       </section>
       <p class="canvas-notice" id="canvas-notice" role="status">Loading proof graph…</p>
       <div class="stage-footer">

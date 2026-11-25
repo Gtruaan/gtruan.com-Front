@@ -1581,15 +1581,23 @@
       }
     }
   ],
+  "title": "Picard–Lindelöf Existence and ODE Uniqueness",
   "annotations": {
     "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]": {
-      "title": "Existence of an ODE solution",
-      "summary": "Under the Picard–Lindelöf hypotheses, every initial point in the smaller closed ball gives a solution on the specified closed time interval.",
-      "compact_latex": "\\exists\\alpha:\\mathbb R\\to E,\\quad \\alpha(t_0)=x\\quad\\land\\quad \\forall t\\in[t_{\\min},t_{\\max}],\\ \\operatorname{HasDerivWithinAt}\\!\\left(\\alpha,f(t,\\alpha(t)),[t_{\\min},t_{\\max}],t\\right).",
-      "concepts": [
-        "picard-existence"
+      "title": "Local existence with a prescribed initial value",
+      "summary": "For a field satisfying the Picard–Lindelöf conditions, every permitted initial state x gives a solution on the prescribed closed interval. The initial state may differ from the center x₀ of the ball on which the field is controlled. The solution is represented by a function on ℝ whose asserted derivative is taken within the interval.",
+      "statement_latex": "\\begin{gathered} E\\text{ is a complete real normed space},\\quad I=[t_{\\min},t_{\\max}],\\quad t_0\\in I,\\quad a,r,L,K\\ge0.\\\\ \\operatorname{IsPicardLindelof}(f,t_0,x_0,a,r,L,K),\\quad x\\in\\overline B(x_0,r)\\\\ \\Longrightarrow\\quad \\exists g:\\mathbb R\\to E,\\quad g(t_0)=x\\ \\land\\ \\forall t\\in I,\\ \\operatorname{HasDerivWithinAt}(g,f(t,g(t)),I,t).\\end{gathered}",
+      "compact_latex": "\\exists g:\\mathbb R\\to E,\\quad g(t_0)=x\\ \\land\\ \\forall t\\in I,\\ \\operatorname{HasDerivWithinAt}(g,f(t,g(t)),I,t)",
+      "why_here": "This is the existence result established by the constructed solution.",
+      "areas": [
+        "Ordinary differential equations",
+        "Functional analysis"
       ],
-      "why_here": "This is the existence conclusion produced by the fixed-curve construction.",
+      "concepts": [
+        "picard",
+        "fixed-point",
+        "within-derivative"
+      ],
       "support_edges": [
         32
       ],
@@ -1597,38 +1605,24 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
-      },
-      "statement_latex": "\\begin{gathered} E\\text{ is a complete real normed space},\\quad I=[t_{\\min},t_{\\max}],\\quad t_0\\in I,\\\\ \\operatorname{IsPicardLindelof}(f,t_0,x_0,a,r,L,K)\\ \\land\\ x\\in\\overline B(x_0,r)\\ \\Longrightarrow\\ \\exists\\alpha:\\mathbb R\\to E,\\ \\alpha(t_0)=x\\ \\land\\ \\forall t\\in[t_{\\min},t_{\\max}],\\ \\operatorname{HasDerivWithinAt}\\!\\left(\\alpha,f(t,\\alpha(t)),[t_{\\min},t_{\\max}],t\\right).\\end{gathered}",
-      "field_provenance": {
-        "statement_latex": {
-          "kind": "model",
-          "provider": "Codex CLI",
-          "auth": "ChatGPT",
-          "model": "gpt-6.1-terra",
-          "prompt_version": 3,
-          "review": "Implicit type and interval context transcribed from the pinned Lean source.",
-          "bundle": "root-statements.terra.annotations.json"
-        },
-        "compact_latex": {
-          "kind": "model",
-          "provider": "Codex CLI",
-          "auth": "ChatGPT",
-          "model": "gpt-6.1-terra",
-          "prompt_version": 3,
-          "bundle": "root-statements.terra.annotations.json"
-        }
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "lean:[\"ODE_solution_unique_of_mem_Icc\"]": {
-      "title": "Uniqueness on a closed interval",
-      "summary": "Two continuous trajectories that solve the same locally constrained Lipschitz ODE and agree at an interior time agree throughout the interval.",
-      "compact_latex": "\\forall t\\in[a,b],\\quad f(t)=g(t).",
-      "concepts": [
-        "ode-uniqueness"
+      "title": "Uniqueness from an interior initial time",
+      "summary": "Two continuous trajectories satisfying the same ODE at interior times agree throughout the closed interval if they agree at one interior time. The field needs a common state Lipschitz constant on the permitted set s(t) at each interior time, and both trajectories must lie in that set there.",
+      "statement_latex": "\\begin{gathered} t_0\\in(a,b),\\quad \\forall t\\in(a,b),\\ \\operatorname{LipschitzOnWith}(K,v(t,\\cdot),s(t)),\\\\ \\forall h\\in\\{f,g\\},\\quad h\\in C([a,b];E)\\ \\land\\ \\forall t\\in(a,b),\\ \\bigl(\\operatorname{HasDerivAt}(h,v(t,h(t)),t)\\land h(t)\\in s(t)\\bigr),\\\\ f(t_0)=g(t_0)\\quad\\Longrightarrow\\quad \\forall t\\in[a,b],\\ f(t)=g(t).\\end{gathered}",
+      "compact_latex": "\\forall t\\in[a,b],\\quad f(t)=g(t)",
+      "why_here": "This is the uniqueness result established by combining agreement on the two halves.",
+      "areas": [
+        "Ordinary differential equations"
       ],
-      "why_here": "This is the conclusion obtained by combining agreement on both sides of the initial time.",
+      "concepts": [
+        "gronwall",
+        "time-reversal",
+        "within-derivative"
+      ],
       "support_edges": [
         56
       ],
@@ -1636,51 +1630,32 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
-      },
-      "statement_latex": "\\begin{gathered} E\\text{ is a real normed space},\\quad v:\\mathbb R\\times E\\to E,\\quad s:\\mathbb R\\to\\mathcal P(E),\\quad K\\ge0,\\\\ t_0\\in(a,b),\\quad \\forall t\\in(a,b),\\ \\operatorname{LipschitzOnWith}(K,v(t),s(t)),\\\\ f,g\\in C([a,b]),\\quad \\forall t\\in(a,b),\\ \\operatorname{HasDerivAt}(f,v(t,f(t)),t)\\ \\land\\ f(t)\\in s(t),\\\\ \\forall t\\in(a,b),\\ \\operatorname{HasDerivAt}(g,v(t,g(t)),t)\\ \\land\\ g(t)\\in s(t),\\quad f(t_0)=g(t_0)\\\\ \\Longrightarrow\\quad \\forall t\\in[a,b],\\ f(t)=g(t).\\end{gathered}",
-      "field_provenance": {
-        "statement_latex": {
-          "kind": "model",
-          "provider": "Codex CLI",
-          "auth": "ChatGPT",
-          "model": "gpt-6.1-terra",
-          "prompt_version": 3,
-          "review": "Implicit type and interval context transcribed from the pinned Lean source.",
-          "bundle": "root-statements.terra.annotations.json"
-        },
-        "compact_latex": {
-          "kind": "model",
-          "provider": "Codex CLI",
-          "auth": "ChatGPT",
-          "model": "gpt-6.1-terra",
-          "prompt_version": 3,
-          "bundle": "root-statements.terra.annotations.json"
-        }
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "lean:[\"IsPicardLindelof\"]": {
       "title": "Picard–Lindelöf hypotheses",
-      "summary": "Packages conditions on the vector field and the time interval for the existence construction.",
+      "summary": "The predicate packages the field estimates on the larger ball of radius a, together with an interval size condition depending on the smaller radius r. A particular starting point x is chosen separately by requiring it to lie in the smaller ball.",
       "concepts": [
-        "picard-existence"
+        "admissible-curves",
+        "picard"
       ],
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "lean:[\"ODE\",\"FunSpace\"]": {
-      "title": "Admissible curve space",
-      "summary": "Interval curves are Lipschitz and have their value at the initial time in the prescribed ball.",
+      "title": "Admissible interval curves",
+      "summary": "A member is an E-valued function on the closed time interval with Lipschitz constant at most L and value at t₀ in the closed radius-r ball.",
+      "why_here": "The curve-space construction uses these two defining constraints.",
       "concepts": [
-        "curve-space"
+        "admissible-curves"
       ],
-      "why_here": "The curve-space construction summarizes this definition.",
       "support_edges": [
         1
       ],
@@ -1688,18 +1663,18 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]": {
-      "title": "Completeness of the curve space",
-      "summary": "The admissible curves form a complete space when the state space is complete.",
+      "title": "Completeness of the admissible curve space",
+      "summary": "When E is complete, the admissible curves form a closed subset of the complete space of continuous maps with the supremum metric. The Lipschitz inequalities and the closed-ball constraint at t₀ are preserved under uniform limits.",
+      "why_here": "This instance supplies the completeness part of the curve-space construction.",
       "concepts": [
-        "curve-space",
+        "admissible-curves",
         "fixed-point"
       ],
-      "why_here": "Completeness supplies the setting for the fixed-point argument.",
       "support_edges": [
         2
       ],
@@ -1707,17 +1682,18 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "lean:[\"ODE\",\"picard\"]": {
       "title": "Picard integral operator",
-      "compact_latex": "(T\\alpha)(t)=x+\\int_{t_0}^{t}f(s,\\alpha(s))\\,ds.",
+      "summary": "For a candidate curve α, the formula adds the integral of the field along α from t₀ to t to the prescribed initial state. This defines the integral update used to build a solution.",
+      "compact_latex": "(T\\alpha)(t)=x+\\int_{t_0}^{t} f(s,\\alpha(s))\\,ds",
+      "why_here": "The self-map construction uses this formula for its output values.",
       "concepts": [
-        "picard-iteration"
+        "picard"
       ],
-      "why_here": "The self-map construction uses this integral formula.",
       "support_edges": [
         6
       ],
@@ -1725,18 +1701,18 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "lean:[\"ODE\",\"FunSpace\",\"next\"]": {
-      "title": "Picard self-map",
-      "summary": "The Picard integral operator maps admissible curves back into the curve space.",
+      "title": "Picard update on admissible curves",
+      "summary": "The bound L on the field bounds the difference between two output values by L times their time separation. The integral vanishes at t₀, so the prescribed x gives the output its required initial-ball membership.",
+      "why_here": "It is the self-map used in the construction and the update expanded in the fixed-point equation.",
       "concepts": [
-        "picard-iteration",
-        "curve-space"
+        "admissible-curves",
+        "picard"
       ],
-      "why_here": "It is the self-map whose fixed-point identity yields the integral equation.",
       "support_edges": [
         7,
         25
@@ -1745,17 +1721,19 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]": {
       "title": "Pointwise factorial estimate",
-      "summary": "The distance between iterated Picard curves has a factorial denominator and a power of elapsed time.",
+      "summary": "At zero iterations, pointwise distance is bounded by the supremum distance of the two curves. Each further iteration applies the state Lipschitz bound and integrates a power of the elapsed time, giving the next factorial denominator.",
+      "compact_latex": "d((T^n\\alpha)(t),(T^n\\beta)(t))\\le \\frac{(K|t-t_0|)^n}{n!}\\,d_\\infty(\\alpha,\\beta)",
+      "why_here": "This is the time-dependent estimate used in the factorial-bound argument.",
       "concepts": [
-        "factorial-bound"
+        "factorial",
+        "picard"
       ],
-      "why_here": "It supplies the pointwise estimate summarized by the factorial-bound step.",
       "support_edges": [
         11
       ],
@@ -1763,17 +1741,19 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]": {
       "title": "Uniform factorial estimate",
-      "compact_latex": "d(T^n\\alpha,T^n\\beta)\\leq\\frac{(KR)^n}{n!}\\,d(\\alpha,\\beta).",
+      "summary": "Every time in the interval is at distance at most R from t₀, where R is the larger endpoint distance. Replacing the pointwise elapsed time by R and taking the supremum yields a bound in the curve-space metric.",
+      "compact_latex": "d_\\infty(T^n\\alpha,T^n\\beta)\\le \\frac{(KR)^n}{n!}\\,d_\\infty(\\alpha,\\beta)",
+      "why_here": "This is the uniform estimate recorded by the factorial-bound step.",
       "concepts": [
-        "factorial-bound"
+        "factorial",
+        "admissible-curves"
       ],
-      "why_here": "Taking a uniform bound over the interval gives an estimate in the curve-space metric.",
       "support_edges": [
         12
       ],
@@ -1781,18 +1761,18 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]": {
-      "title": "A Picard iterate is contracting",
-      "summary": "A sufficiently high iterate is a contraction, with a choice independent of the initial point in the smaller ball.",
+      "title": "A contraction iterate uniform in the initial state",
+      "summary": "The bound (KR)ⁿ/n! tends to zero and is independent of x. One may therefore choose a single iterate number and coefficient below one that work for every permitted initial state.",
+      "why_here": "It supplies the uniform choice underlying the contracting-iterate step.",
       "concepts": [
-        "factorial-bound",
+        "factorial",
         "fixed-point"
       ],
-      "why_here": "The factorial estimate gives a coefficient below one for a suitable iterate.",
       "support_edges": [
         15
       ],
@@ -1800,17 +1780,17 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "lean:[\"ContractingWith\",\"isFixedPt_fixedPoint_iterate\"]": {
       "title": "Fixed point of a contracting iterate",
-      "summary": "The fixed point of a contracting iterate is also fixed by the original map.",
+      "summary": "If p is the fixed point of Tⁿ, then Tp is also fixed by Tⁿ because T commutes with its own iterates. The contraction bound gives d(p,Tp) ≤ C d(p,Tp) with C < 1, forcing Tp = p.",
+      "why_here": "It turns the fixed point of the contracting Picard iterate into a fixed point of the original update.",
       "concepts": [
         "fixed-point"
       ],
-      "why_here": "The existence argument applies this result to the Picard self-map.",
       "support_edges": [
         19
       ],
@@ -1818,18 +1798,18 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]": {
-      "title": "Existence of a fixed Picard curve",
-      "summary": "The Picard self-map has a fixed point in the admissible curve space.",
+      "title": "Existence of an admissible fixed curve",
+      "summary": "For a chosen permissible x, specialize the uniform contraction result to the corresponding Picard update. Completeness and the fixed-point result for contracting iterates give an admissible curve fixed by that update.",
+      "why_here": "This is the reusable existence lemma summarized by the fixed-curve step.",
       "concepts": [
         "fixed-point",
-        "picard-iteration"
+        "picard"
       ],
-      "why_here": "This is the fixed-curve result used to construct the solution.",
       "support_edges": [
         20
       ],
@@ -1837,17 +1817,18 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "lean:[\"ODE\",\"FunSpace\",\"compProj\"]": {
-      "title": "Endpoint extension",
-      "summary": "Extends an interval curve to the real line by keeping its endpoint values constant outside the interval.",
+      "title": "Constant endpoint extension",
+      "summary": "Project each real time to the nearest point of the closed interval before evaluating the curve. This preserves the curve on the interval and extends it by its endpoint values outside.",
+      "why_here": "This supplies the real-line representative in the integral equation.",
       "concepts": [
-        "picard-existence"
+        "admissible-curves",
+        "within-derivative"
       ],
-      "why_here": "The fixed interval curve is extended before its integral equation is used.",
       "support_edges": [
         24
       ],
@@ -1855,17 +1836,18 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]": {
       "title": "Derivative of the Picard integral",
-      "summary": "Under the stated continuity and range hypotheses, differentiating the Picard integral within the interval recovers the vector field.",
+      "summary": "Joint continuity of the field on the time-state domain and continuity of a curve staying in that domain make the integrand continuous along the curve. The fundamental theorem of calculus then gives the derivative within the closed interval by evaluating the integrand at t.",
+      "why_here": "It supplies the derivative of the integral expression used to verify the solution.",
       "concepts": [
-        "picard-existence"
+        "picard",
+        "within-derivative"
       ],
-      "why_here": "The final existence step applies this derivative result.",
       "support_edges": [
         30
       ],
@@ -1873,17 +1855,38 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]": {
+      "title": "Uniqueness from the right endpoint",
+      "summary": "For curves with the stipulated left derivatives on (a,b], equality at b implies agreement on [a,b]. Reflection turns these into right derivatives for the field −v(−t,·), to which forward uniqueness applies.",
+      "why_here": "It is applied with the initial time t₀ as the right endpoint of the left half.",
+      "concepts": [
+        "time-reversal",
+        "gronwall",
+        "within-derivative"
+      ],
+      "support_edges": [
+        49
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]": {
-      "title": "Forward one-sided uniqueness",
-      "summary": "Solutions agreeing at the left endpoint agree on the closed interval under the one-sided Lipschitz and derivative hypotheses.",
+      "title": "Uniqueness from the left endpoint",
+      "summary": "For continuous trajectories with the stipulated right derivatives and state membership on [a,b), the comparison estimate bounds their distance by zero when they agree at a. Thus they agree on the closed interval.",
+      "why_here": "It applies directly on the right half and also underlies the reflected uniqueness argument.",
       "concepts": [
-        "ode-uniqueness"
+        "gronwall",
+        "within-derivative"
       ],
-      "why_here": "The forward half of the interval uses this theorem.",
       "support_edges": [
         44,
         50
@@ -1892,38 +1895,17 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
-      }
-    },
-    "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]": {
-      "title": "Backward one-sided uniqueness",
-      "summary": "Solutions agreeing at the right endpoint agree on the closed interval; the proof uses time reversal.",
-      "concepts": [
-        "ode-uniqueness",
-        "time-reversal"
-      ],
-      "why_here": "The backward half of the interval uses this theorem.",
-      "support_edges": [
-        49
-      ],
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]": {
-      "title": "Trajectory distance estimate",
-      "summary": "A bound on initial separation propagates exponentially along two solutions under the one-sided hypotheses.",
-      "compact_latex": "d(f(t),g(t))\\leq\\delta e^{K(t-a)}\\qquad(t\\in[a,b]).",
+      "title": "Exponential separation of exact trajectories",
+      "summary": "Exact ODE trajectories satisfy the approximate-trajectory estimate with both derivative errors equal to zero. The bound then reduces to initial separation δ multiplied by exp(K(t−a)).",
+      "why_here": "It supplies the estimate specialized to zero initial distance in forward uniqueness.",
       "concepts": [
-        "gronwall",
-        "ode-uniqueness"
+        "gronwall"
       ],
-      "why_here": "Setting the initial distance bound to zero yields one-sided uniqueness.",
       "support_edges": [
         34,
         37
@@ -1932,17 +1914,18 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "lean:[\"norm_le_gronwallBound_of_norm_deriv_right_le\"]": {
-      "title": "Differential Grönwall bound",
-      "summary": "A right-derivative bound controls the norm of a continuous curve by a Grönwall bound.",
+      "title": "Grönwall bound for the norm of a curve",
+      "summary": "The norm of a continuous curve with right derivatives has right slopes controlled by the norm of those derivatives. A bound of the form ‖h′‖ ≤ K‖h‖ + ε and an initial norm bound δ therefore give the scalar Grönwall bound.",
+      "why_here": "It identifies the underlying differential estimate summarized in the trajectory comparison.",
       "concepts": [
-        "gronwall"
+        "gronwall",
+        "within-derivative"
       ],
-      "why_here": "The trajectory-comparison step summarizes this background inequality.",
       "support_edges": [
         33
       ],
@@ -1950,16 +1933,18 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "fact:state-space": {
-      "title": "Complete state space and time interval",
+      "title": "Complete state space and initial time",
+      "summary": "The state space E is a complete real normed space and t₀ belongs to the closed time interval I.",
+      "why_here": "These are inputs to the curve-space construction and the verification of the derivative within I.",
       "concepts": [
-        "curve-space"
+        "admissible-curves",
+        "within-derivative"
       ],
-      "why_here": "These assumptions support both the complete curve space and the final differentiation step.",
       "support_edges": [
         0,
         29
@@ -1968,17 +1953,20 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "fact:existence-hypotheses": {
-      "title": "Field and interval bounds",
-      "summary": "Lipschitz continuity, time continuity, a field bound, and the interval-size condition make the Picard construction admissible.",
+      "title": "Field bounds and admissible initial state",
+      "summary": "The field is K-Lipschitz in the state, continuous in time and bounded by L on the larger ball. The room between radii r and a accommodates the drift LR, and the chosen initial state x lies in the smaller ball.",
+      "compact_latex": "x\\in\\overline B(x_0,r),\\qquad LR\\le a-r,\\qquad R=\\max(t_{\\max}-t_0,t_0-t_{\\min})",
+      "why_here": "These bounds keep Picard updates admissible, control differences between updates and allow differentiation of the integral along the fixed curve.",
       "concepts": [
-        "picard-existence"
+        "admissible-curves",
+        "picard",
+        "factorial"
       ],
-      "why_here": "These hypotheses support the self-map, its iterated estimate, and the solution step.",
       "support_edges": [
         4,
         10,
@@ -1988,35 +1976,40 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "step:curve-space": {
-      "title": "Build the complete curve space",
+      "title": "Build a complete space of candidate curves",
+      "summary": "Use the supremum metric on E-valued curves over I with Lipschitz constant at most L and starting value in the radius-r ball. Uniform limits preserve the Lipschitz bound and the closed initial-ball constraint, so the space is closed in the complete continuous-map space. The constant curve at x₀ gives a member.",
+      "why_here": "It produces the admissible complete space on which the Picard update acts.",
       "concepts": [
-        "curve-space"
+        "admissible-curves",
+        "fixed-point"
       ],
-      "why_here": "It produces the complete admissible space used by the fixed-point argument.",
       "support_edges": [
         0,
+        1,
+        2,
         3
       ],
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "fact:curve-space": {
-      "title": "Complete admissible curve space",
+      "title": "Nonempty complete space of admissible curves",
+      "summary": "The admissible curve space X has a member and is complete in the supremum metric.",
+      "why_here": "It gives the domain of the integral update and the complete space used by the fixed-point argument.",
       "concepts": [
-        "curve-space",
+        "admissible-curves",
         "fixed-point"
       ],
-      "why_here": "It is the domain of the Picard self-map and the fixed-point argument.",
       "support_edges": [
         3,
         5,
@@ -2026,36 +2019,41 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "step:picard-self-map": {
-      "title": "Construct the Picard self-map",
+      "title": "Show that the Picard update preserves admissibility",
+      "summary": "An admissible input curve stays within distance r+LR of x₀, by its initial-ball condition and its L-Lipschitz bound. This is within the larger ball, so the field bound implies that integrating between any two output times yields a difference of norm at most L|t−s|. At t₀ the integral vanishes and the output equals x, so it is again an admissible curve.",
+      "why_here": "It makes repeated Picard updates possible on the same space.",
       "concepts": [
-        "picard-iteration"
+        "picard",
+        "admissible-curves"
       ],
-      "why_here": "The field and interval bounds make the integral operator a self-map.",
       "support_edges": [
         4,
         5,
+        6,
+        7,
         8
       ],
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "fact:picard-self-map": {
-      "title": "Admissible Picard operator",
-      "compact_latex": "(T\\alpha)(t)=x+\\int_{t_0}^{t}f(s,\\alpha(s))\\,ds.",
+      "title": "Picard self-map on the curve space",
+      "summary": "For the chosen x, the integral update defines a map T from the admissible curve space to itself.",
+      "why_here": "It provides both the map to iterate and the formula to expand at a fixed point.",
       "concepts": [
-        "picard-iteration"
+        "picard",
+        "admissible-curves"
       ],
-      "why_here": "This operator is estimated under iteration and later rewritten as an integral equation.",
       "support_edges": [
         8,
         9,
@@ -2065,37 +2063,42 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "step:factorial-bound": {
-      "title": "Estimate iterated Picard maps",
-      "summary": "Induction, the state Lipschitz bound, and integration yield the factorial estimate.",
+      "title": "Estimate repeated Picard updates",
+      "summary": "Start with the supremum distance between two admissible curves. After one more update, the common initial state cancels and the field Lipschitz bound gives K times the preceding pointwise difference under the integral. Integrating an elapsed-time power gives uⁿ⁺¹/(n+1) from uⁿ, producing the factorial by induction. Using the largest elapsed time R gives the estimate in the supremum metric.",
+      "why_here": "It supplies the bound from which a contracting iterate is chosen.",
       "concepts": [
-        "factorial-bound"
+        "picard",
+        "factorial"
       ],
-      "why_here": "It produces the estimate used to select a contracting iterate.",
       "support_edges": [
         9,
         10,
+        11,
+        12,
         13
       ],
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "fact:factorial-bound": {
-      "title": "Factorial decay of iterate bounds",
-      "compact_latex": "d(T^n\\alpha,T^n\\beta)\\leq\\frac{(KR)^n}{n!}d(\\alpha,\\beta).",
+      "title": "Lipschitz bound for the nth update",
+      "summary": "The supremum distance between two curves after n updates is at most their original distance multiplied by (KR)ⁿ/n!.",
+      "compact_latex": "d_\\infty(T^n\\alpha,T^n\\beta)\\le \\frac{(KR)^n}{n!}\\,d_\\infty(\\alpha,\\beta)",
+      "why_here": "The coefficient in this bound is the quantity made smaller than one.",
       "concepts": [
-        "factorial-bound"
+        "factorial",
+        "fixed-point"
       ],
-      "why_here": "Its coefficient tends to zero, enabling the contraction step.",
       "support_edges": [
         13,
         14
@@ -2104,35 +2107,39 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "step:contracting-iterate": {
-      "title": "Choose a contracting iterate",
+      "title": "Choose an iterate that shrinks distances",
+      "summary": "The uniform distance bound has coefficient (KR)ⁿ/n!. Consecutive coefficients satisfy cₙ₊₁ = cₙ·KR/(n+1), so the coefficient tends to zero. Choose n with cₙ < 1 to obtain a contraction, with the same choice valid for every permitted x.",
+      "why_here": "It turns the distance bound into the contraction needed for the fixed-point argument.",
       "concepts": [
-        "factorial-bound",
+        "factorial",
         "fixed-point"
       ],
-      "why_here": "Factorial decay provides an iterate with Lipschitz constant below one.",
       "support_edges": [
         14,
+        15,
         16
       ],
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "fact:contracting-iterate": {
-      "title": "Contracting Picard iterate",
+      "title": "A contracting Picard iterate",
+      "summary": "The Picard update under consideration has an iterate Tⁿ whose Lipschitz coefficient is strictly less than one.",
+      "why_here": "This is the contraction input to the fixed-curve construction.",
       "concepts": [
+        "factorial",
         "fixed-point"
       ],
-      "why_here": "This enables the fixed-point argument on the complete curve space.",
       "support_edges": [
         16,
         17
@@ -2141,38 +2148,41 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "step:fixed-curve": {
-      "title": "Obtain a fixed curve",
+      "title": "Find a curve fixed by the Picard update",
+      "summary": "Apply the contraction fixed-point theorem to Tⁿ on the complete admissible curve space. If α is its fixed point, then Tα is also fixed by Tⁿ because T and Tⁿ commute. Uniqueness of the fixed point of Tⁿ gives Tα = α.",
+      "why_here": "It produces the fixed curve from which the integral solution is built.",
       "concepts": [
-        "fixed-point"
+        "fixed-point",
+        "picard"
       ],
-      "why_here": "The contracting iterate and completeness yield a fixed point of the original Picard map.",
       "support_edges": [
         17,
         18,
         19,
+        20,
         21
       ],
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "fact:fixed-curve": {
-      "title": "Picard fixed curve",
-      "compact_latex": "T\\alpha=\\alpha.",
+      "title": "An admissible fixed curve",
+      "summary": "For the chosen initial state, there exists an admissible curve α satisfying Tα = α.",
+      "why_here": "The next step takes such a curve and expands its fixed-point identity.",
       "concepts": [
         "fixed-point",
-        "picard-iteration"
+        "picard"
       ],
-      "why_here": "The fixed-point identity gives the integral equation on the interval.",
       "support_edges": [
         21,
         22
@@ -2181,37 +2191,42 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "step:integral-equation": {
-      "title": "Recover the integral equation",
-      "summary": "Extend the fixed curve by constant endpoint values and rewrite its fixed-point identity on the interval.",
+      "title": "Read the fixed-point identity as an integral equation",
+      "summary": "Choose an admissible fixed curve α and extend it to a real-line function g by holding its endpoint values constant outside the interval. For t in the interval, g(t) equals α(t), which equals the value of Tα at t. The definition of Tα uses the extended curve g under the integral, giving the stated equation on I.",
+      "why_here": "It gives an equation for the particular real-line witness used in the existence proof.",
       "concepts": [
-        "picard-iteration"
+        "fixed-point",
+        "picard"
       ],
-      "why_here": "It turns the fixed curve into an extended curve satisfying the Picard integral equation.",
       "support_edges": [
         22,
         23,
+        24,
+        25,
         26
       ],
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "fact:integral-equation": {
       "title": "Integral equation for the extended curve",
-      "compact_latex": "g(t)=x+\\int_{t_0}^{t}f(s,g(s))\\,ds\\qquad(t\\in I).",
+      "summary": "The particular extended fixed curve g satisfies the Picard integral equation at every time in I.",
+      "compact_latex": "\\forall t\\in I,\\quad g(t)=x+\\int_{t_0}^{t}f(s,g(s))\\,ds",
+      "why_here": "This equality gives the initial value and transfers the derivative of the integral expression to g.",
       "concepts": [
-        "picard-iteration"
+        "picard",
+        "within-derivative"
       ],
-      "why_here": "Differentiating this equation gives the ODE solution.",
       "support_edges": [
         26,
         27
@@ -2220,17 +2235,18 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "step:ode-solution": {
-      "title": "Differentiate the integral equation",
-      "summary": "Evaluate at the initial time and differentiate within the interval.",
+      "title": "Verify the initial value and the ODE",
+      "summary": "Setting t = t₀ in the integral equation gives g(t₀) = x because the integral over a zero-length interval vanishes. The continuity and ball bounds allow the fundamental theorem of calculus to give the derivative of the integral expression within I as f(t,g(t)). Since g equals that expression on I, it has the same within-interval derivative there.",
+      "why_here": "It verifies both requirements for the existential solution.",
       "concepts": [
-        "picard-existence"
+        "picard",
+        "within-derivative"
       ],
-      "why_here": "This step produces the required initial value and derivative.",
       "support_edges": [
         27,
         28,
@@ -2242,36 +2258,40 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "fact:ode-solution": {
-      "title": "Existence conclusion",
-      "summary": "An extended curve has the prescribed initial value and solves the ODE within the interval.",
+      "title": "Existence of a solution on the closed interval",
+      "summary": "Under the existence hypotheses, there is a real-line curve with the prescribed initial state and the required derivative within I at every time in I.",
+      "compact_latex": "\\exists g:\\mathbb R\\to E,\\quad g(t_0)=x\\ \\land\\ \\forall t\\in I,\\ \\operatorname{HasDerivWithinAt}(g,f(t,g(t)),I,t)",
+      "why_here": "This is the explicit concluding assertion of the existence theorem.",
       "concepts": [
-        "picard-existence"
+        "picard",
+        "within-derivative"
       ],
-      "why_here": "It concludes the existence declaration.",
       "support_edges": [
         31,
         32
       ],
+      "display_as": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "fact:uniqueness-hypotheses": {
-      "title": "Uniqueness hypotheses",
-      "summary": "The initial time is interior, both trajectories solve the ODE and remain in the permitted sets, and the field is uniformly Lipschitz there.",
+      "title": "Interior equation and state constraints",
+      "summary": "The initial time t₀ lies strictly inside [a,b]. Both curves are continuous on the closed interval, satisfy the same ODE in its interior and lie in s(t) there, where the field has a common state Lipschitz bound.",
+      "why_here": "These hypotheses restrict to the half-intervals used in the two uniqueness applications.",
       "concepts": [
-        "ode-uniqueness"
+        "gronwall",
+        "within-derivative"
       ],
-      "why_here": "The hypotheses restrict to the two half-intervals.",
       "support_edges": [
         39
       ],
@@ -2279,17 +2299,19 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "fact:same-initial-value": {
-      "title": "Common initial value",
-      "compact_latex": "f(t_0)=g(t_0).",
+      "title": "Equal values at the initial time",
+      "summary": "The two trajectories have zero separation at t₀.",
+      "compact_latex": "f(t_0)=g(t_0)",
+      "why_here": "This supplies the endpoint equality for both half-interval applications.",
       "concepts": [
-        "ode-uniqueness"
+        "gronwall",
+        "time-reversal"
       ],
-      "why_here": "The common value supplies the endpoint equality for both one-sided arguments.",
       "support_edges": [
         43,
         48
@@ -2298,17 +2320,18 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "step:trajectory-comparison": {
-      "title": "Compare trajectory distances",
-      "summary": "A differential Grönwall estimate gives a reusable forward bound on the separation of two trajectories.",
+      "title": "Bound separation by Grönwall’s inequality",
+      "summary": "For two forward trajectories in the permitted sets, the right derivative of h = f−g is the difference of their field values, so ‖h′‖ ≤ K‖h‖ by the state Lipschitz bound. The exact-trajectory comparison uses the approximate-trajectory bound with zero errors. An initial distance at most δ then gives distance at most δ exp(K(t−a)) on the closed interval.",
+      "why_here": "It produces a reusable estimate that can be applied with zero initial separation.",
       "concepts": [
-        "gronwall"
+        "gronwall",
+        "within-derivative"
       ],
-      "why_here": "It produces the comparison estimate used for one-sided uniqueness.",
       "support_edges": [
         33,
         34,
@@ -2318,17 +2341,18 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "fact:trajectory-comparison": {
-      "title": "Exponential separation bound",
-      "summary": "Under the forward comparison hypotheses, an initial distance at most δ grows by at most the factor exp(K(t−a)).",
+      "title": "Forward separation estimate",
+      "summary": "Under the forward comparison hypotheses, initial distance at most δ gives an exponential bound on the distance at every time in [a,b].",
+      "compact_latex": "d(f(a),g(a))\\le\\delta\\quad\\Longrightarrow\\quad \\forall t\\in[a,b],\\ d(f(t),g(t))\\le\\delta e^{K(t-a)}",
+      "why_here": "It is the reusable premise specialized to equal initial values.",
       "concepts": [
         "gronwall"
       ],
-      "why_here": "The one-sided uniqueness proof applies it with zero initial separation.",
       "support_edges": [
         35,
         36
@@ -2337,18 +2361,17 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "step:one-sided-principle": {
-      "title": "Derive forward uniqueness",
-      "summary": "Set the initial distance bound to zero and conclude equality from zero distance.",
+      "title": "Deduce forward uniqueness from zero separation",
+      "summary": "Equality at the left endpoint allows the forward separation estimate with δ = 0. Its upper bound is then zero at every time, and metric distance zero implies equality. This gives the reusable forward uniqueness principle under the one-sided hypotheses.",
+      "why_here": "It converts a quantitative comparison into a one-sided uniqueness theorem.",
       "concepts": [
-        "ode-uniqueness",
         "gronwall"
       ],
-      "why_here": "It produces the reusable one-sided uniqueness principle.",
       "support_edges": [
         36,
         37,
@@ -2358,17 +2381,18 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "fact:one-sided-principle": {
-      "title": "Forward uniqueness principle",
-      "summary": "Solutions with the same left-endpoint value agree on the forward interval under the one-sided hypotheses.",
+      "title": "Reusable forward uniqueness principle",
+      "summary": "Under the one-sided equation, continuity, membership and Lipschitz hypotheses, equality at the left endpoint implies agreement on the entire forward interval.",
+      "why_here": "It supplies forward uniqueness directly and through time reversal.",
       "concepts": [
-        "ode-uniqueness"
+        "gronwall",
+        "time-reversal"
       ],
-      "why_here": "It supports the forward argument and, via time reversal, the backward argument.",
       "support_edges": [
         38,
         41,
@@ -2378,16 +2402,18 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "step:split-interval": {
-      "title": "Split at the initial time",
+      "title": "Restrict the hypotheses to the two halves",
+      "summary": "Since a < t₀ < b, the intervals [a,t₀] and [t₀,b] cover [a,b]. The derivative and field hypotheses are needed on (a,t₀] and [t₀,b), respectively, both of which lie inside (a,b). Restrict continuity to each closed half and use the ordinary derivatives to obtain the needed left or right derivatives.",
+      "why_here": "It prepares the hypotheses for the two one-sided applications and supplies the cover for the final conclusion.",
       "concepts": [
-        "ode-uniqueness"
+        "within-derivative",
+        "time-reversal"
       ],
-      "why_here": "The interior hypotheses restrict to the two covering half-intervals.",
       "support_edges": [
         39,
         40
@@ -2396,17 +2422,19 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "fact:split-interval": {
-      "title": "Two admissible half-intervals",
-      "compact_latex": "[a,b]=[a,t_0]\\cup[t_0,b].",
+      "title": "Two covering halves with restricted hypotheses",
+      "summary": "The two halves cover [a,b] and inherit the hypotheses for their respective one-sided uniqueness results.",
+      "compact_latex": "[a,b]=[a,t_0]\\cup[t_0,b]",
+      "why_here": "It feeds both one-sided applications and identifies the union on which their conclusions combine.",
       "concepts": [
-        "ode-uniqueness"
+        "within-derivative",
+        "time-reversal"
       ],
-      "why_here": "The two one-sided results apply on these halves, which cover the interval.",
       "support_edges": [
         40,
         42,
@@ -2417,16 +2445,18 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "step:forward-agreement": {
-      "title": "Prove forward agreement",
+      "title": "Apply forward uniqueness on the right half",
+      "summary": "On [t₀,b], the two curves have the required right derivatives and permitted state values at times in [t₀,b). Their equality at the left endpoint t₀ lets the forward theorem give agreement on all of [t₀,b].",
+      "why_here": "It produces the right-half equality used in the full-interval conclusion.",
       "concepts": [
-        "ode-uniqueness"
+        "gronwall",
+        "within-derivative"
       ],
-      "why_here": "One-sided uniqueness gives equality on the right half.",
       "support_edges": [
         41,
         42,
@@ -2438,17 +2468,18 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "fact:forward-agreement": {
-      "title": "Agreement after the initial time",
-      "compact_latex": "f=g\\text{ on }[t_0,b].",
+      "title": "Agreement on the right half",
+      "summary": "The two trajectories in the main theorem agree from t₀ through b.",
+      "compact_latex": "\\forall t\\in[t_0,b],\\quad f(t)=g(t)",
+      "why_here": "This supplies equality at each point of the right half of the cover.",
       "concepts": [
-        "ode-uniqueness"
+        "gronwall"
       ],
-      "why_here": "It supplies one half of the final interval agreement.",
       "support_edges": [
         45,
         52
@@ -2457,40 +2488,43 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "step:backward-agreement": {
-      "title": "Prove backward agreement",
-      "summary": "Apply the left-sided theorem, whose proof reflects time and uses forward uniqueness.",
+      "title": "Apply backward uniqueness on the left half",
+      "summary": "On [a,t₀], use the restricted left-derivative hypotheses and equality at the right endpoint t₀. The backward theorem follows by reflecting time: differentiating a reflected curve introduces a minus sign, so the reflected field is −v(−t,·), with the same state Lipschitz constant. Forward uniqueness on the reflected interval gives agreement back on [a,t₀].",
+      "why_here": "It produces the left-half equality used in the full-interval conclusion.",
       "concepts": [
-        "ode-uniqueness",
-        "time-reversal"
+        "time-reversal",
+        "gronwall",
+        "within-derivative"
       ],
-      "why_here": "It gives equality on the left half of the interval.",
       "support_edges": [
         46,
         47,
         48,
         49,
+        50,
         51
       ],
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "fact:backward-agreement": {
-      "title": "Agreement before the initial time",
-      "compact_latex": "f=g\\text{ on }[a,t_0].",
+      "title": "Agreement on the left half",
+      "summary": "The two trajectories in the main theorem agree from a through t₀.",
+      "compact_latex": "\\forall t\\in[a,t_0],\\quad f(t)=g(t)",
+      "why_here": "This supplies equality at each point of the left half of the cover.",
       "concepts": [
-        "ode-uniqueness"
+        "time-reversal"
       ],
-      "why_here": "It supplies the other half of the final interval agreement.",
       "support_edges": [
         51,
         53
@@ -2499,16 +2533,18 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "step:agreement-on-interval": {
-      "title": "Combine the two agreements",
+      "title": "Combine equality on the two halves",
+      "summary": "Any t in [a,b] belongs to [a,t₀] or [t₀,b]. The corresponding half-interval equality gives f(t) = g(t), so the curves agree on the whole interval.",
+      "why_here": "It joins the particular forward and backward conclusions into the theorem’s assertion.",
       "concepts": [
-        "ode-uniqueness"
+        "time-reversal",
+        "gronwall"
       ],
-      "why_here": "Equality on the two covering halves gives equality on the whole interval.",
       "support_edges": [
         52,
         53,
@@ -2519,273 +2555,250 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     "fact:agreement-on-interval": {
-      "title": "Agreement on the closed interval",
-      "compact_latex": "f=g\\text{ on }[a,b].",
+      "title": "Agreement on the full interval",
+      "summary": "Under the main uniqueness hypotheses, the two trajectories agree at every point of [a,b].",
+      "compact_latex": "\\forall t\\in[a,b],\\quad f(t)=g(t)",
+      "why_here": "This is the explicit concluding assertion of the uniqueness theorem.",
       "concepts": [
-        "ode-uniqueness"
+        "gronwall",
+        "time-reversal"
       ],
-      "why_here": "It concludes the uniqueness declaration.",
       "support_edges": [
         55,
         56
       ],
+      "display_as": "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     }
   },
   "concepts": [
     {
-      "id": "picard-existence",
-      "title": "Picard–Lindelöf existence",
-      "summary": "Construct an ODE solution from a fixed point of an integral operator under suitable field and interval bounds.",
-      "kind": "concept",
-      "annotation_provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
-      }
-    },
-    {
-      "id": "curve-space",
+      "id": "admissible-curves",
       "title": "Complete space of admissible curves",
-      "summary": "Lipschitz curves with an initial-ball constraint form the complete metric setting for the existence proof.",
-      "kind": "concept",
-      "annotation_provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
-      }
-    },
-    {
-      "id": "picard-iteration",
-      "title": "Picard integral operator",
-      "summary": "Integrating the vector field along a candidate curve turns the ODE into a fixed-point problem.",
-      "kind": "concept",
-      "annotation_provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
-      }
-    },
-    {
-      "id": "factorial-bound",
-      "title": "Factorial estimate for iterates",
-      "summary": "Repeated integration gives a factorial denominator, so a sufficiently high Picard iterate is contracting.",
-      "kind": "concept",
-      "annotation_provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
-      }
-    },
-    {
-      "id": "fixed-point",
-      "title": "Fixed point of a contracting iterate",
-      "summary": "On a complete metric space, a contracting iterate supplies a fixed point of the original map.",
+      "summary": "The supremum metric measures the largest pointwise distance between two curves. A common Lipschitz bound and a closed constraint at the initial time both survive uniform convergence, allowing completeness to pass from continuous maps to the constrained curves.",
       "detail": "foundation",
       "kind": "concept",
       "annotation_provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "id": "picard",
+      "title": "Picard integration",
+      "summary": "Integrate the field along a candidate curve and add the initial state. A curve fixed by this update satisfies the integral equation for the ODE, from which differentiation recovers the differential equation.",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "id": "factorial",
+      "title": "Factorial decay under repeated integration",
+      "summary": "Each integration of an elapsed-time power increases its exponent and divides by the new exponent. Iteration yields a factor 1/n!, which makes the Lipschitz bound tend to zero even for a fixed positive value of KR.",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "id": "fixed-point",
+      "title": "Contraction and fixed points",
+      "summary": "A contraction on a nonempty complete metric space has a unique fixed point. When the contraction is an iterate Tⁿ, the map T sends that fixed point to another fixed point of Tⁿ, so uniqueness forces T to fix it as well.",
+      "detail": "foundation",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "id": "within-derivative",
+      "title": "Derivatives within a set",
+      "summary": "A derivative within a set uses increments that stay in that set. For a closed interval this permits differentiation at the endpoints from the available side, and equality of two functions on the interval transfers any such derivative between them.",
+      "detail": "foundation",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "id": "gronwall",
       "title": "Grönwall comparison",
-      "summary": "A differential growth bound controls trajectory separation by an exponential factor.",
+      "summary": "A differential growth bound gives an exponential bound on how far apart two solutions can move. With zero initial distance and zero derivative error, the growth bound forces their distance to remain zero.",
       "detail": "foundation",
       "kind": "concept",
       "annotation_provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
-      }
-    },
-    {
-      "id": "ode-uniqueness",
-      "title": "Uniqueness of ODE trajectories",
-      "summary": "Lipschitz control and equality at an initial time force two solutions to agree on the interval.",
-      "kind": "concept",
-      "annotation_provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "id": "time-reversal",
       "title": "Time reversal",
-      "summary": "Reflecting time and negating the transformed vector field converts a backward uniqueness problem into a forward one.",
+      "summary": "Replacing t by −t swaps the interval endpoints and exchanges right and left derivatives. The chain rule negates the reflected vector field, and negation preserves distances and hence the state Lipschitz constant.",
       "kind": "concept",
       "annotation_provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     }
   ],
-  "groups": [
-    {
-      "id": "existence-construction",
-      "title": "Construct a solution by Picard iteration",
-      "steps": [
-        "step:curve-space",
-        "step:picard-self-map",
-        "step:factorial-bound",
-        "step:contracting-iterate",
-        "step:fixed-curve",
-        "step:integral-equation",
-        "step:ode-solution"
-      ],
-      "kind": "block",
-      "annotation_provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
-      },
-      "inputs": [
-        "fact:existence-hypotheses",
-        "fact:state-space"
-      ],
-      "outputs": [
-        "fact:ode-solution"
-      ]
-    },
-    {
-      "id": "uniqueness-comparison",
-      "title": "Derive one-sided uniqueness by comparison",
-      "steps": [
-        "step:trajectory-comparison",
-        "step:one-sided-principle"
-      ],
-      "kind": "block",
-      "annotation_provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
-      },
-      "inputs": [],
-      "outputs": [
-        "fact:one-sided-principle"
-      ]
-    },
-    {
-      "id": "uniqueness-interval",
-      "title": "Combine uniqueness on both sides",
-      "steps": [
-        "step:split-interval",
-        "step:forward-agreement",
-        "step:backward-agreement",
-        "step:agreement-on-interval"
-      ],
-      "kind": "block",
-      "annotation_provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
-      },
-      "inputs": [
-        "fact:one-sided-principle",
-        "fact:same-initial-value",
-        "fact:uniqueness-hypotheses"
-      ],
-      "outputs": [
-        "fact:agreement-on-interval"
-      ]
-    }
-  ],
+  "groups": [],
   "semantic_edges": [
     {
       "source": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
-      "target": "picard-existence",
+      "target": "picard",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
+      "target": "fixed-point",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
+      "target": "within-derivative",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
-      "target": "ode-uniqueness",
+      "target": "gronwall",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
+      "target": "time-reversal",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
+      "target": "within-derivative",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "lean:[\"IsPicardLindelof\"]",
-      "target": "picard-existence",
+      "target": "admissible-curves",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "lean:[\"IsPicardLindelof\"]",
+      "target": "picard",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\"]",
-      "target": "curve-space",
+      "target": "admissible-curves",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
-      "target": "curve-space",
+      "target": "admissible-curves",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
@@ -2796,80 +2809,104 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "lean:[\"ODE\",\"picard\"]",
-      "target": "picard-iteration",
+      "target": "picard",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
-      "target": "picard-iteration",
+      "target": "admissible-curves",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
-      "target": "curve-space",
+      "target": "picard",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]",
-      "target": "factorial-bound",
+      "target": "factorial",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]",
+      "target": "picard",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]",
-      "target": "factorial-bound",
+      "target": "factorial",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]",
+      "target": "admissible-curves",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]",
-      "target": "factorial-bound",
+      "target": "factorial",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
@@ -2880,8 +2917,8 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
@@ -2892,8 +2929,8 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
@@ -2904,68 +2941,68 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]",
-      "target": "picard-iteration",
+      "target": "picard",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\",\"compProj\"]",
-      "target": "picard-existence",
+      "target": "admissible-curves",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "lean:[\"ODE\",\"FunSpace\",\"compProj\"]",
+      "target": "within-derivative",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]",
-      "target": "picard-existence",
+      "target": "picard",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
-      "source": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
-      "target": "ode-uniqueness",
+      "source": "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]",
+      "target": "within-derivative",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
-      }
-    },
-    {
-      "source": "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
-      "target": "ode-uniqueness",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
@@ -2976,8 +3013,56 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
+      "target": "gronwall",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
+      "target": "within-derivative",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
+      "target": "gronwall",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
+      "target": "within-derivative",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
@@ -2988,20 +3073,8 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
-      }
-    },
-    {
-      "source": "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]",
-      "target": "ode-uniqueness",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
@@ -3012,56 +3085,116 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "lean:[\"norm_le_gronwallBound_of_norm_deriv_right_le\"]",
+      "target": "within-derivative",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "fact:state-space",
-      "target": "curve-space",
+      "target": "admissible-curves",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "fact:state-space",
+      "target": "within-derivative",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "fact:existence-hypotheses",
-      "target": "picard-existence",
+      "target": "admissible-curves",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "fact:existence-hypotheses",
+      "target": "picard",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "fact:existence-hypotheses",
+      "target": "factorial",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "step:curve-space",
-      "target": "curve-space",
+      "target": "admissible-curves",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "step:curve-space",
+      "target": "fixed-point",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "fact:curve-space",
-      "target": "curve-space",
+      "target": "admissible-curves",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
@@ -3072,68 +3205,116 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "step:picard-self-map",
-      "target": "picard-iteration",
+      "target": "picard",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "step:picard-self-map",
+      "target": "admissible-curves",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "fact:picard-self-map",
-      "target": "picard-iteration",
+      "target": "picard",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "fact:picard-self-map",
+      "target": "admissible-curves",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "step:factorial-bound",
-      "target": "factorial-bound",
+      "target": "picard",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "step:factorial-bound",
+      "target": "factorial",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "fact:factorial-bound",
-      "target": "factorial-bound",
+      "target": "factorial",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "fact:factorial-bound",
+      "target": "fixed-point",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "step:contracting-iterate",
-      "target": "factorial-bound",
+      "target": "factorial",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
@@ -3144,8 +3325,20 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "fact:contracting-iterate",
+      "target": "factorial",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
@@ -3156,8 +3349,8 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
@@ -3168,8 +3361,20 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "step:fixed-curve",
+      "target": "picard",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
@@ -3180,92 +3385,164 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "fact:fixed-curve",
-      "target": "picard-iteration",
+      "target": "picard",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "step:integral-equation",
-      "target": "picard-iteration",
+      "target": "fixed-point",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "step:integral-equation",
+      "target": "picard",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "fact:integral-equation",
-      "target": "picard-iteration",
+      "target": "picard",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "fact:integral-equation",
+      "target": "within-derivative",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "step:ode-solution",
-      "target": "picard-existence",
+      "target": "picard",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "step:ode-solution",
+      "target": "within-derivative",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "fact:ode-solution",
-      "target": "picard-existence",
+      "target": "picard",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "fact:ode-solution",
+      "target": "within-derivative",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "fact:uniqueness-hypotheses",
-      "target": "ode-uniqueness",
+      "target": "gronwall",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "fact:uniqueness-hypotheses",
+      "target": "within-derivative",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "fact:same-initial-value",
-      "target": "ode-uniqueness",
+      "target": "gronwall",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "fact:same-initial-value",
+      "target": "time-reversal",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
@@ -3276,8 +3553,20 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "step:trajectory-comparison",
+      "target": "within-derivative",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
@@ -3288,20 +3577,8 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
-      }
-    },
-    {
-      "source": "step:one-sided-principle",
-      "target": "ode-uniqueness",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
@@ -3312,80 +3589,116 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "fact:one-sided-principle",
-      "target": "ode-uniqueness",
+      "target": "gronwall",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "fact:one-sided-principle",
+      "target": "time-reversal",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "step:split-interval",
-      "target": "ode-uniqueness",
+      "target": "within-derivative",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "step:split-interval",
+      "target": "time-reversal",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "fact:split-interval",
-      "target": "ode-uniqueness",
+      "target": "within-derivative",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "fact:split-interval",
+      "target": "time-reversal",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "step:forward-agreement",
-      "target": "ode-uniqueness",
+      "target": "gronwall",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "step:forward-agreement",
+      "target": "within-derivative",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "fact:forward-agreement",
-      "target": "ode-uniqueness",
+      "target": "gronwall",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
-      }
-    },
-    {
-      "source": "step:backward-agreement",
-      "target": "ode-uniqueness",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
@@ -3396,50 +3709,98 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "step:backward-agreement",
+      "target": "gronwall",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "step:backward-agreement",
+      "target": "within-derivative",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "fact:backward-agreement",
-      "target": "ode-uniqueness",
+      "target": "time-reversal",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "step:agreement-on-interval",
-      "target": "ode-uniqueness",
+      "target": "time-reversal",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "step:agreement-on-interval",
+      "target": "gronwall",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     },
     {
       "source": "fact:agreement-on-interval",
-      "target": "ode-uniqueness",
+      "target": "gronwall",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "model": "gpt-6.1-terra",
-        "prompt_version": 2
+        "discarded_groups": true,
+        "prompt_version": 5
+      }
+    },
+    {
+      "source": "fact:agreement-on-interval",
+      "target": "time-reversal",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 5
       }
     }
   ],
   "view": {
     "level": "ideas",
-    "group_depth": 1,
+    "group_depth": 0,
     "hide_shared_above": null,
     "nodes": [
       "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
@@ -3462,22 +3823,41 @@
       "lean:[\"norm_le_gronwallBound_of_norm_deriv_right_le\"]",
       "fact:state-space",
       "fact:existence-hypotheses",
+      "step:curve-space",
+      "fact:curve-space",
+      "step:picard-self-map",
+      "fact:picard-self-map",
+      "step:factorial-bound",
+      "fact:factorial-bound",
+      "step:contracting-iterate",
+      "fact:contracting-iterate",
+      "step:fixed-curve",
+      "fact:fixed-curve",
+      "step:integral-equation",
+      "fact:integral-equation",
+      "step:ode-solution",
       "fact:ode-solution",
       "fact:uniqueness-hypotheses",
       "fact:same-initial-value",
+      "step:trajectory-comparison",
+      "fact:trajectory-comparison",
+      "step:one-sided-principle",
       "fact:one-sided-principle",
+      "step:split-interval",
+      "fact:split-interval",
+      "step:forward-agreement",
+      "fact:forward-agreement",
+      "step:backward-agreement",
+      "fact:backward-agreement",
+      "step:agreement-on-interval",
       "fact:agreement-on-interval",
-      "picard-existence",
-      "curve-space",
-      "picard-iteration",
-      "factorial-bound",
+      "admissible-curves",
+      "picard",
+      "factorial",
       "fixed-point",
+      "within-derivative",
       "gronwall",
-      "ode-uniqueness",
-      "time-reversal",
-      "existence-construction",
-      "uniqueness-comparison",
-      "uniqueness-interval"
+      "time-reversal"
     ],
     "size_roles": {
       "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]": "root",
@@ -3500,61 +3880,55 @@
       "lean:[\"norm_le_gronwallBound_of_norm_deriv_right_le\"]": "support",
       "fact:state-space": "standard",
       "fact:existence-hypotheses": "standard",
+      "step:curve-space": "standard",
+      "fact:curve-space": "standard",
+      "step:picard-self-map": "standard",
+      "fact:picard-self-map": "standard",
+      "step:factorial-bound": "standard",
+      "fact:factorial-bound": "standard",
+      "step:contracting-iterate": "standard",
+      "fact:contracting-iterate": "standard",
+      "step:fixed-curve": "standard",
+      "fact:fixed-curve": "standard",
+      "step:integral-equation": "standard",
+      "fact:integral-equation": "standard",
+      "step:ode-solution": "standard",
       "fact:ode-solution": "standard",
       "fact:uniqueness-hypotheses": "standard",
       "fact:same-initial-value": "standard",
+      "step:trajectory-comparison": "standard",
+      "fact:trajectory-comparison": "standard",
+      "step:one-sided-principle": "standard",
       "fact:one-sided-principle": "standard",
+      "step:split-interval": "standard",
+      "fact:split-interval": "standard",
+      "step:forward-agreement": "standard",
+      "fact:forward-agreement": "standard",
+      "step:backward-agreement": "standard",
+      "fact:backward-agreement": "standard",
+      "step:agreement-on-interval": "standard",
       "fact:agreement-on-interval": "standard",
-      "picard-existence": "standard",
-      "curve-space": "standard",
-      "picard-iteration": "standard",
-      "factorial-bound": "standard",
+      "admissible-curves": "standard",
+      "picard": "standard",
+      "factorial": "standard",
       "fixed-point": "standard",
+      "within-derivative": "standard",
       "gronwall": "standard",
-      "ode-uniqueness": "standard",
-      "time-reversal": "standard",
-      "existence-construction": "block",
-      "uniqueness-comparison": "block",
-      "uniqueness-interval": "block"
+      "time-reversal": "standard"
     },
     "hidden": [],
-    "collapsed_into": {
-      "step:curve-space": "existence-construction",
-      "step:picard-self-map": "existence-construction",
-      "step:factorial-bound": "existence-construction",
-      "step:contracting-iterate": "existence-construction",
-      "step:fixed-curve": "existence-construction",
-      "step:integral-equation": "existence-construction",
-      "step:ode-solution": "existence-construction",
-      "step:trajectory-comparison": "uniqueness-comparison",
-      "step:one-sided-principle": "uniqueness-comparison",
-      "step:split-interval": "uniqueness-interval",
-      "step:forward-agreement": "uniqueness-interval",
-      "step:backward-agreement": "uniqueness-interval",
-      "step:agreement-on-interval": "uniqueness-interval",
-      "fact:curve-space": "existence-construction",
-      "fact:picard-self-map": "existence-construction",
-      "fact:factorial-bound": "existence-construction",
-      "fact:contracting-iterate": "existence-construction",
-      "fact:fixed-curve": "existence-construction",
-      "fact:integral-equation": "existence-construction",
-      "fact:trajectory-comparison": "uniqueness-comparison",
-      "fact:split-interval": "uniqueness-interval",
-      "fact:forward-agreement": "uniqueness-interval",
-      "fact:backward-agreement": "uniqueness-interval"
-    },
+    "collapsed_into": {},
     "edges": [
       {
         "source": "fact:state-space",
-        "target": "existence-construction",
+        "target": "step:curve-space",
         "relation": "premise_of",
         "edge_indices": [
-          0,
-          29
+          0
         ]
       },
       {
-        "source": "existence-construction",
+        "source": "step:curve-space",
         "target": "lean:[\"ODE\",\"FunSpace\"]",
         "relation": "summarizes",
         "edge_indices": [
@@ -3562,7 +3936,7 @@
         ]
       },
       {
-        "source": "existence-construction",
+        "source": "step:curve-space",
         "target": "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
         "relation": "summarizes",
         "edge_indices": [
@@ -3570,17 +3944,31 @@
         ]
       },
       {
-        "source": "fact:existence-hypotheses",
-        "target": "existence-construction",
-        "relation": "premise_of",
+        "source": "step:curve-space",
+        "target": "fact:curve-space",
+        "relation": "produces",
         "edge_indices": [
-          4,
-          10,
-          28
+          3
         ]
       },
       {
-        "source": "existence-construction",
+        "source": "fact:existence-hypotheses",
+        "target": "step:picard-self-map",
+        "relation": "premise_of",
+        "edge_indices": [
+          4
+        ]
+      },
+      {
+        "source": "fact:curve-space",
+        "target": "step:picard-self-map",
+        "relation": "premise_of",
+        "edge_indices": [
+          5
+        ]
+      },
+      {
+        "source": "step:picard-self-map",
         "target": "lean:[\"ODE\",\"picard\"]",
         "relation": "summarizes",
         "edge_indices": [
@@ -3588,16 +3976,39 @@
         ]
       },
       {
-        "source": "existence-construction",
+        "source": "step:picard-self-map",
         "target": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
         "relation": "summarizes",
         "edge_indices": [
-          7,
-          25
+          7
         ]
       },
       {
-        "source": "existence-construction",
+        "source": "step:picard-self-map",
+        "target": "fact:picard-self-map",
+        "relation": "produces",
+        "edge_indices": [
+          8
+        ]
+      },
+      {
+        "source": "fact:picard-self-map",
+        "target": "step:factorial-bound",
+        "relation": "premise_of",
+        "edge_indices": [
+          9
+        ]
+      },
+      {
+        "source": "fact:existence-hypotheses",
+        "target": "step:factorial-bound",
+        "relation": "premise_of",
+        "edge_indices": [
+          10
+        ]
+      },
+      {
+        "source": "step:factorial-bound",
         "target": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]",
         "relation": "summarizes",
         "edge_indices": [
@@ -3605,7 +4016,7 @@
         ]
       },
       {
-        "source": "existence-construction",
+        "source": "step:factorial-bound",
         "target": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]",
         "relation": "summarizes",
         "edge_indices": [
@@ -3613,7 +4024,23 @@
         ]
       },
       {
-        "source": "existence-construction",
+        "source": "step:factorial-bound",
+        "target": "fact:factorial-bound",
+        "relation": "produces",
+        "edge_indices": [
+          13
+        ]
+      },
+      {
+        "source": "fact:factorial-bound",
+        "target": "step:contracting-iterate",
+        "relation": "premise_of",
+        "edge_indices": [
+          14
+        ]
+      },
+      {
+        "source": "step:contracting-iterate",
         "target": "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]",
         "relation": "summarizes",
         "edge_indices": [
@@ -3621,7 +4048,31 @@
         ]
       },
       {
-        "source": "existence-construction",
+        "source": "step:contracting-iterate",
+        "target": "fact:contracting-iterate",
+        "relation": "produces",
+        "edge_indices": [
+          16
+        ]
+      },
+      {
+        "source": "fact:contracting-iterate",
+        "target": "step:fixed-curve",
+        "relation": "premise_of",
+        "edge_indices": [
+          17
+        ]
+      },
+      {
+        "source": "fact:curve-space",
+        "target": "step:fixed-curve",
+        "relation": "premise_of",
+        "edge_indices": [
+          18
+        ]
+      },
+      {
+        "source": "step:fixed-curve",
         "target": "lean:[\"ContractingWith\",\"isFixedPt_fixedPoint_iterate\"]",
         "relation": "applies",
         "edge_indices": [
@@ -3629,7 +4080,7 @@
         ]
       },
       {
-        "source": "existence-construction",
+        "source": "step:fixed-curve",
         "target": "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]",
         "relation": "summarizes",
         "edge_indices": [
@@ -3637,7 +4088,31 @@
         ]
       },
       {
-        "source": "existence-construction",
+        "source": "step:fixed-curve",
+        "target": "fact:fixed-curve",
+        "relation": "produces",
+        "edge_indices": [
+          21
+        ]
+      },
+      {
+        "source": "fact:fixed-curve",
+        "target": "step:integral-equation",
+        "relation": "premise_of",
+        "edge_indices": [
+          22
+        ]
+      },
+      {
+        "source": "fact:picard-self-map",
+        "target": "step:integral-equation",
+        "relation": "premise_of",
+        "edge_indices": [
+          23
+        ]
+      },
+      {
+        "source": "step:integral-equation",
         "target": "lean:[\"ODE\",\"FunSpace\",\"compProj\"]",
         "relation": "summarizes",
         "edge_indices": [
@@ -3645,7 +4120,47 @@
         ]
       },
       {
-        "source": "existence-construction",
+        "source": "step:integral-equation",
+        "target": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
+        "relation": "summarizes",
+        "edge_indices": [
+          25
+        ]
+      },
+      {
+        "source": "step:integral-equation",
+        "target": "fact:integral-equation",
+        "relation": "produces",
+        "edge_indices": [
+          26
+        ]
+      },
+      {
+        "source": "fact:integral-equation",
+        "target": "step:ode-solution",
+        "relation": "premise_of",
+        "edge_indices": [
+          27
+        ]
+      },
+      {
+        "source": "fact:existence-hypotheses",
+        "target": "step:ode-solution",
+        "relation": "premise_of",
+        "edge_indices": [
+          28
+        ]
+      },
+      {
+        "source": "fact:state-space",
+        "target": "step:ode-solution",
+        "relation": "premise_of",
+        "edge_indices": [
+          29
+        ]
+      },
+      {
+        "source": "step:ode-solution",
         "target": "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]",
         "relation": "applies",
         "edge_indices": [
@@ -3653,7 +4168,7 @@
         ]
       },
       {
-        "source": "existence-construction",
+        "source": "step:ode-solution",
         "target": "fact:ode-solution",
         "relation": "produces",
         "edge_indices": [
@@ -3669,7 +4184,7 @@
         ]
       },
       {
-        "source": "uniqueness-comparison",
+        "source": "step:trajectory-comparison",
         "target": "lean:[\"norm_le_gronwallBound_of_norm_deriv_right_le\"]",
         "relation": "summarizes",
         "edge_indices": [
@@ -3677,7 +4192,7 @@
         ]
       },
       {
-        "source": "uniqueness-comparison",
+        "source": "step:trajectory-comparison",
         "target": "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]",
         "relation": "summarizes",
         "edge_indices": [
@@ -3685,7 +4200,23 @@
         ]
       },
       {
-        "source": "uniqueness-comparison",
+        "source": "step:trajectory-comparison",
+        "target": "fact:trajectory-comparison",
+        "relation": "produces",
+        "edge_indices": [
+          35
+        ]
+      },
+      {
+        "source": "fact:trajectory-comparison",
+        "target": "step:one-sided-principle",
+        "relation": "premise_of",
+        "edge_indices": [
+          36
+        ]
+      },
+      {
+        "source": "step:one-sided-principle",
         "target": "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]",
         "relation": "applies",
         "edge_indices": [
@@ -3693,7 +4224,7 @@
         ]
       },
       {
-        "source": "uniqueness-comparison",
+        "source": "step:one-sided-principle",
         "target": "fact:one-sided-principle",
         "relation": "produces",
         "edge_indices": [
@@ -3702,32 +4233,46 @@
       },
       {
         "source": "fact:uniqueness-hypotheses",
-        "target": "uniqueness-interval",
+        "target": "step:split-interval",
         "relation": "premise_of",
         "edge_indices": [
           39
         ]
       },
       {
+        "source": "step:split-interval",
+        "target": "fact:split-interval",
+        "relation": "produces",
+        "edge_indices": [
+          40
+        ]
+      },
+      {
         "source": "fact:one-sided-principle",
-        "target": "uniqueness-interval",
+        "target": "step:forward-agreement",
         "relation": "premise_of",
         "edge_indices": [
-          41,
-          46
+          41
+        ]
+      },
+      {
+        "source": "fact:split-interval",
+        "target": "step:forward-agreement",
+        "relation": "premise_of",
+        "edge_indices": [
+          42
         ]
       },
       {
         "source": "fact:same-initial-value",
-        "target": "uniqueness-interval",
+        "target": "step:forward-agreement",
         "relation": "premise_of",
         "edge_indices": [
-          43,
-          48
+          43
         ]
       },
       {
-        "source": "uniqueness-interval",
+        "source": "step:forward-agreement",
         "target": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
         "relation": "applies",
         "edge_indices": [
@@ -3735,7 +4280,39 @@
         ]
       },
       {
-        "source": "uniqueness-interval",
+        "source": "step:forward-agreement",
+        "target": "fact:forward-agreement",
+        "relation": "produces",
+        "edge_indices": [
+          45
+        ]
+      },
+      {
+        "source": "fact:one-sided-principle",
+        "target": "step:backward-agreement",
+        "relation": "premise_of",
+        "edge_indices": [
+          46
+        ]
+      },
+      {
+        "source": "fact:split-interval",
+        "target": "step:backward-agreement",
+        "relation": "premise_of",
+        "edge_indices": [
+          47
+        ]
+      },
+      {
+        "source": "fact:same-initial-value",
+        "target": "step:backward-agreement",
+        "relation": "premise_of",
+        "edge_indices": [
+          48
+        ]
+      },
+      {
+        "source": "step:backward-agreement",
         "target": "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
         "relation": "applies",
         "edge_indices": [
@@ -3743,7 +4320,7 @@
         ]
       },
       {
-        "source": "uniqueness-interval",
+        "source": "step:backward-agreement",
         "target": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
         "relation": "summarizes",
         "edge_indices": [
@@ -3751,7 +4328,39 @@
         ]
       },
       {
-        "source": "uniqueness-interval",
+        "source": "step:backward-agreement",
+        "target": "fact:backward-agreement",
+        "relation": "produces",
+        "edge_indices": [
+          51
+        ]
+      },
+      {
+        "source": "fact:forward-agreement",
+        "target": "step:agreement-on-interval",
+        "relation": "premise_of",
+        "edge_indices": [
+          52
+        ]
+      },
+      {
+        "source": "fact:backward-agreement",
+        "target": "step:agreement-on-interval",
+        "relation": "premise_of",
+        "edge_indices": [
+          53
+        ]
+      },
+      {
+        "source": "fact:split-interval",
+        "target": "step:agreement-on-interval",
+        "relation": "premise_of",
+        "edge_indices": [
+          54
+        ]
+      },
+      {
+        "source": "step:agreement-on-interval",
         "target": "fact:agreement-on-interval",
         "relation": "produces",
         "edge_indices": [
@@ -3768,98 +4377,154 @@
       },
       {
         "source": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
-        "target": "picard-existence",
+        "target": "picard",
         "relation": "about",
         "semantic_edge_indices": [
           0
         ]
       },
       {
-        "source": "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
-        "target": "ode-uniqueness",
+        "source": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
+        "target": "fixed-point",
         "relation": "about",
         "semantic_edge_indices": [
           1
         ]
       },
       {
-        "source": "lean:[\"IsPicardLindelof\"]",
-        "target": "picard-existence",
+        "source": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
+        "target": "within-derivative",
         "relation": "about",
         "semantic_edge_indices": [
           2
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\"]",
-        "target": "curve-space",
+        "source": "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
+        "target": "gronwall",
         "relation": "about",
         "semantic_edge_indices": [
           3
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
-        "target": "curve-space",
+        "source": "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
+        "target": "time-reversal",
         "relation": "about",
         "semantic_edge_indices": [
           4
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
-        "target": "fixed-point",
+        "source": "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
+        "target": "within-derivative",
         "relation": "about",
         "semantic_edge_indices": [
           5
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"picard\"]",
-        "target": "picard-iteration",
+        "source": "lean:[\"IsPicardLindelof\"]",
+        "target": "admissible-curves",
         "relation": "about",
         "semantic_edge_indices": [
           6
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
-        "target": "picard-iteration",
+        "source": "lean:[\"IsPicardLindelof\"]",
+        "target": "picard",
         "relation": "about",
         "semantic_edge_indices": [
           7
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
-        "target": "curve-space",
+        "source": "lean:[\"ODE\",\"FunSpace\"]",
+        "target": "admissible-curves",
         "relation": "about",
         "semantic_edge_indices": [
           8
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]",
-        "target": "factorial-bound",
+        "source": "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
+        "target": "admissible-curves",
         "relation": "about",
         "semantic_edge_indices": [
           9
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]",
-        "target": "factorial-bound",
+        "source": "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
+        "target": "fixed-point",
         "relation": "about",
         "semantic_edge_indices": [
           10
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]",
-        "target": "factorial-bound",
+        "source": "lean:[\"ODE\",\"picard\"]",
+        "target": "picard",
         "relation": "about",
         "semantic_edge_indices": [
           11
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
+        "target": "admissible-curves",
+        "relation": "about",
+        "semantic_edge_indices": [
+          12
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
+        "target": "picard",
+        "relation": "about",
+        "semantic_edge_indices": [
+          13
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]",
+        "target": "factorial",
+        "relation": "about",
+        "semantic_edge_indices": [
+          14
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]",
+        "target": "picard",
+        "relation": "about",
+        "semantic_edge_indices": [
+          15
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]",
+        "target": "factorial",
+        "relation": "about",
+        "semantic_edge_indices": [
+          16
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]",
+        "target": "admissible-curves",
+        "relation": "about",
+        "semantic_edge_indices": [
+          17
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]",
+        "target": "factorial",
+        "relation": "about",
+        "semantic_edge_indices": [
+          18
         ]
       },
       {
@@ -3867,7 +4532,7 @@
         "target": "fixed-point",
         "relation": "about",
         "semantic_edge_indices": [
-          12
+          19
         ]
       },
       {
@@ -3875,7 +4540,7 @@
         "target": "fixed-point",
         "relation": "about",
         "semantic_edge_indices": [
-          13
+          20
         ]
       },
       {
@@ -3883,47 +4548,47 @@
         "target": "fixed-point",
         "relation": "about",
         "semantic_edge_indices": [
-          14
+          21
         ]
       },
       {
         "source": "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]",
-        "target": "picard-iteration",
+        "target": "picard",
         "relation": "about",
         "semantic_edge_indices": [
-          15
+          22
         ]
       },
       {
         "source": "lean:[\"ODE\",\"FunSpace\",\"compProj\"]",
-        "target": "picard-existence",
+        "target": "admissible-curves",
         "relation": "about",
         "semantic_edge_indices": [
-          16
+          23
+        ]
+      },
+      {
+        "source": "lean:[\"ODE\",\"FunSpace\",\"compProj\"]",
+        "target": "within-derivative",
+        "relation": "about",
+        "semantic_edge_indices": [
+          24
         ]
       },
       {
         "source": "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]",
-        "target": "picard-existence",
+        "target": "picard",
         "relation": "about",
         "semantic_edge_indices": [
-          17
+          25
         ]
       },
       {
-        "source": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
-        "target": "ode-uniqueness",
+        "source": "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]",
+        "target": "within-derivative",
         "relation": "about",
         "semantic_edge_indices": [
-          18
-        ]
-      },
-      {
-        "source": "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
-        "target": "ode-uniqueness",
-        "relation": "about",
-        "semantic_edge_indices": [
-          19
+          26
         ]
       },
       {
@@ -3931,7 +4596,39 @@
         "target": "time-reversal",
         "relation": "about",
         "semantic_edge_indices": [
-          20
+          27
+        ]
+      },
+      {
+        "source": "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
+        "target": "gronwall",
+        "relation": "about",
+        "semantic_edge_indices": [
+          28
+        ]
+      },
+      {
+        "source": "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
+        "target": "within-derivative",
+        "relation": "about",
+        "semantic_edge_indices": [
+          29
+        ]
+      },
+      {
+        "source": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
+        "target": "gronwall",
+        "relation": "about",
+        "semantic_edge_indices": [
+          30
+        ]
+      },
+      {
+        "source": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
+        "target": "within-derivative",
+        "relation": "about",
+        "semantic_edge_indices": [
+          31
         ]
       },
       {
@@ -3939,15 +4636,7 @@
         "target": "gronwall",
         "relation": "about",
         "semantic_edge_indices": [
-          21
-        ]
-      },
-      {
-        "source": "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]",
-        "target": "ode-uniqueness",
-        "relation": "about",
-        "semantic_edge_indices": [
-          22
+          32
         ]
       },
       {
@@ -3955,162 +4644,1582 @@
         "target": "gronwall",
         "relation": "about",
         "semantic_edge_indices": [
-          23
-        ]
-      },
-      {
-        "source": "fact:state-space",
-        "target": "curve-space",
-        "relation": "about",
-        "semantic_edge_indices": [
-          24
-        ]
-      },
-      {
-        "source": "fact:existence-hypotheses",
-        "target": "picard-existence",
-        "relation": "about",
-        "semantic_edge_indices": [
-          25
-        ]
-      },
-      {
-        "source": "existence-construction",
-        "target": "curve-space",
-        "relation": "about",
-        "semantic_edge_indices": [
-          26,
-          27
-        ]
-      },
-      {
-        "source": "existence-construction",
-        "target": "fixed-point",
-        "relation": "about",
-        "semantic_edge_indices": [
-          28,
-          34,
-          35,
-          36,
-          37
-        ]
-      },
-      {
-        "source": "existence-construction",
-        "target": "picard-iteration",
-        "relation": "about",
-        "semantic_edge_indices": [
-          29,
-          30,
-          38,
-          39,
-          40
-        ]
-      },
-      {
-        "source": "existence-construction",
-        "target": "factorial-bound",
-        "relation": "about",
-        "semantic_edge_indices": [
-          31,
-          32,
           33
         ]
       },
       {
-        "source": "existence-construction",
-        "target": "picard-existence",
+        "source": "lean:[\"norm_le_gronwallBound_of_norm_deriv_right_le\"]",
+        "target": "within-derivative",
+        "relation": "about",
+        "semantic_edge_indices": [
+          34
+        ]
+      },
+      {
+        "source": "fact:state-space",
+        "target": "admissible-curves",
+        "relation": "about",
+        "semantic_edge_indices": [
+          35
+        ]
+      },
+      {
+        "source": "fact:state-space",
+        "target": "within-derivative",
+        "relation": "about",
+        "semantic_edge_indices": [
+          36
+        ]
+      },
+      {
+        "source": "fact:existence-hypotheses",
+        "target": "admissible-curves",
+        "relation": "about",
+        "semantic_edge_indices": [
+          37
+        ]
+      },
+      {
+        "source": "fact:existence-hypotheses",
+        "target": "picard",
+        "relation": "about",
+        "semantic_edge_indices": [
+          38
+        ]
+      },
+      {
+        "source": "fact:existence-hypotheses",
+        "target": "factorial",
+        "relation": "about",
+        "semantic_edge_indices": [
+          39
+        ]
+      },
+      {
+        "source": "step:curve-space",
+        "target": "admissible-curves",
+        "relation": "about",
+        "semantic_edge_indices": [
+          40
+        ]
+      },
+      {
+        "source": "step:curve-space",
+        "target": "fixed-point",
         "relation": "about",
         "semantic_edge_indices": [
           41
         ]
       },
       {
-        "source": "fact:ode-solution",
-        "target": "picard-existence",
+        "source": "fact:curve-space",
+        "target": "admissible-curves",
         "relation": "about",
         "semantic_edge_indices": [
           42
         ]
       },
       {
-        "source": "fact:uniqueness-hypotheses",
-        "target": "ode-uniqueness",
+        "source": "fact:curve-space",
+        "target": "fixed-point",
         "relation": "about",
         "semantic_edge_indices": [
           43
         ]
       },
       {
-        "source": "fact:same-initial-value",
-        "target": "ode-uniqueness",
+        "source": "step:picard-self-map",
+        "target": "picard",
         "relation": "about",
         "semantic_edge_indices": [
           44
         ]
       },
       {
-        "source": "uniqueness-comparison",
-        "target": "gronwall",
+        "source": "step:picard-self-map",
+        "target": "admissible-curves",
         "relation": "about",
         "semantic_edge_indices": [
-          45,
-          46,
-          48
+          45
         ]
       },
       {
-        "source": "uniqueness-comparison",
-        "target": "ode-uniqueness",
+        "source": "fact:picard-self-map",
+        "target": "picard",
+        "relation": "about",
+        "semantic_edge_indices": [
+          46
+        ]
+      },
+      {
+        "source": "fact:picard-self-map",
+        "target": "admissible-curves",
         "relation": "about",
         "semantic_edge_indices": [
           47
         ]
       },
       {
-        "source": "fact:one-sided-principle",
-        "target": "ode-uniqueness",
+        "source": "step:factorial-bound",
+        "target": "picard",
+        "relation": "about",
+        "semantic_edge_indices": [
+          48
+        ]
+      },
+      {
+        "source": "step:factorial-bound",
+        "target": "factorial",
         "relation": "about",
         "semantic_edge_indices": [
           49
         ]
       },
       {
-        "source": "uniqueness-interval",
-        "target": "ode-uniqueness",
+        "source": "fact:factorial-bound",
+        "target": "factorial",
         "relation": "about",
         "semantic_edge_indices": [
-          50,
-          51,
-          52,
-          53,
-          54,
-          56,
-          57
+          50
         ]
       },
       {
-        "source": "uniqueness-interval",
-        "target": "time-reversal",
+        "source": "fact:factorial-bound",
+        "target": "fixed-point",
+        "relation": "about",
+        "semantic_edge_indices": [
+          51
+        ]
+      },
+      {
+        "source": "step:contracting-iterate",
+        "target": "factorial",
+        "relation": "about",
+        "semantic_edge_indices": [
+          52
+        ]
+      },
+      {
+        "source": "step:contracting-iterate",
+        "target": "fixed-point",
+        "relation": "about",
+        "semantic_edge_indices": [
+          53
+        ]
+      },
+      {
+        "source": "fact:contracting-iterate",
+        "target": "factorial",
+        "relation": "about",
+        "semantic_edge_indices": [
+          54
+        ]
+      },
+      {
+        "source": "fact:contracting-iterate",
+        "target": "fixed-point",
         "relation": "about",
         "semantic_edge_indices": [
           55
         ]
       },
       {
-        "source": "fact:agreement-on-interval",
-        "target": "ode-uniqueness",
+        "source": "step:fixed-curve",
+        "target": "fixed-point",
+        "relation": "about",
+        "semantic_edge_indices": [
+          56
+        ]
+      },
+      {
+        "source": "step:fixed-curve",
+        "target": "picard",
+        "relation": "about",
+        "semantic_edge_indices": [
+          57
+        ]
+      },
+      {
+        "source": "fact:fixed-curve",
+        "target": "fixed-point",
         "relation": "about",
         "semantic_edge_indices": [
           58
         ]
+      },
+      {
+        "source": "fact:fixed-curve",
+        "target": "picard",
+        "relation": "about",
+        "semantic_edge_indices": [
+          59
+        ]
+      },
+      {
+        "source": "step:integral-equation",
+        "target": "fixed-point",
+        "relation": "about",
+        "semantic_edge_indices": [
+          60
+        ]
+      },
+      {
+        "source": "step:integral-equation",
+        "target": "picard",
+        "relation": "about",
+        "semantic_edge_indices": [
+          61
+        ]
+      },
+      {
+        "source": "fact:integral-equation",
+        "target": "picard",
+        "relation": "about",
+        "semantic_edge_indices": [
+          62
+        ]
+      },
+      {
+        "source": "fact:integral-equation",
+        "target": "within-derivative",
+        "relation": "about",
+        "semantic_edge_indices": [
+          63
+        ]
+      },
+      {
+        "source": "step:ode-solution",
+        "target": "picard",
+        "relation": "about",
+        "semantic_edge_indices": [
+          64
+        ]
+      },
+      {
+        "source": "step:ode-solution",
+        "target": "within-derivative",
+        "relation": "about",
+        "semantic_edge_indices": [
+          65
+        ]
+      },
+      {
+        "source": "fact:ode-solution",
+        "target": "picard",
+        "relation": "about",
+        "semantic_edge_indices": [
+          66
+        ]
+      },
+      {
+        "source": "fact:ode-solution",
+        "target": "within-derivative",
+        "relation": "about",
+        "semantic_edge_indices": [
+          67
+        ]
+      },
+      {
+        "source": "fact:uniqueness-hypotheses",
+        "target": "gronwall",
+        "relation": "about",
+        "semantic_edge_indices": [
+          68
+        ]
+      },
+      {
+        "source": "fact:uniqueness-hypotheses",
+        "target": "within-derivative",
+        "relation": "about",
+        "semantic_edge_indices": [
+          69
+        ]
+      },
+      {
+        "source": "fact:same-initial-value",
+        "target": "gronwall",
+        "relation": "about",
+        "semantic_edge_indices": [
+          70
+        ]
+      },
+      {
+        "source": "fact:same-initial-value",
+        "target": "time-reversal",
+        "relation": "about",
+        "semantic_edge_indices": [
+          71
+        ]
+      },
+      {
+        "source": "step:trajectory-comparison",
+        "target": "gronwall",
+        "relation": "about",
+        "semantic_edge_indices": [
+          72
+        ]
+      },
+      {
+        "source": "step:trajectory-comparison",
+        "target": "within-derivative",
+        "relation": "about",
+        "semantic_edge_indices": [
+          73
+        ]
+      },
+      {
+        "source": "fact:trajectory-comparison",
+        "target": "gronwall",
+        "relation": "about",
+        "semantic_edge_indices": [
+          74
+        ]
+      },
+      {
+        "source": "step:one-sided-principle",
+        "target": "gronwall",
+        "relation": "about",
+        "semantic_edge_indices": [
+          75
+        ]
+      },
+      {
+        "source": "fact:one-sided-principle",
+        "target": "gronwall",
+        "relation": "about",
+        "semantic_edge_indices": [
+          76
+        ]
+      },
+      {
+        "source": "fact:one-sided-principle",
+        "target": "time-reversal",
+        "relation": "about",
+        "semantic_edge_indices": [
+          77
+        ]
+      },
+      {
+        "source": "step:split-interval",
+        "target": "within-derivative",
+        "relation": "about",
+        "semantic_edge_indices": [
+          78
+        ]
+      },
+      {
+        "source": "step:split-interval",
+        "target": "time-reversal",
+        "relation": "about",
+        "semantic_edge_indices": [
+          79
+        ]
+      },
+      {
+        "source": "fact:split-interval",
+        "target": "within-derivative",
+        "relation": "about",
+        "semantic_edge_indices": [
+          80
+        ]
+      },
+      {
+        "source": "fact:split-interval",
+        "target": "time-reversal",
+        "relation": "about",
+        "semantic_edge_indices": [
+          81
+        ]
+      },
+      {
+        "source": "step:forward-agreement",
+        "target": "gronwall",
+        "relation": "about",
+        "semantic_edge_indices": [
+          82
+        ]
+      },
+      {
+        "source": "step:forward-agreement",
+        "target": "within-derivative",
+        "relation": "about",
+        "semantic_edge_indices": [
+          83
+        ]
+      },
+      {
+        "source": "fact:forward-agreement",
+        "target": "gronwall",
+        "relation": "about",
+        "semantic_edge_indices": [
+          84
+        ]
+      },
+      {
+        "source": "step:backward-agreement",
+        "target": "time-reversal",
+        "relation": "about",
+        "semantic_edge_indices": [
+          85
+        ]
+      },
+      {
+        "source": "step:backward-agreement",
+        "target": "gronwall",
+        "relation": "about",
+        "semantic_edge_indices": [
+          86
+        ]
+      },
+      {
+        "source": "step:backward-agreement",
+        "target": "within-derivative",
+        "relation": "about",
+        "semantic_edge_indices": [
+          87
+        ]
+      },
+      {
+        "source": "fact:backward-agreement",
+        "target": "time-reversal",
+        "relation": "about",
+        "semantic_edge_indices": [
+          88
+        ]
+      },
+      {
+        "source": "step:agreement-on-interval",
+        "target": "time-reversal",
+        "relation": "about",
+        "semantic_edge_indices": [
+          89
+        ]
+      },
+      {
+        "source": "step:agreement-on-interval",
+        "target": "gronwall",
+        "relation": "about",
+        "semantic_edge_indices": [
+          90
+        ]
+      },
+      {
+        "source": "fact:agreement-on-interval",
+        "target": "gronwall",
+        "relation": "about",
+        "semantic_edge_indices": [
+          91
+        ]
+      },
+      {
+        "source": "fact:agreement-on-interval",
+        "target": "time-reversal",
+        "relation": "about",
+        "semantic_edge_indices": [
+          92
+        ]
       }
     ]
   },
-  "formal_evidence": {
-    "declaration_graph": "declarations.graph.json.gz",
-    "kernel_export": "lean-export.ndjson.gz",
-    "raw_export_sha256": "bb88b3483b2be4d506b83fc42f4a9296297ddb075466a34855f9c35c530177ff",
-    "declaration_ids": "Shared lean: IDs identify the same pinned Lean names in both graphs."
-  }
+  "views": {
+    "overview": {
+      "label": "Overview",
+      "nodes": [
+        "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
+        "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
+        "fact:state-space",
+        "fact:existence-hypotheses",
+        "step:curve-space",
+        "step:picard-self-map",
+        "step:factorial-bound",
+        "step:contracting-iterate",
+        "step:fixed-curve",
+        "step:integral-equation",
+        "step:ode-solution",
+        "fact:uniqueness-hypotheses",
+        "fact:same-initial-value",
+        "step:trajectory-comparison",
+        "step:one-sided-principle",
+        "step:split-interval",
+        "step:forward-agreement",
+        "step:backward-agreement",
+        "step:agreement-on-interval"
+      ],
+      "edges": [
+        {
+          "source": "fact:state-space",
+          "target": "step:curve-space",
+          "relation": "premise_of",
+          "edge_indices": [
+            0
+          ]
+        },
+        {
+          "source": "fact:existence-hypotheses",
+          "target": "step:picard-self-map",
+          "relation": "premise_of",
+          "edge_indices": [
+            4
+          ]
+        },
+        {
+          "source": "step:curve-space",
+          "target": "step:picard-self-map",
+          "relation": "supports",
+          "edge_indices": [
+            5
+          ]
+        },
+        {
+          "source": "step:picard-self-map",
+          "target": "step:factorial-bound",
+          "relation": "supports",
+          "edge_indices": [
+            9
+          ]
+        },
+        {
+          "source": "fact:existence-hypotheses",
+          "target": "step:factorial-bound",
+          "relation": "premise_of",
+          "edge_indices": [
+            10
+          ]
+        },
+        {
+          "source": "step:factorial-bound",
+          "target": "step:contracting-iterate",
+          "relation": "supports",
+          "edge_indices": [
+            14
+          ]
+        },
+        {
+          "source": "step:contracting-iterate",
+          "target": "step:fixed-curve",
+          "relation": "supports",
+          "edge_indices": [
+            17
+          ]
+        },
+        {
+          "source": "step:curve-space",
+          "target": "step:fixed-curve",
+          "relation": "supports",
+          "edge_indices": [
+            18
+          ]
+        },
+        {
+          "source": "step:fixed-curve",
+          "target": "step:integral-equation",
+          "relation": "supports",
+          "edge_indices": [
+            22
+          ]
+        },
+        {
+          "source": "step:picard-self-map",
+          "target": "step:integral-equation",
+          "relation": "supports",
+          "edge_indices": [
+            23
+          ]
+        },
+        {
+          "source": "step:integral-equation",
+          "target": "step:ode-solution",
+          "relation": "supports",
+          "edge_indices": [
+            27
+          ]
+        },
+        {
+          "source": "fact:existence-hypotheses",
+          "target": "step:ode-solution",
+          "relation": "premise_of",
+          "edge_indices": [
+            28
+          ]
+        },
+        {
+          "source": "fact:state-space",
+          "target": "step:ode-solution",
+          "relation": "premise_of",
+          "edge_indices": [
+            29
+          ]
+        },
+        {
+          "source": "step:ode-solution",
+          "target": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
+          "relation": "concludes",
+          "edge_indices": [
+            31
+          ]
+        },
+        {
+          "source": "step:trajectory-comparison",
+          "target": "step:one-sided-principle",
+          "relation": "supports",
+          "edge_indices": [
+            36
+          ]
+        },
+        {
+          "source": "fact:uniqueness-hypotheses",
+          "target": "step:split-interval",
+          "relation": "premise_of",
+          "edge_indices": [
+            39
+          ]
+        },
+        {
+          "source": "step:one-sided-principle",
+          "target": "step:forward-agreement",
+          "relation": "supports",
+          "edge_indices": [
+            41
+          ]
+        },
+        {
+          "source": "step:split-interval",
+          "target": "step:forward-agreement",
+          "relation": "supports",
+          "edge_indices": [
+            42
+          ]
+        },
+        {
+          "source": "fact:same-initial-value",
+          "target": "step:forward-agreement",
+          "relation": "premise_of",
+          "edge_indices": [
+            43
+          ]
+        },
+        {
+          "source": "step:one-sided-principle",
+          "target": "step:backward-agreement",
+          "relation": "supports",
+          "edge_indices": [
+            46
+          ]
+        },
+        {
+          "source": "step:split-interval",
+          "target": "step:backward-agreement",
+          "relation": "supports",
+          "edge_indices": [
+            47
+          ]
+        },
+        {
+          "source": "fact:same-initial-value",
+          "target": "step:backward-agreement",
+          "relation": "premise_of",
+          "edge_indices": [
+            48
+          ]
+        },
+        {
+          "source": "step:forward-agreement",
+          "target": "step:agreement-on-interval",
+          "relation": "supports",
+          "edge_indices": [
+            52
+          ]
+        },
+        {
+          "source": "step:backward-agreement",
+          "target": "step:agreement-on-interval",
+          "relation": "supports",
+          "edge_indices": [
+            53
+          ]
+        },
+        {
+          "source": "step:split-interval",
+          "target": "step:agreement-on-interval",
+          "relation": "supports",
+          "edge_indices": [
+            54
+          ]
+        },
+        {
+          "source": "step:agreement-on-interval",
+          "target": "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
+          "relation": "concludes",
+          "edge_indices": [
+            55
+          ]
+        }
+      ],
+      "collapsed_into": {
+        "fact:ode-solution": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
+        "fact:agreement-on-interval": "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
+        "fact:curve-space": "step:curve-space",
+        "fact:picard-self-map": "step:picard-self-map",
+        "fact:factorial-bound": "step:factorial-bound",
+        "fact:contracting-iterate": "step:contracting-iterate",
+        "fact:fixed-curve": "step:fixed-curve",
+        "fact:integral-equation": "step:integral-equation",
+        "fact:trajectory-comparison": "step:trajectory-comparison",
+        "fact:one-sided-principle": "step:one-sided-principle",
+        "fact:split-interval": "step:split-interval",
+        "fact:forward-agreement": "step:forward-agreement",
+        "fact:backward-agreement": "step:backward-agreement"
+      }
+    },
+    "steps": {
+      "label": "Proof steps and facts",
+      "nodes": [
+        "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
+        "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
+        "fact:state-space",
+        "fact:existence-hypotheses",
+        "step:curve-space",
+        "fact:curve-space",
+        "step:picard-self-map",
+        "fact:picard-self-map",
+        "step:factorial-bound",
+        "fact:factorial-bound",
+        "step:contracting-iterate",
+        "fact:contracting-iterate",
+        "step:fixed-curve",
+        "fact:fixed-curve",
+        "step:integral-equation",
+        "fact:integral-equation",
+        "step:ode-solution",
+        "fact:uniqueness-hypotheses",
+        "fact:same-initial-value",
+        "step:trajectory-comparison",
+        "fact:trajectory-comparison",
+        "step:one-sided-principle",
+        "fact:one-sided-principle",
+        "step:split-interval",
+        "fact:split-interval",
+        "step:forward-agreement",
+        "fact:forward-agreement",
+        "step:backward-agreement",
+        "fact:backward-agreement",
+        "step:agreement-on-interval"
+      ],
+      "edges": [
+        {
+          "source": "fact:state-space",
+          "target": "step:curve-space",
+          "relation": "premise_of",
+          "edge_indices": [
+            0
+          ]
+        },
+        {
+          "source": "step:curve-space",
+          "target": "fact:curve-space",
+          "relation": "produces",
+          "edge_indices": [
+            3
+          ]
+        },
+        {
+          "source": "fact:existence-hypotheses",
+          "target": "step:picard-self-map",
+          "relation": "premise_of",
+          "edge_indices": [
+            4
+          ]
+        },
+        {
+          "source": "fact:curve-space",
+          "target": "step:picard-self-map",
+          "relation": "premise_of",
+          "edge_indices": [
+            5
+          ]
+        },
+        {
+          "source": "step:picard-self-map",
+          "target": "fact:picard-self-map",
+          "relation": "produces",
+          "edge_indices": [
+            8
+          ]
+        },
+        {
+          "source": "fact:picard-self-map",
+          "target": "step:factorial-bound",
+          "relation": "premise_of",
+          "edge_indices": [
+            9
+          ]
+        },
+        {
+          "source": "fact:existence-hypotheses",
+          "target": "step:factorial-bound",
+          "relation": "premise_of",
+          "edge_indices": [
+            10
+          ]
+        },
+        {
+          "source": "step:factorial-bound",
+          "target": "fact:factorial-bound",
+          "relation": "produces",
+          "edge_indices": [
+            13
+          ]
+        },
+        {
+          "source": "fact:factorial-bound",
+          "target": "step:contracting-iterate",
+          "relation": "premise_of",
+          "edge_indices": [
+            14
+          ]
+        },
+        {
+          "source": "step:contracting-iterate",
+          "target": "fact:contracting-iterate",
+          "relation": "produces",
+          "edge_indices": [
+            16
+          ]
+        },
+        {
+          "source": "fact:contracting-iterate",
+          "target": "step:fixed-curve",
+          "relation": "premise_of",
+          "edge_indices": [
+            17
+          ]
+        },
+        {
+          "source": "fact:curve-space",
+          "target": "step:fixed-curve",
+          "relation": "premise_of",
+          "edge_indices": [
+            18
+          ]
+        },
+        {
+          "source": "step:fixed-curve",
+          "target": "fact:fixed-curve",
+          "relation": "produces",
+          "edge_indices": [
+            21
+          ]
+        },
+        {
+          "source": "fact:fixed-curve",
+          "target": "step:integral-equation",
+          "relation": "premise_of",
+          "edge_indices": [
+            22
+          ]
+        },
+        {
+          "source": "fact:picard-self-map",
+          "target": "step:integral-equation",
+          "relation": "premise_of",
+          "edge_indices": [
+            23
+          ]
+        },
+        {
+          "source": "step:integral-equation",
+          "target": "fact:integral-equation",
+          "relation": "produces",
+          "edge_indices": [
+            26
+          ]
+        },
+        {
+          "source": "fact:integral-equation",
+          "target": "step:ode-solution",
+          "relation": "premise_of",
+          "edge_indices": [
+            27
+          ]
+        },
+        {
+          "source": "fact:existence-hypotheses",
+          "target": "step:ode-solution",
+          "relation": "premise_of",
+          "edge_indices": [
+            28
+          ]
+        },
+        {
+          "source": "fact:state-space",
+          "target": "step:ode-solution",
+          "relation": "premise_of",
+          "edge_indices": [
+            29
+          ]
+        },
+        {
+          "source": "step:ode-solution",
+          "target": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
+          "relation": "concludes",
+          "edge_indices": [
+            31
+          ]
+        },
+        {
+          "source": "step:trajectory-comparison",
+          "target": "fact:trajectory-comparison",
+          "relation": "produces",
+          "edge_indices": [
+            35
+          ]
+        },
+        {
+          "source": "fact:trajectory-comparison",
+          "target": "step:one-sided-principle",
+          "relation": "premise_of",
+          "edge_indices": [
+            36
+          ]
+        },
+        {
+          "source": "step:one-sided-principle",
+          "target": "fact:one-sided-principle",
+          "relation": "produces",
+          "edge_indices": [
+            38
+          ]
+        },
+        {
+          "source": "fact:uniqueness-hypotheses",
+          "target": "step:split-interval",
+          "relation": "premise_of",
+          "edge_indices": [
+            39
+          ]
+        },
+        {
+          "source": "step:split-interval",
+          "target": "fact:split-interval",
+          "relation": "produces",
+          "edge_indices": [
+            40
+          ]
+        },
+        {
+          "source": "fact:one-sided-principle",
+          "target": "step:forward-agreement",
+          "relation": "premise_of",
+          "edge_indices": [
+            41
+          ]
+        },
+        {
+          "source": "fact:split-interval",
+          "target": "step:forward-agreement",
+          "relation": "premise_of",
+          "edge_indices": [
+            42
+          ]
+        },
+        {
+          "source": "fact:same-initial-value",
+          "target": "step:forward-agreement",
+          "relation": "premise_of",
+          "edge_indices": [
+            43
+          ]
+        },
+        {
+          "source": "step:forward-agreement",
+          "target": "fact:forward-agreement",
+          "relation": "produces",
+          "edge_indices": [
+            45
+          ]
+        },
+        {
+          "source": "fact:one-sided-principle",
+          "target": "step:backward-agreement",
+          "relation": "premise_of",
+          "edge_indices": [
+            46
+          ]
+        },
+        {
+          "source": "fact:split-interval",
+          "target": "step:backward-agreement",
+          "relation": "premise_of",
+          "edge_indices": [
+            47
+          ]
+        },
+        {
+          "source": "fact:same-initial-value",
+          "target": "step:backward-agreement",
+          "relation": "premise_of",
+          "edge_indices": [
+            48
+          ]
+        },
+        {
+          "source": "step:backward-agreement",
+          "target": "fact:backward-agreement",
+          "relation": "produces",
+          "edge_indices": [
+            51
+          ]
+        },
+        {
+          "source": "fact:forward-agreement",
+          "target": "step:agreement-on-interval",
+          "relation": "premise_of",
+          "edge_indices": [
+            52
+          ]
+        },
+        {
+          "source": "fact:backward-agreement",
+          "target": "step:agreement-on-interval",
+          "relation": "premise_of",
+          "edge_indices": [
+            53
+          ]
+        },
+        {
+          "source": "fact:split-interval",
+          "target": "step:agreement-on-interval",
+          "relation": "premise_of",
+          "edge_indices": [
+            54
+          ]
+        },
+        {
+          "source": "step:agreement-on-interval",
+          "target": "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
+          "relation": "concludes",
+          "edge_indices": [
+            55
+          ]
+        }
+      ],
+      "collapsed_into": {
+        "fact:ode-solution": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
+        "fact:agreement-on-interval": "lean:[\"ODE_solution_unique_of_mem_Icc\"]"
+      }
+    },
+    "references": {
+      "label": "Lean references",
+      "nodes": [
+        "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
+        "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
+        "lean:[\"IsPicardLindelof\"]",
+        "lean:[\"ODE\",\"FunSpace\"]",
+        "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
+        "lean:[\"ODE\",\"picard\"]",
+        "lean:[\"ODE\",\"FunSpace\",\"next\"]",
+        "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]",
+        "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]",
+        "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]",
+        "lean:[\"ContractingWith\",\"isFixedPt_fixedPoint_iterate\"]",
+        "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]",
+        "lean:[\"ODE\",\"FunSpace\",\"compProj\"]",
+        "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]",
+        "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
+        "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
+        "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]",
+        "lean:[\"norm_le_gronwallBound_of_norm_deriv_right_le\"]",
+        "fact:state-space",
+        "fact:existence-hypotheses",
+        "step:curve-space",
+        "fact:curve-space",
+        "step:picard-self-map",
+        "fact:picard-self-map",
+        "step:factorial-bound",
+        "fact:factorial-bound",
+        "step:contracting-iterate",
+        "fact:contracting-iterate",
+        "step:fixed-curve",
+        "fact:fixed-curve",
+        "step:integral-equation",
+        "fact:integral-equation",
+        "step:ode-solution",
+        "fact:ode-solution",
+        "fact:uniqueness-hypotheses",
+        "fact:same-initial-value",
+        "step:trajectory-comparison",
+        "fact:trajectory-comparison",
+        "step:one-sided-principle",
+        "fact:one-sided-principle",
+        "step:split-interval",
+        "fact:split-interval",
+        "step:forward-agreement",
+        "fact:forward-agreement",
+        "step:backward-agreement",
+        "fact:backward-agreement",
+        "step:agreement-on-interval",
+        "fact:agreement-on-interval"
+      ],
+      "edges": [
+        {
+          "source": "fact:state-space",
+          "target": "step:curve-space",
+          "relation": "premise_of",
+          "edge_indices": [
+            0
+          ]
+        },
+        {
+          "source": "lean:[\"ODE\",\"FunSpace\"]",
+          "target": "step:curve-space",
+          "relation": "summarizes",
+          "edge_indices": [
+            1
+          ]
+        },
+        {
+          "source": "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
+          "target": "step:curve-space",
+          "relation": "summarizes",
+          "edge_indices": [
+            2
+          ]
+        },
+        {
+          "source": "step:curve-space",
+          "target": "fact:curve-space",
+          "relation": "produces",
+          "edge_indices": [
+            3
+          ]
+        },
+        {
+          "source": "fact:existence-hypotheses",
+          "target": "step:picard-self-map",
+          "relation": "premise_of",
+          "edge_indices": [
+            4
+          ]
+        },
+        {
+          "source": "fact:curve-space",
+          "target": "step:picard-self-map",
+          "relation": "premise_of",
+          "edge_indices": [
+            5
+          ]
+        },
+        {
+          "source": "lean:[\"ODE\",\"picard\"]",
+          "target": "step:picard-self-map",
+          "relation": "summarizes",
+          "edge_indices": [
+            6
+          ]
+        },
+        {
+          "source": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
+          "target": "step:picard-self-map",
+          "relation": "summarizes",
+          "edge_indices": [
+            7
+          ]
+        },
+        {
+          "source": "step:picard-self-map",
+          "target": "fact:picard-self-map",
+          "relation": "produces",
+          "edge_indices": [
+            8
+          ]
+        },
+        {
+          "source": "fact:picard-self-map",
+          "target": "step:factorial-bound",
+          "relation": "premise_of",
+          "edge_indices": [
+            9
+          ]
+        },
+        {
+          "source": "fact:existence-hypotheses",
+          "target": "step:factorial-bound",
+          "relation": "premise_of",
+          "edge_indices": [
+            10
+          ]
+        },
+        {
+          "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]",
+          "target": "step:factorial-bound",
+          "relation": "summarizes",
+          "edge_indices": [
+            11
+          ]
+        },
+        {
+          "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]",
+          "target": "step:factorial-bound",
+          "relation": "summarizes",
+          "edge_indices": [
+            12
+          ]
+        },
+        {
+          "source": "step:factorial-bound",
+          "target": "fact:factorial-bound",
+          "relation": "produces",
+          "edge_indices": [
+            13
+          ]
+        },
+        {
+          "source": "fact:factorial-bound",
+          "target": "step:contracting-iterate",
+          "relation": "premise_of",
+          "edge_indices": [
+            14
+          ]
+        },
+        {
+          "source": "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]",
+          "target": "step:contracting-iterate",
+          "relation": "summarizes",
+          "edge_indices": [
+            15
+          ]
+        },
+        {
+          "source": "step:contracting-iterate",
+          "target": "fact:contracting-iterate",
+          "relation": "produces",
+          "edge_indices": [
+            16
+          ]
+        },
+        {
+          "source": "fact:contracting-iterate",
+          "target": "step:fixed-curve",
+          "relation": "premise_of",
+          "edge_indices": [
+            17
+          ]
+        },
+        {
+          "source": "fact:curve-space",
+          "target": "step:fixed-curve",
+          "relation": "premise_of",
+          "edge_indices": [
+            18
+          ]
+        },
+        {
+          "source": "lean:[\"ContractingWith\",\"isFixedPt_fixedPoint_iterate\"]",
+          "target": "step:fixed-curve",
+          "relation": "applies",
+          "edge_indices": [
+            19
+          ]
+        },
+        {
+          "source": "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]",
+          "target": "step:fixed-curve",
+          "relation": "summarizes",
+          "edge_indices": [
+            20
+          ]
+        },
+        {
+          "source": "step:fixed-curve",
+          "target": "fact:fixed-curve",
+          "relation": "produces",
+          "edge_indices": [
+            21
+          ]
+        },
+        {
+          "source": "fact:fixed-curve",
+          "target": "step:integral-equation",
+          "relation": "premise_of",
+          "edge_indices": [
+            22
+          ]
+        },
+        {
+          "source": "fact:picard-self-map",
+          "target": "step:integral-equation",
+          "relation": "premise_of",
+          "edge_indices": [
+            23
+          ]
+        },
+        {
+          "source": "lean:[\"ODE\",\"FunSpace\",\"compProj\"]",
+          "target": "step:integral-equation",
+          "relation": "summarizes",
+          "edge_indices": [
+            24
+          ]
+        },
+        {
+          "source": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
+          "target": "step:integral-equation",
+          "relation": "summarizes",
+          "edge_indices": [
+            25
+          ]
+        },
+        {
+          "source": "step:integral-equation",
+          "target": "fact:integral-equation",
+          "relation": "produces",
+          "edge_indices": [
+            26
+          ]
+        },
+        {
+          "source": "fact:integral-equation",
+          "target": "step:ode-solution",
+          "relation": "premise_of",
+          "edge_indices": [
+            27
+          ]
+        },
+        {
+          "source": "fact:existence-hypotheses",
+          "target": "step:ode-solution",
+          "relation": "premise_of",
+          "edge_indices": [
+            28
+          ]
+        },
+        {
+          "source": "fact:state-space",
+          "target": "step:ode-solution",
+          "relation": "premise_of",
+          "edge_indices": [
+            29
+          ]
+        },
+        {
+          "source": "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]",
+          "target": "step:ode-solution",
+          "relation": "applies",
+          "edge_indices": [
+            30
+          ]
+        },
+        {
+          "source": "step:ode-solution",
+          "target": "fact:ode-solution",
+          "relation": "produces",
+          "edge_indices": [
+            31
+          ]
+        },
+        {
+          "source": "fact:ode-solution",
+          "target": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
+          "relation": "concludes",
+          "edge_indices": [
+            32
+          ]
+        },
+        {
+          "source": "lean:[\"norm_le_gronwallBound_of_norm_deriv_right_le\"]",
+          "target": "step:trajectory-comparison",
+          "relation": "summarizes",
+          "edge_indices": [
+            33
+          ]
+        },
+        {
+          "source": "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]",
+          "target": "step:trajectory-comparison",
+          "relation": "summarizes",
+          "edge_indices": [
+            34
+          ]
+        },
+        {
+          "source": "step:trajectory-comparison",
+          "target": "fact:trajectory-comparison",
+          "relation": "produces",
+          "edge_indices": [
+            35
+          ]
+        },
+        {
+          "source": "fact:trajectory-comparison",
+          "target": "step:one-sided-principle",
+          "relation": "premise_of",
+          "edge_indices": [
+            36
+          ]
+        },
+        {
+          "source": "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]",
+          "target": "step:one-sided-principle",
+          "relation": "applies",
+          "edge_indices": [
+            37
+          ]
+        },
+        {
+          "source": "step:one-sided-principle",
+          "target": "fact:one-sided-principle",
+          "relation": "produces",
+          "edge_indices": [
+            38
+          ]
+        },
+        {
+          "source": "fact:uniqueness-hypotheses",
+          "target": "step:split-interval",
+          "relation": "premise_of",
+          "edge_indices": [
+            39
+          ]
+        },
+        {
+          "source": "step:split-interval",
+          "target": "fact:split-interval",
+          "relation": "produces",
+          "edge_indices": [
+            40
+          ]
+        },
+        {
+          "source": "fact:one-sided-principle",
+          "target": "step:forward-agreement",
+          "relation": "premise_of",
+          "edge_indices": [
+            41
+          ]
+        },
+        {
+          "source": "fact:split-interval",
+          "target": "step:forward-agreement",
+          "relation": "premise_of",
+          "edge_indices": [
+            42
+          ]
+        },
+        {
+          "source": "fact:same-initial-value",
+          "target": "step:forward-agreement",
+          "relation": "premise_of",
+          "edge_indices": [
+            43
+          ]
+        },
+        {
+          "source": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
+          "target": "step:forward-agreement",
+          "relation": "applies",
+          "edge_indices": [
+            44
+          ]
+        },
+        {
+          "source": "step:forward-agreement",
+          "target": "fact:forward-agreement",
+          "relation": "produces",
+          "edge_indices": [
+            45
+          ]
+        },
+        {
+          "source": "fact:one-sided-principle",
+          "target": "step:backward-agreement",
+          "relation": "premise_of",
+          "edge_indices": [
+            46
+          ]
+        },
+        {
+          "source": "fact:split-interval",
+          "target": "step:backward-agreement",
+          "relation": "premise_of",
+          "edge_indices": [
+            47
+          ]
+        },
+        {
+          "source": "fact:same-initial-value",
+          "target": "step:backward-agreement",
+          "relation": "premise_of",
+          "edge_indices": [
+            48
+          ]
+        },
+        {
+          "source": "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
+          "target": "step:backward-agreement",
+          "relation": "applies",
+          "edge_indices": [
+            49
+          ]
+        },
+        {
+          "source": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
+          "target": "step:backward-agreement",
+          "relation": "summarizes",
+          "edge_indices": [
+            50
+          ]
+        },
+        {
+          "source": "step:backward-agreement",
+          "target": "fact:backward-agreement",
+          "relation": "produces",
+          "edge_indices": [
+            51
+          ]
+        },
+        {
+          "source": "fact:forward-agreement",
+          "target": "step:agreement-on-interval",
+          "relation": "premise_of",
+          "edge_indices": [
+            52
+          ]
+        },
+        {
+          "source": "fact:backward-agreement",
+          "target": "step:agreement-on-interval",
+          "relation": "premise_of",
+          "edge_indices": [
+            53
+          ]
+        },
+        {
+          "source": "fact:split-interval",
+          "target": "step:agreement-on-interval",
+          "relation": "premise_of",
+          "edge_indices": [
+            54
+          ]
+        },
+        {
+          "source": "step:agreement-on-interval",
+          "target": "fact:agreement-on-interval",
+          "relation": "produces",
+          "edge_indices": [
+            55
+          ]
+        },
+        {
+          "source": "fact:agreement-on-interval",
+          "target": "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
+          "relation": "concludes",
+          "edge_indices": [
+            56
+          ]
+        }
+      ],
+      "collapsed_into": {}
+    }
+  },
+  "default_view": "steps"
 }
