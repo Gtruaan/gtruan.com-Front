@@ -1,6 +1,6 @@
 # gtruan.com Front-end
 
-Built with React on top of Vite and vanilla CSS.
+Built with React, TypeScript, Vite, and vanilla CSS.
 Site is running (or should be) on [gtruan.com](https://gtruan.com).
 
 Sprites were made by me on **paint.net** :smile:
@@ -18,7 +18,7 @@ yarn install
 Running
 
 ```bash
-yarn start
+yarn dev
 ```
 
 ---------------
