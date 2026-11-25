@@ -7,8 +7,10 @@ const diagram = bySelector("#diagram");
 const world = bySelector("#world");
 const edgeLayer = bySelector("#edges");
 const nodeLayer = bySelector("#nodes");
+const labelWorld = bySelector("#label-world");
 const inspector = bySelector("#inspector");
 const inspectorBody = bySelector("#inspector-body");
+const portraitLayout = window.matchMedia("(orientation: portrait) and (max-width: 1024px)");
 
 const proofRelations = new Set(["premise_of", "produces", "concludes"]);
 const referenceRelations = new Set(["applies", "summarizes", "unfolds"]);
@@ -195,9 +197,10 @@ function ellipsePath(rx, ry, seed, offset = 0) {
   ).join(" ") + " Z";
 }
 
-function createNode(item, projection) {
+function createNode(item, projection, portrait) {
   const isRoot = roots.includes(item.id);
-  const [ax, ay] = positionFor(item, projection);
+  const [x, y] = positionFor(item, projection);
+  const [ax, ay] = portrait ? [y * .82, x] : [x, y];
   const [title, formula] = shortLabel(item.id);
   const rx = isRoot ? 93 : prominent.has(item.id) ? 72 :
     item.kind === "inference" ? 64 : item.role === "assumption" ? 59 : 57;
@@ -209,8 +212,8 @@ function createNode(item, projection) {
   });
   const outline = svg("path", { class: "node-outline" });
   const echo = svg("path", { class: "node-echo" });
-  const label = svg("foreignObject", { class: "node-label" });
-  const content = html("div", null, "node-label-content");
+  // Keep the math in HTML so it doesn't depend on SVG foreignObject compositing.
+  const label = html("div", null, `node-label${isRoot ? " is-root" : ""}`);
   const stack = html("div", null, "node-label-stack");
   const titleElement = html("span", title, "node-title");
   const math = formula ? html("span", null, "node-formula") : null;
@@ -219,9 +222,8 @@ function createNode(item, projection) {
     drawMath(math, formula);
     stack.append(math);
   }
-  content.append(stack);
-  label.append(content);
-  group.append(outline, echo, label);
+  label.append(stack);
+  group.append(outline, echo);
   group.addEventListener("keydown", (event) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
@@ -229,6 +231,7 @@ function createNode(item, projection) {
     }
   });
   nodeLayer.append(group);
+  labelWorld.append(label);
   return {
     id: item.id, item, isRoot, rx, ry, baseRx: rx, baseRy: ry, ax, ay,
     x: ax, y: ay, vx: 0, vy: 0, group, pinned: false,
@@ -250,9 +253,11 @@ function createEdge(link, nodes) {
 function createLayout() {
   cancelAnimationFrame(frame);
   const projection = buildProjection(mode);
+  const portrait = portraitLayout.matches;
   nodeLayer.replaceChildren();
   edgeLayer.replaceChildren();
-  const nodes = projection.nodes.map((n) => createNode(n, projection));
+  labelWorld.replaceChildren();
+  const nodes = projection.nodes.map((n) => createNode(n, projection, portrait));
   const nodeMap = new Map(nodes.map((node) => [node.id, node]));
   const edges = projection.links.map((e) => createEdge(e, nodeMap));
   const neighbors = new Map(nodes.map((node) => [node.id, new Set()]));
@@ -260,7 +265,7 @@ function createLayout() {
     neighbors.get(edge.source).add(edge.target);
     neighbors.get(edge.target).add(edge.source);
   }
-  layout = { nodes, nodeMap, edges, neighbors, producer: projection.producer };
+  layout = { nodes, nodeMap, edges, neighbors, producer: projection.producer, portrait };
   fitLabels(nodes);
   for (let i = 0; i < 160; i++) forceStep(.36 + .64 * (1 - i / 160));
   separateNodes(40);
@@ -281,9 +286,8 @@ function setLabelBounds(node) {
   // The rectangle's corners sit inside the ellipse, away from the ink outline.
   const width = Math.floor(node.rx * labelWidthRatio);
   const height = Math.floor(node.ry * labelHeightRatio);
-  for (const [name, value] of Object.entries({ width, height, x: -width / 2, y: -height / 2 })) {
-    node.label.setAttribute(name, value);
-  }
+  node.label.style.width = `${width}px`;
+  node.label.style.height = `${height}px`;
   return { width: width - 3, height: height - 3 };
 }
 
@@ -328,9 +332,9 @@ function fitNodeLabel(node) {
 }
 
 function fitLabels(nodes) {
-  diagram.classList.add("is-fitting-labels");
+  stage.classList.add("is-fitting-labels");
   for (const node of nodes) fitNodeLabel(node);
-  diagram.classList.remove("is-fitting-labels");
+  stage.classList.remove("is-fitting-labels");
 }
 
 function projectedRadius(node, ux, uy) {
@@ -450,7 +454,10 @@ function paintEdge(edge) {
 }
 
 function paintNodes() {
-  for (const node of layout.nodes) node.group.setAttribute("transform", `translate(${node.x},${node.y})`);
+  for (const node of layout.nodes) {
+    node.group.setAttribute("transform", `translate(${node.x},${node.y})`);
+    node.label.style.transform = `translate(${node.x}px, ${node.y}px) translate(-50%, -50%)`;
+  }
   for (const edge of layout.edges) paintEdge(edge);
 }
 
@@ -472,6 +479,7 @@ function settle(iterations = 42) {
 
 function paintCamera() {
   world.setAttribute("transform", `translate(${camera.x},${camera.y}) scale(${camera.scale})`);
+  labelWorld.style.transform = `translate(${camera.x}px, ${camera.y}px) scale(${camera.scale})`;
 }
 
 function fitGraph(initial = false) {
@@ -485,7 +493,7 @@ function fitGraph(initial = false) {
   const margin = narrow ? 18 : 55;
   const scale = Math.min(1.32, (box.width - 2 * margin) / (right - left),
     (box.height - 72) / (bottom - top));
-  camera.scale = Math.max(initial && narrow ? .64 : .19, scale);
+  camera.scale = Math.max(initial && narrow && !layout.portrait ? .64 : .19, scale);
   camera.x = box.width / 2 - (left + right) / 2 * camera.scale;
   camera.y = (box.height - 15) / 2 - (top + bottom) / 2 * camera.scale;
   camera.fitted = true;
@@ -533,8 +541,10 @@ function updateHighlights() {
     }
   }
   for (const node of layout.nodes) {
+    const muted = Boolean(selected && !neighbors.has(node.id));
     node.group.classList.toggle("is-selected", node.id === selected);
-    node.group.classList.toggle("is-muted", Boolean(selected && !neighbors.has(node.id)));
+    node.group.classList.toggle("is-muted", muted);
+    node.label.classList.toggle("is-muted", muted);
     node.group.setAttribute("aria-pressed", String(node.id === selected));
   }
 }
@@ -753,7 +763,7 @@ document.addEventListener("keydown", (event) => {
   else if (selected) clearSelection(true);
 });
 bySelector("#formula-toggle").addEventListener("change", (event) => {
-  diagram.classList.toggle("hide-formulas", !event.target.checked);
+  stage.classList.toggle("hide-formulas", !event.target.checked);
 });
 bySelector("#reset-layout").addEventListener("click", () => {
   if (!proof) return;
@@ -772,6 +782,16 @@ for (const input of settings.querySelectorAll('input[name="detail"]')) {
     fitGraph(true);
   });
 }
+
+portraitLayout.addEventListener("change", () => {
+  if (!layout) return;
+  gesture = null;
+  diagram.classList.remove("is-dragging");
+  createLayout();
+  updateHighlights();
+  fitGraph(true);
+  if (selected) reveal(selected);
+});
 
 new ResizeObserver(() => {
   if (!layout || !camera.fitted) return;

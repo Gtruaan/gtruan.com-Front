@@ -76,6 +76,8 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   user-select: none;
 }
 .diagram.is-dragging { cursor: grabbing; }
+.diagram-labels { position: absolute; inset: 0; pointer-events: none; }
+.label-world { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
 .paper { pointer-events: none; }
 .tools {
   display: flex;
@@ -209,15 +211,16 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .graph-node:hover .node-outline, .graph-node:focus-visible .node-outline { fill: #f6f2e4; }
 .graph-node:focus-visible .node-outline { stroke: #367695; stroke-width: 2.7px; }
 .graph-node.is-selected .node-outline { stroke-width: 2.8px; fill: #fffaf0; }
-.node-label { pointer-events: none; overflow: visible; }
-.node-label-content {
-  width: 100%;
-  height: 100%;
+.node-label {
+  position: absolute;
+  top: 0;
+  left: 0;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   align-items: center;
   text-align: center;
 }
+.node-label.is-muted { opacity: .48; }
 .node-label-stack {
   display: flex;
   flex-direction: column;
