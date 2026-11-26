@@ -552,16 +552,20 @@
       }
     }
   ],
+  "title": "Irrationality of √2",
   "annotations": {
     "lean:irrational_sqrt_two": {
       "title": "Irrationality of √2",
-      "summary": "No rational number equals the nonnegative real square root of 2. The proof applies the irrationality theorem for prime square roots using the fact that 2 is prime.",
-      "statement_latex": "\\operatorname{Irrational}(\\sqrt{2})",
+      "summary": "The nonnegative real square root of 2 cannot be represented by a rational number. This follows from the irrationality of prime square roots and the primality of 2.",
+      "statement_latex": "\\sqrt{2}\\notin\\mathbb Q\\quad\\text{with }\\sqrt{2}\\text{ taken in }\\mathbb R.",
       "compact_latex": "\\sqrt{2}\\notin\\mathbb Q",
-      "why_here": "This is the theorem established by the concluding fact.",
+      "why_here": "It is the theorem established by the final specialization.",
+      "areas": [
+        "Number theory"
+      ],
       "concepts": [
         "irrationality",
-        "prime-nonsquare"
+        "prime-nonsquares"
       ],
       "support_edges": [
         18
@@ -570,147 +574,65 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
-    "lean:Irrational": {
-      "title": "Irrational real numbers",
-      "summary": "A real number is irrational if there is no rational number whose image in the reals equals it.",
-      "why_here": "Unfolding the definition lets the rational criterion be proved by comparing two kinds of witnesses.",
-      "concepts": [
-        "irrationality"
-      ],
-      "support_edges": [
-        2
-      ],
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "prompt_version": 5
-      }
-    },
-    "lean:irrational_sqrt_ratCast_iff_of_nonneg": {
+    "fact:rational-square": {
       "title": "Rational square criterion",
-      "summary": "For a nonnegative rational number, its real square root is irrational exactly when the number has no rational square witness.",
-      "statement_latex": "\\forall q\\in\\mathbb Q,\\quad 0\\le q\\implies\\bigl(\\operatorname{Irrational}(\\sqrt q)\\iff\\neg\\operatorname{IsSquare}_{\\mathbb Q}(q)\\bigr)",
-      "compact_latex": "\\sqrt q\\notin\\mathbb Q\\iff\\nexists y\\in\\mathbb Q\\; (y^2=q)\\qquad(q\\in\\mathbb Q,\\ q\\ge0)",
-      "why_here": "The rational-witness argument establishes this equivalence.",
+      "summary": "For a nonnegative rational number, rationality of its real square root is equivalent to having a rational square witness. A rational square root itself gives a witness, and a rational square witness gives the square root after taking its absolute value. Negating this equivalence gives the irrationality criterion.",
+      "statement_latex": "\\forall q\\in\\mathbb Q_{\\ge0},\\quad \\sqrt q\\notin\\mathbb Q\\iff\\neg\\exists r\\in\\mathbb Q\\;(r^2=q),\\quad\\text{where }\\sqrt q\\text{ is taken in }\\mathbb R.",
+      "compact_latex": "\\sqrt q\\notin\\mathbb Q\\iff\\neg\\mathrm{Sq}_{\\mathbb Q}(q),\\ q\\ge0",
+      "why_here": "It supplies the criterion that is then applied to a natural number viewed as rational.",
       "concepts": [
         "irrationality",
-        "square-witnesses"
+        "squarehood",
+        "principal-root"
       ],
       "support_edges": [
-        1
+        0,
+        3
       ],
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
-    "lean:Rat.isSquare_natCast_iff": {
-      "title": "Squarehood under rational casting",
-      "summary": "A natural number has a rational square witness exactly when it has a natural square witness. This identifies the two squarehood tests for the same natural number.",
-      "why_here": "This equivalence replaces the rational squarehood condition with the natural one.",
-      "concepts": [
-        "squarehood-transfer"
-      ],
-      "support_edges": [
-        6
-      ],
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "prompt_version": 5
-      }
-    },
-    "lean:irrational_sqrt_natCast_iff": {
+    "fact:natural-square": {
       "title": "Natural square criterion",
-      "summary": "The real square root of a natural number is irrational exactly when the number has no natural square witness.",
-      "statement_latex": "\\forall n\\in\\mathbb N,\\quad\\operatorname{Irrational}(\\sqrt n)\\iff\\neg\\operatorname{IsSquare}_{\\mathbb N}(n)",
-      "compact_latex": "\\sqrt n\\notin\\mathbb Q\\iff\\nexists m\\in\\mathbb N\\; (m^2=n)\\qquad(n\\in\\mathbb N)",
-      "why_here": "The transfer step establishes this equivalence, and the prime argument uses the direction from nonsquare to irrational.",
+      "summary": "A natural number has an irrational real square root exactly when it is not a perfect square in the natural numbers. The transfer works because a natural number that is a square in the rationals is already a square in the naturals.",
+      "statement_latex": "\\forall n\\in\\mathbb N,\\quad \\sqrt n\\notin\\mathbb Q\\iff\\neg\\exists m\\in\\mathbb N\\;(m^2=n),\\quad\\text{where }\\sqrt n\\text{ is taken in }\\mathbb R.",
+      "compact_latex": "\\sqrt n\\notin\\mathbb Q\\iff\\neg\\mathrm{Sq}_{\\mathbb N}(n)",
+      "why_here": "It converts the nonsquare property of a prime into irrationality of its square root.",
       "concepts": [
         "irrationality",
-        "squarehood-transfer"
+        "squarehood",
+        "square-transfer"
       ],
       "support_edges": [
-        5,
-        10
+        4,
+        7
       ],
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
-      }
-    },
-    "lean:Nat.Prime.irrational_sqrt": {
-      "title": "Prime square roots",
-      "summary": "Every prime natural number has an irrational real square root.",
-      "statement_latex": "\\forall p\\in\\mathbb N,\\quad\\operatorname{Prime}(p)\\implies\\operatorname{Irrational}(\\sqrt p)",
-      "compact_latex": "\\sqrt p\\notin\\mathbb Q\\qquad(p\\in\\mathbb N\\text{ prime})",
-      "why_here": "The prime argument establishes this general result, which is then applied to 2.",
-      "concepts": [
-        "prime-nonsquare",
-        "irrationality"
-      ],
-      "support_edges": [
-        9,
-        17
-      ],
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "prompt_version": 5
-      }
-    },
-    "lean:Irreducible.not_isSquare": {
-      "title": "Irreducible elements are nonsquares",
-      "summary": "If an irreducible element factored as a square, irreducibility would force its repeated factor to be a unit. The square would then also be a unit, contradicting irreducibility.",
-      "why_here": "The graph identifies this nonsquare principle as support for the prime-root argument.",
-      "concepts": [
-        "prime-nonsquare"
-      ],
-      "support_edges": [
-        11
-      ],
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "prompt_version": 5
-      }
-    },
-    "lean:Nat.prime_two": {
-      "title": "2 is prime",
-      "summary": "This theorem supplies primality for the specific natural number 2.",
-      "compact_latex": "\\operatorname{Prime}(2)",
-      "why_here": "The primality step cites this theorem to supply the hypothesis for specialization.",
-      "concepts": [
-        "prime-nonsquare"
-      ],
-      "support_edges": [
-        13
-      ],
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     "step:rational-square": {
-      "title": "Convert square-root witnesses",
-      "summary": "Take a nonnegative rational q. If the real square root of q equals a rational y, squaring gives y² = q because the real square root squares to q and the rational embedding is injective. Conversely, from a rational square witness q = (q′)², the rational number |q′| equals the real square root of q. Negating the equivalence between witness existence statements gives the irrationality criterion.",
-      "why_here": "This proves the rational criterion by unfolding irrationality and converting witnesses in both directions.",
+      "title": "Match rational square witnesses",
+      "summary": "For a nonnegative rational q, suppose a rational y represents its real square root. Squaring gives y² = q in the reals, and injectivity of the rational embedding gives the same equality in the rationals. Conversely, if r² = q for a rational r, then the real square root is |r|, which is rational. Negating the resulting equivalence gives the rational square criterion.",
+      "compact_latex": "y^2=q",
+      "why_here": "It expands irrationality into the absence of a rational representative and derives the rational square criterion.",
       "concepts": [
         "irrationality",
-        "square-witnesses"
+        "squarehood",
+        "principal-root"
       ],
       "support_edges": [
         0,
@@ -721,37 +643,18 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
-      }
-    },
-    "fact:rational-square": {
-      "title": "Nonnegative rational criterion",
-      "summary": "For any nonnegative rational q, its real square root is irrational exactly when q is a nonsquare in the rationals.",
-      "statement_latex": "\\forall q\\in\\mathbb Q,\\quad 0\\le q\\implies\\bigl(\\operatorname{Irrational}(\\sqrt q)\\iff\\neg\\operatorname{IsSquare}_{\\mathbb Q}(q)\\bigr)",
-      "compact_latex": "\\sqrt q\\notin\\mathbb Q\\iff\\nexists y\\in\\mathbb Q\\; (y^2=q)\\qquad(q\\in\\mathbb Q,\\ q\\ge0)",
-      "why_here": "This is the result of the witness conversion and the premise used to obtain the natural criterion.",
-      "concepts": [
-        "irrationality",
-        "square-witnesses"
-      ],
-      "support_edges": [
-        0,
-        3
-      ],
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     "step:natural-square": {
-      "title": "Transfer the criterion to naturals",
-      "summary": "View an arbitrary natural number n as a nonnegative rational and apply the rational criterion. Its casts through the rationals and directly into the reals give the same square-root input. The squarehood transfer lemma replaces rational squarehood with natural squarehood, yielding the criterion for n.",
-      "why_here": "This connects the rational witness argument to the natural-number condition used for primes.",
+      "title": "Transfer squarehood to the naturals",
+      "summary": "Apply the rational criterion to a natural number viewed as a nonnegative rational. The squarehood transfer theorem equates having a rational square witness with having a natural square witness. The two embeddings into the reals give the same radicand, so the resulting criterion concerns the original real square root.",
+      "compact_latex": "\\mathrm{Sq}_{\\mathbb Q}(n)\\iff\\mathrm{Sq}_{\\mathbb N}(n)",
+      "why_here": "It turns the rational criterion into one about natural perfect squares.",
       "concepts": [
-        "squarehood-transfer",
-        "irrationality"
+        "squarehood",
+        "square-transfer"
       ],
       "support_edges": [
         3,
@@ -763,36 +666,18 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
-      }
-    },
-    "fact:natural-square": {
-      "title": "Natural square criterion",
-      "summary": "For every natural number n, the real square root of n is irrational exactly when no natural number squares to n.",
-      "statement_latex": "\\forall n\\in\\mathbb N,\\quad\\operatorname{Irrational}(\\sqrt n)\\iff\\neg\\operatorname{IsSquare}_{\\mathbb N}(n)",
-      "compact_latex": "\\sqrt n\\notin\\mathbb Q\\iff\\nexists m\\in\\mathbb N\\; (m^2=n)\\qquad(n\\in\\mathbb N)",
-      "why_here": "This is the transferred equivalence used to turn the nonsquare property of a prime into irrationality.",
-      "concepts": [
-        "squarehood-transfer",
-        "irrationality"
-      ],
-      "support_edges": [
-        4,
-        7
-      ],
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     "step:prime-root": {
-      "title": "Apply the criterion to a prime",
-      "summary": "Assume p is a prime natural number. A factorization p = m² would give two copies of the same factor, so primality would force m = 1 and hence p = 1, which is impossible for a prime. The nonsquare-to-irrational direction of the natural criterion now gives irrationality of √p.",
-      "why_here": "This discharges the squarehood condition using primality and produces the general prime-root result.",
+      "title": "Prime square roots are irrational",
+      "summary": "Start with a prime natural number p. The nonsquare property of irreducibles rules out p = m², since a square of a nonunit factors into two nonunits and a square of a unit is a unit. The natural square criterion then gives irrationality of √p.",
+      "compact_latex": "\\operatorname{Prime}(p)\\Rightarrow\\sqrt p\\notin\\mathbb Q",
+      "why_here": "It supplies the general implication that the final step uses at 2.",
       "concepts": [
-        "prime-nonsquare",
+        "prime-nonsquares",
+        "squarehood",
         "irrationality"
       ],
       "support_edges": [
@@ -806,17 +691,182 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    "fact:specialize": {
+      "title": "Irrationality of √2",
+      "summary": "The prime square root theorem at the prime 2 yields the same irrationality statement as the root theorem.",
+      "compact_latex": "\\sqrt{2}\\notin\\mathbb Q",
+      "why_here": "It is the explicit conclusion produced by specializing the prime square root theorem.",
+      "concepts": [
+        "irrationality",
+        "prime-nonsquares"
+      ],
+      "support_edges": [
+        16,
+        18
+      ],
+      "display_as": "lean:irrational_sqrt_two",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    "lean:Irrational": {
+      "title": "Irrationality",
+      "summary": "A real number is irrational when it lies outside the image of the rationals in the reals. Thus a rational representative is a witness to the negation of irrationality.",
+      "compact_latex": "x\\notin\\mathbb Q",
+      "why_here": "Its definition lets the rational criterion be proved by comparing two kinds of witnesses.",
+      "concepts": [
+        "irrationality"
+      ],
+      "support_edges": [
+        2
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    "lean:irrational_sqrt_ratCast_iff_of_nonneg": {
+      "title": "Rational square criterion",
+      "summary": "For a nonnegative rational q, the real square root of q is irrational exactly when q has no rational square witness.",
+      "compact_latex": "\\sqrt q\\notin\\mathbb Q\\iff\\neg\\mathrm{Sq}_{\\mathbb Q}(q),\\ q\\ge0",
+      "why_here": "It is the declaration whose witness argument is summarized in the graph.",
+      "concepts": [
+        "irrationality",
+        "squarehood",
+        "principal-root"
+      ],
+      "support_edges": [
+        1
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    "lean:Rat.isSquare_natCast_iff": {
+      "title": "Squarehood of naturals in ℚ",
+      "summary": "A natural number is a rational square exactly when it is a natural square. If a reduced fraction a/b with b positive has an integer square, then b² divides a². Coprimality forces b = 1, so the absolute value of the numerator gives a natural witness.",
+      "statement_latex": "\\forall n\\in\\mathbb N,\\quad (\\exists r\\in\\mathbb Q\\;r^2=n)\\iff(\\exists m\\in\\mathbb N\\;m^2=n),\\quad\\text{with }n\\text{ embedded in }\\mathbb Q\\text{ on the left}.",
+      "compact_latex": "\\mathrm{Sq}_{\\mathbb Q}(n)\\iff\\mathrm{Sq}_{\\mathbb N}(n)",
+      "why_here": "It justifies replacing rational squarehood with natural squarehood for a natural radicand.",
+      "concepts": [
+        "squarehood",
+        "square-transfer"
+      ],
+      "support_edges": [
+        6
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    "lean:irrational_sqrt_natCast_iff": {
+      "title": "Natural square criterion",
+      "summary": "For a natural number n, its real square root is irrational exactly when no natural number squares to n.",
+      "compact_latex": "\\sqrt n\\notin\\mathbb Q\\iff\\neg\\mathrm{Sq}_{\\mathbb N}(n)",
+      "why_here": "The graph summarizes its derivation from the rational criterion and applies it to primes.",
+      "concepts": [
+        "irrationality",
+        "squarehood",
+        "square-transfer"
+      ],
+      "support_edges": [
+        5,
+        10
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    "lean:Nat.Prime.irrational_sqrt": {
+      "title": "Irrationality of prime square roots",
+      "summary": "Every prime natural number has an irrational real square root.",
+      "statement_latex": "\\forall p\\in\\mathbb N,\\quad \\operatorname{Prime}(p)\\Rightarrow\\sqrt p\\notin\\mathbb Q,\\quad\\text{where }\\sqrt p\\text{ is taken in }\\mathbb R.",
+      "compact_latex": "\\operatorname{Prime}(p)\\Rightarrow\\sqrt p\\notin\\mathbb Q",
+      "why_here": "This is the general theorem applied at 2 in the final step.",
+      "concepts": [
+        "prime-nonsquares",
+        "irrationality"
+      ],
+      "support_edges": [
+        9,
+        17
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    "lean:Irreducible.not_isSquare": {
+      "title": "Irreducibles are nonsquares",
+      "summary": "In the natural-number application, a prime is irreducible. If it were a square, its square factorization would force the repeated factor to be a unit, which would make the square itself a unit and contradict irreducibility.",
+      "why_here": "It supplies the nonsquare premise for applying the natural square criterion to a prime.",
+      "concepts": [
+        "prime-nonsquares",
+        "squarehood"
+      ],
+      "support_edges": [
+        11
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    "lean:Nat.prime_two": {
+      "title": "Primality of 2",
+      "summary": "The natural number 2 has exactly the positive divisors 1 and 2.",
+      "compact_latex": "\\operatorname{Prime}(2)",
+      "why_here": "This declaration supplies the primality fact needed for the specialization.",
+      "concepts": [
+        "prime-nonsquares"
+      ],
+      "support_edges": [
+        13
+      ],
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     "fact:prime-root": {
-      "title": "Prime square roots are irrational",
-      "summary": "For any natural number p with a proof of primality, its real square root is irrational.",
-      "statement_latex": "\\forall p\\in\\mathbb N,\\quad\\operatorname{Prime}(p)\\implies\\operatorname{Irrational}(\\sqrt p)",
-      "compact_latex": "\\sqrt p\\notin\\mathbb Q\\qquad(p\\in\\mathbb N\\text{ prime})",
-      "why_here": "This general result supplies the rule applied at 2.",
+      "title": "Irrationality of prime square roots",
+      "summary": "If p is a prime natural number, then its real square root is irrational. The result applies to any prime p.",
+      "compact_latex": "\\operatorname{Prime}(p)\\Rightarrow\\sqrt p\\notin\\mathbb Q",
+      "why_here": "It provides the general premise for the argument at 2.",
       "concepts": [
-        "prime-nonsquare",
+        "prime-nonsquares",
         "irrationality"
       ],
       "support_edges": [
@@ -827,16 +877,17 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     "step:two-prime": {
-      "title": "Use the primality of 2",
-      "summary": "The step takes the established theorem that 2 is prime and supplies that same fact as a premise for specialization. The supplied graph gives no separate primality derivation.",
+      "title": "Invoke the primality of 2",
+      "summary": "Use the established theorem that 2 is prime. This supplies the concrete primality premise for the final application.",
       "compact_latex": "\\operatorname{Prime}(2)",
-      "why_here": "This forwards the named primality theorem to the premise used in the final step.",
+      "why_here": "It brings the cited primality theorem into the argument as a premise.",
       "concepts": [
-        "prime-nonsquare"
+        "prime-nonsquares"
       ],
       "support_edges": [
         12,
@@ -847,16 +898,17 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     "fact:two-prime": {
       "title": "Primality of 2",
-      "summary": "The specific natural number 2 satisfies the primality hypothesis of the prime-root theorem.",
+      "summary": "The required primality condition holds for the specific radicand 2.",
       "compact_latex": "\\operatorname{Prime}(2)",
-      "why_here": "This supplies the concrete primality premise for the specialization.",
+      "why_here": "It discharges the prime square root theorem's hypothesis at 2.",
       "concepts": [
-        "prime-nonsquare"
+        "prime-nonsquares"
       ],
       "support_edges": [
         12,
@@ -866,16 +918,18 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     "step:specialize": {
-      "title": "Specialize the prime-root theorem at 2",
-      "summary": "The general prime-root theorem takes a natural number together with its primality proof. Substituting 2 and using the supplied proof of its primality yields that the real square root of 2 is irrational.",
-      "why_here": "This combines the general theorem with the primality of 2 to produce the concluding fact.",
+      "title": "Apply the prime square root theorem",
+      "summary": "Take p = 2 in the theorem that prime natural numbers have irrational real square roots. Since 2 is prime, the resulting instance gives the irrationality of √2.",
+      "compact_latex": "\\sqrt{2}\\notin\\mathbb Q",
+      "why_here": "It combines the general prime result and the specific primality fact to obtain the conclusion.",
       "concepts": [
-        "prime-nonsquare",
-        "irrationality"
+        "irrationality",
+        "prime-nonsquares"
       ],
       "support_edges": [
         14,
@@ -887,90 +941,87 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
-      }
-    },
-    "fact:specialize": {
-      "title": "Irrationality of √2",
-      "summary": "The real square root of 2 has no rational representative.",
-      "statement_latex": "\\operatorname{Irrational}(\\sqrt{2})",
-      "compact_latex": "\\sqrt{2}\\notin\\mathbb Q",
-      "why_here": "This is the output of specialization and states exactly the root theorem.",
-      "concepts": [
-        "irrationality",
-        "prime-nonsquare"
-      ],
-      "support_edges": [
-        16,
-        18
-      ],
-      "display_as": "lean:irrational_sqrt_two",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     }
   },
   "concepts": [
     {
       "id": "irrationality",
-      "title": "Irrationality as absence of a rational representative",
-      "summary": "A real number is irrational when no rational number maps to it under the embedding of the rationals into the reals. An equivalence about the existence of rational representatives can be negated to obtain an irrationality criterion.",
+      "title": "Irrational numbers",
+      "summary": "A real number is irrational if no rational number represents it under the usual embedding into the reals.",
       "detail": "foundation",
       "kind": "concept",
       "annotation_provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     {
-      "id": "square-witnesses",
-      "title": "Square witnesses and absolute value",
-      "summary": "For a nonnegative rational q, a rational representative y of √q gives a rational square witness by squaring. In the reverse direction, any rational y satisfying y² = q gives |y| as a rational representative of √q, since the real square root is nonnegative.",
+      "id": "squarehood",
+      "title": "Square witnesses",
+      "summary": "For S equal to ℚ or ℕ, the predicate Sqₛ(x) means that some y in S satisfies y² = x. When a natural number is tested for squarehood in ℚ, it is first viewed as a rational number.",
       "detail": "foundation",
       "kind": "concept",
       "annotation_provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     {
-      "id": "squarehood-transfer",
-      "title": "Squarehood across natural and rational numbers",
-      "summary": "A natural number is a square in the rationals exactly when it is a square in the naturals. Consequently the square-root criterion for a rational input can be expressed using natural square witnesses when the input comes from the naturals.",
+      "id": "principal-root",
+      "title": "Nonnegative real square root",
+      "summary": "For a nonnegative real x, its square root is the unique nonnegative real whose square is x. In particular, √(r²) = |r| for real r.",
       "detail": "foundation",
       "kind": "concept",
       "annotation_provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     {
-      "id": "prime-nonsquare",
-      "title": "Prime numbers are nonsquares",
-      "summary": "A square factorization of a prime would repeat a factor, and primality forces that factor to be 1. This would make the prime itself 1, so the natural square criterion implies that every prime has an irrational square root.",
+      "id": "square-transfer",
+      "title": "Squarehood across ℕ and ℚ",
+      "summary": "A natural number has a square witness in ℚ exactly when it has one in ℕ. A rational witness whose square is an integer has denominator 1 in lowest terms.",
       "detail": "foundation",
       "kind": "concept",
       "annotation_provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "id": "prime-nonsquares",
+      "title": "Primes are nonsquares",
+      "summary": "A prime natural number cannot be a perfect square. If it were m², then m would be a divisor strictly between 1 and m².",
+      "detail": "foundation",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     }
   ],
   "groups": [
     {
       "id": "square-criteria",
-      "title": "Square criteria for irrationality",
+      "title": "Derive the square criteria",
       "steps": [
         "step:rational-square",
         "step:natural-square"
@@ -980,7 +1031,8 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       },
       "inputs": [],
       "outputs": [
@@ -989,7 +1041,7 @@
     },
     {
       "id": "prime-application",
-      "title": "From prime square roots to √2",
+      "title": "Apply the criterion to primes and to 2",
       "steps": [
         "step:prime-root",
         "step:two-prime",
@@ -1000,7 +1052,8 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       },
       "inputs": [
         "fact:natural-square"
@@ -1019,18 +1072,212 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     {
       "source": "lean:irrational_sqrt_two",
-      "target": "prime-nonsquare",
+      "target": "prime-nonsquares",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "source": "fact:rational-square",
+      "target": "irrationality",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "source": "fact:rational-square",
+      "target": "squarehood",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "source": "fact:rational-square",
+      "target": "principal-root",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "source": "fact:natural-square",
+      "target": "irrationality",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "source": "fact:natural-square",
+      "target": "squarehood",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "source": "fact:natural-square",
+      "target": "square-transfer",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "source": "step:rational-square",
+      "target": "irrationality",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "source": "step:rational-square",
+      "target": "squarehood",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "source": "step:rational-square",
+      "target": "principal-root",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "source": "step:natural-square",
+      "target": "squarehood",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "source": "step:natural-square",
+      "target": "square-transfer",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "source": "step:prime-root",
+      "target": "prime-nonsquares",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "source": "step:prime-root",
+      "target": "squarehood",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "source": "step:prime-root",
+      "target": "irrationality",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "source": "fact:specialize",
+      "target": "irrationality",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "source": "fact:specialize",
+      "target": "prime-nonsquares",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     {
@@ -1041,7 +1288,8 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     {
@@ -1052,29 +1300,56 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     {
       "source": "lean:irrational_sqrt_ratCast_iff_of_nonneg",
-      "target": "square-witnesses",
+      "target": "squarehood",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "source": "lean:irrational_sqrt_ratCast_iff_of_nonneg",
+      "target": "principal-root",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     {
       "source": "lean:Rat.isSquare_natCast_iff",
-      "target": "squarehood-transfer",
+      "target": "squarehood",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "source": "lean:Rat.isSquare_natCast_iff",
+      "target": "square-transfer",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     {
@@ -1085,29 +1360,44 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     {
       "source": "lean:irrational_sqrt_natCast_iff",
-      "target": "squarehood-transfer",
+      "target": "squarehood",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "source": "lean:irrational_sqrt_natCast_iff",
+      "target": "square-transfer",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     {
       "source": "lean:Nat.Prime.irrational_sqrt",
-      "target": "prime-nonsquare",
+      "target": "prime-nonsquares",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     {
@@ -1118,150 +1408,56 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     {
       "source": "lean:Irreducible.not_isSquare",
-      "target": "prime-nonsquare",
+      "target": "prime-nonsquares",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
+      }
+    },
+    {
+      "source": "lean:Irreducible.not_isSquare",
+      "target": "squarehood",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     {
       "source": "lean:Nat.prime_two",
-      "target": "prime-nonsquare",
+      "target": "prime-nonsquares",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "step:rational-square",
-      "target": "irrationality",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "step:rational-square",
-      "target": "square-witnesses",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "fact:rational-square",
-      "target": "irrationality",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "fact:rational-square",
-      "target": "square-witnesses",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "step:natural-square",
-      "target": "squarehood-transfer",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "step:natural-square",
-      "target": "irrationality",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "fact:natural-square",
-      "target": "squarehood-transfer",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "fact:natural-square",
-      "target": "irrationality",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "step:prime-root",
-      "target": "prime-nonsquare",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "step:prime-root",
-      "target": "irrationality",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     {
       "source": "fact:prime-root",
-      "target": "prime-nonsquare",
+      "target": "prime-nonsquares",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     {
@@ -1272,40 +1468,32 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     {
       "source": "step:two-prime",
-      "target": "prime-nonsquare",
+      "target": "prime-nonsquares",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     {
       "source": "fact:two-prime",
-      "target": "prime-nonsquare",
+      "target": "prime-nonsquares",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "step:specialize",
-      "target": "prime-nonsquare",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     {
@@ -1316,29 +1504,20 @@
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     },
     {
-      "source": "fact:specialize",
-      "target": "irrationality",
+      "source": "step:specialize",
+      "target": "prime-nonsquares",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "fact:specialize",
-      "target": "prime-nonsquare",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "prompt_version": 5
+        "retained_merges": 2,
+        "prompt_version": 7
       }
     }
   ],
@@ -1358,9 +1537,10 @@
       "fact:natural-square",
       "fact:specialize",
       "irrationality",
-      "square-witnesses",
-      "squarehood-transfer",
-      "prime-nonsquare",
+      "squarehood",
+      "principal-root",
+      "square-transfer",
+      "prime-nonsquares",
       "square-criteria",
       "prime-application"
     ],
@@ -1376,9 +1556,10 @@
       "fact:natural-square": "standard",
       "fact:specialize": "standard",
       "irrationality": "standard",
-      "square-witnesses": "standard",
-      "squarehood-transfer": "standard",
-      "prime-nonsquare": "standard",
+      "squarehood": "standard",
+      "principal-root": "standard",
+      "square-transfer": "standard",
+      "prime-nonsquares": "standard",
       "square-criteria": "block",
       "prime-application": "block"
     },
@@ -1508,10 +1689,116 @@
       },
       {
         "source": "lean:irrational_sqrt_two",
-        "target": "prime-nonsquare",
+        "target": "prime-nonsquares",
         "relation": "about",
         "semantic_edge_indices": [
           1
+        ]
+      },
+      {
+        "source": "square-criteria",
+        "target": "irrationality",
+        "relation": "about",
+        "semantic_edge_indices": [
+          2,
+          8
+        ]
+      },
+      {
+        "source": "square-criteria",
+        "target": "squarehood",
+        "relation": "about",
+        "semantic_edge_indices": [
+          3,
+          9,
+          11
+        ]
+      },
+      {
+        "source": "square-criteria",
+        "target": "principal-root",
+        "relation": "about",
+        "semantic_edge_indices": [
+          4,
+          10
+        ]
+      },
+      {
+        "source": "fact:natural-square",
+        "target": "irrationality",
+        "relation": "about",
+        "semantic_edge_indices": [
+          5
+        ]
+      },
+      {
+        "source": "fact:natural-square",
+        "target": "squarehood",
+        "relation": "about",
+        "semantic_edge_indices": [
+          6
+        ]
+      },
+      {
+        "source": "fact:natural-square",
+        "target": "square-transfer",
+        "relation": "about",
+        "semantic_edge_indices": [
+          7
+        ]
+      },
+      {
+        "source": "square-criteria",
+        "target": "square-transfer",
+        "relation": "about",
+        "semantic_edge_indices": [
+          12
+        ]
+      },
+      {
+        "source": "prime-application",
+        "target": "prime-nonsquares",
+        "relation": "about",
+        "semantic_edge_indices": [
+          13,
+          32,
+          34,
+          35,
+          37
+        ]
+      },
+      {
+        "source": "prime-application",
+        "target": "squarehood",
+        "relation": "about",
+        "semantic_edge_indices": [
+          14
+        ]
+      },
+      {
+        "source": "prime-application",
+        "target": "irrationality",
+        "relation": "about",
+        "semantic_edge_indices": [
+          15,
+          33,
+          36
+        ]
+      },
+      {
+        "source": "fact:specialize",
+        "target": "irrationality",
+        "relation": "about",
+        "semantic_edge_indices": [
+          16
+        ]
+      },
+      {
+        "source": "fact:specialize",
+        "target": "prime-nonsquares",
+        "relation": "about",
+        "semantic_edge_indices": [
+          17
         ]
       },
       {
@@ -1519,118 +1806,11 @@
         "target": "irrationality",
         "relation": "about",
         "semantic_edge_indices": [
-          2
-        ]
-      },
-      {
-        "source": "lean:irrational_sqrt_ratCast_iff_of_nonneg",
-        "target": "irrationality",
-        "relation": "about",
-        "semantic_edge_indices": [
-          3
-        ]
-      },
-      {
-        "source": "lean:irrational_sqrt_ratCast_iff_of_nonneg",
-        "target": "square-witnesses",
-        "relation": "about",
-        "semantic_edge_indices": [
-          4
-        ]
-      },
-      {
-        "source": "lean:Rat.isSquare_natCast_iff",
-        "target": "squarehood-transfer",
-        "relation": "about",
-        "semantic_edge_indices": [
-          5
-        ]
-      },
-      {
-        "source": "lean:irrational_sqrt_natCast_iff",
-        "target": "irrationality",
-        "relation": "about",
-        "semantic_edge_indices": [
-          6
-        ]
-      },
-      {
-        "source": "lean:irrational_sqrt_natCast_iff",
-        "target": "squarehood-transfer",
-        "relation": "about",
-        "semantic_edge_indices": [
-          7
-        ]
-      },
-      {
-        "source": "lean:Nat.Prime.irrational_sqrt",
-        "target": "prime-nonsquare",
-        "relation": "about",
-        "semantic_edge_indices": [
-          8
-        ]
-      },
-      {
-        "source": "lean:Nat.Prime.irrational_sqrt",
-        "target": "irrationality",
-        "relation": "about",
-        "semantic_edge_indices": [
-          9
-        ]
-      },
-      {
-        "source": "lean:Irreducible.not_isSquare",
-        "target": "prime-nonsquare",
-        "relation": "about",
-        "semantic_edge_indices": [
-          10
-        ]
-      },
-      {
-        "source": "lean:Nat.prime_two",
-        "target": "prime-nonsquare",
-        "relation": "about",
-        "semantic_edge_indices": [
-          11
-        ]
-      },
-      {
-        "source": "square-criteria",
-        "target": "irrationality",
-        "relation": "about",
-        "semantic_edge_indices": [
-          12,
-          14,
-          17
-        ]
-      },
-      {
-        "source": "square-criteria",
-        "target": "square-witnesses",
-        "relation": "about",
-        "semantic_edge_indices": [
-          13,
-          15
-        ]
-      },
-      {
-        "source": "square-criteria",
-        "target": "squarehood-transfer",
-        "relation": "about",
-        "semantic_edge_indices": [
-          16
-        ]
-      },
-      {
-        "source": "fact:natural-square",
-        "target": "squarehood-transfer",
-        "relation": "about",
-        "semantic_edge_indices": [
           18
         ]
       },
       {
-        "source": "fact:natural-square",
+        "source": "lean:irrational_sqrt_ratCast_iff_of_nonneg",
         "target": "irrationality",
         "relation": "about",
         "semantic_edge_indices": [
@@ -1638,29 +1818,71 @@
         ]
       },
       {
-        "source": "prime-application",
-        "target": "prime-nonsquare",
+        "source": "lean:irrational_sqrt_ratCast_iff_of_nonneg",
+        "target": "squarehood",
         "relation": "about",
         "semantic_edge_indices": [
-          20,
-          22,
-          24,
-          25,
+          20
+        ]
+      },
+      {
+        "source": "lean:irrational_sqrt_ratCast_iff_of_nonneg",
+        "target": "principal-root",
+        "relation": "about",
+        "semantic_edge_indices": [
+          21
+        ]
+      },
+      {
+        "source": "lean:Rat.isSquare_natCast_iff",
+        "target": "squarehood",
+        "relation": "about",
+        "semantic_edge_indices": [
+          22
+        ]
+      },
+      {
+        "source": "lean:Rat.isSquare_natCast_iff",
+        "target": "square-transfer",
+        "relation": "about",
+        "semantic_edge_indices": [
+          23
+        ]
+      },
+      {
+        "source": "lean:irrational_sqrt_natCast_iff",
+        "target": "irrationality",
+        "relation": "about",
+        "semantic_edge_indices": [
+          24
+        ]
+      },
+      {
+        "source": "lean:irrational_sqrt_natCast_iff",
+        "target": "squarehood",
+        "relation": "about",
+        "semantic_edge_indices": [
+          25
+        ]
+      },
+      {
+        "source": "lean:irrational_sqrt_natCast_iff",
+        "target": "square-transfer",
+        "relation": "about",
+        "semantic_edge_indices": [
           26
         ]
       },
       {
-        "source": "prime-application",
-        "target": "irrationality",
+        "source": "lean:Nat.Prime.irrational_sqrt",
+        "target": "prime-nonsquares",
         "relation": "about",
         "semantic_edge_indices": [
-          21,
-          23,
           27
         ]
       },
       {
-        "source": "fact:specialize",
+        "source": "lean:Nat.Prime.irrational_sqrt",
         "target": "irrationality",
         "relation": "about",
         "semantic_edge_indices": [
@@ -1668,11 +1890,27 @@
         ]
       },
       {
-        "source": "fact:specialize",
-        "target": "prime-nonsquare",
+        "source": "lean:Irreducible.not_isSquare",
+        "target": "prime-nonsquares",
         "relation": "about",
         "semantic_edge_indices": [
           29
+        ]
+      },
+      {
+        "source": "lean:Irreducible.not_isSquare",
+        "target": "squarehood",
+        "relation": "about",
+        "semantic_edge_indices": [
+          30
+        ]
+      },
+      {
+        "source": "lean:Nat.prime_two",
+        "target": "prime-nonsquares",
+        "relation": "about",
+        "semantic_edge_indices": [
+          31
         ]
       }
     ]
@@ -1731,8 +1969,8 @@
         }
       ],
       "collapsed_into": {
-        "step:two-prime": "fact:two-prime",
         "fact:specialize": "lean:irrational_sqrt_two",
+        "step:two-prime": "fact:two-prime",
         "fact:rational-square": "step:rational-square",
         "fact:natural-square": "step:natural-square",
         "fact:prime-root": "step:prime-root"
@@ -1818,8 +2056,8 @@
         }
       ],
       "collapsed_into": {
-        "step:two-prime": "fact:two-prime",
-        "fact:specialize": "lean:irrational_sqrt_two"
+        "fact:specialize": "lean:irrational_sqrt_two",
+        "step:two-prime": "fact:two-prime"
       }
     },
     "references": {

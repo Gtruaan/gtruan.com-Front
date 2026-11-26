@@ -1581,22 +1581,22 @@
       }
     }
   ],
-  "title": "Picard–Lindelöf Existence and ODE Uniqueness",
+  "title": "Picard–Lindelöf",
   "annotations": {
     "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]": {
-      "title": "Local existence with a prescribed initial value",
-      "summary": "For a field satisfying the Picard–Lindelöf conditions, every permitted initial state x gives a solution on the prescribed closed interval. The initial state may differ from the center x₀ of the ball on which the field is controlled. The solution is represented by a function on ℝ whose asserted derivative is taken within the interval.",
-      "statement_latex": "\\begin{gathered} E\\text{ is a complete real normed space},\\quad I=[t_{\\min},t_{\\max}],\\quad t_0\\in I,\\quad a,r,L,K\\ge0.\\\\ \\operatorname{IsPicardLindelof}(f,t_0,x_0,a,r,L,K),\\quad x\\in\\overline B(x_0,r)\\\\ \\Longrightarrow\\quad \\exists g:\\mathbb R\\to E,\\quad g(t_0)=x\\ \\land\\ \\forall t\\in I,\\ \\operatorname{HasDerivWithinAt}(g,f(t,g(t)),I,t).\\end{gathered}",
-      "compact_latex": "\\exists g:\\mathbb R\\to E,\\quad g(t_0)=x\\ \\land\\ \\forall t\\in I,\\ \\operatorname{HasDerivWithinAt}(g,f(t,g(t)),I,t)",
-      "why_here": "This is the existence result established by the constructed solution.",
+      "title": "Existence of a solution",
+      "summary": "The field is uniformly Lipschitz in state, continuous in time, and bounded on a closed ball. A bound on the time interval lets the Picard construction produce a solution through any specified point in the smaller initial ball. The solution is defined on the real line, with the differential equation asserted using derivatives within the given interval, including its endpoints.",
+      "statement_latex": "\\begin{gathered} E\\text{ is a real Banach space},\\quad I=[t_{\\min},t_{\\max}],\\quad t_0\\in I,\\quad f:\\mathbb R\\times E\\to E,\\\\ x_0,x\\in E,\\quad a,r,L,K\\ge0,\\quad B=\\overline B(x_0,a),\\quad R=\\max(t_{\\max}-t_0,t_0-t_{\\min}).\\\\ \\text{Assume }x\\in\\overline B(x_0,r),\\ LR\\le a-r,\\quad \\|f(t,y)\\|\\le L\\quad(t\\in I,\\ y\\in B),\\\\ f(t,\\cdot)|_B\\text{ is }K\\text{-Lipschitz for every }t\\in I,\\quad f(\\cdot,y)|_I\\text{ is continuous for every }y\\in B.\\\\ \\text{Then }\\exists g:\\mathbb R\\to E,\\quad g(t_0)=x\\ \\land\\ \\forall t\\in I,\\quad g'_I(t)=f(t,g(t)),\\\\ \\text{where }g'_I(t)\\text{ denotes a derivative taken within }I.\\end{gathered}",
+      "compact_latex": "g'_I(t)=f(t,g(t))",
+      "why_here": "The concluding fact supplies both the prescribed initial value and the interval derivative.",
       "areas": [
         "Ordinary differential equations",
         "Functional analysis"
       ],
       "concepts": [
-        "picard",
-        "fixed-point",
-        "within-derivative"
+        "picard-iteration",
+        "contraction",
+        "fundamental-theorem"
       ],
       "support_edges": [
         32
@@ -1606,22 +1606,24 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "lean:[\"ODE_solution_unique_of_mem_Icc\"]": {
-      "title": "Uniqueness from an interior initial time",
-      "summary": "Two continuous trajectories satisfying the same ODE at interior times agree throughout the closed interval if they agree at one interior time. The field needs a common state Lipschitz constant on the permitted set s(t) at each interior time, and both trajectories must lie in that set there.",
-      "statement_latex": "\\begin{gathered} t_0\\in(a,b),\\quad \\forall t\\in(a,b),\\ \\operatorname{LipschitzOnWith}(K,v(t,\\cdot),s(t)),\\\\ \\forall h\\in\\{f,g\\},\\quad h\\in C([a,b];E)\\ \\land\\ \\forall t\\in(a,b),\\ \\bigl(\\operatorname{HasDerivAt}(h,v(t,h(t)),t)\\land h(t)\\in s(t)\\bigr),\\\\ f(t_0)=g(t_0)\\quad\\Longrightarrow\\quad \\forall t\\in[a,b],\\ f(t)=g(t).\\end{gathered}",
-      "compact_latex": "\\forall t\\in[a,b],\\quad f(t)=g(t)",
-      "why_here": "This is the uniqueness result established by combining agreement on the two halves.",
+      "title": "Uniqueness of solutions",
+      "summary": "Two continuous trajectories solve the same ODE at interior times and remain in the sets where the field is uniformly Lipschitz in state. Agreement at an interior time propagates forward and backward, yielding equality on the closed interval.",
+      "statement_latex": "\\begin{gathered} E\\text{ is a real normed space},\\quad a<t_0<b,\\quad K\\ge0,\\quad v:\\mathbb R\\times E\\to E,\\\\ s(t)\\subseteq E,\\quad f,g:\\mathbb R\\to E,\\quad f,g\\text{ continuous on }[a,b],\\quad f(t_0)=g(t_0).\\\\ \\text{For every }t\\in(a,b),\\ v(t,\\cdot)|_{s(t)}\\text{ is }K\\text{-Lipschitz},\\quad f(t),g(t)\\in s(t),\\\\ f'(t)=v(t,f(t)),\\quad g'(t)=v(t,g(t)).\\\\ \\text{Then }f|_{[a,b]}=g|_{[a,b]}.\\end{gathered}",
+      "compact_latex": "f|_{[a,b]}=g|_{[a,b]}",
+      "why_here": "The concluding fact establishes agreement on the whole closed interval.",
       "areas": [
-        "Ordinary differential equations"
+        "Ordinary differential equations",
+        "Analysis"
       ],
       "concepts": [
         "gronwall",
-        "time-reversal",
-        "within-derivative"
+        "time-reversal"
       ],
       "support_edges": [
         56
@@ -1631,30 +1633,34 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "lean:[\"IsPicardLindelof\"]": {
       "title": "Picard–Lindelöf hypotheses",
-      "summary": "The predicate packages the field estimates on the larger ball of radius a, together with an interval size condition depending on the smaller radius r. A particular starting point x is chosen separately by requiring it to lie in the smaller ball.",
+      "summary": "The hypothesis bundle controls the field on a ball centered at a reference state. It supplies spatial Lipschitz continuity, time continuity, a field bound, and an interval-size condition. The permitted initial state is supplied separately and can differ from the center.",
       "concepts": [
-        "admissible-curves",
-        "picard"
+        "spatial-lipschitz",
+        "picard-iteration"
       ],
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "lean:[\"ODE\",\"FunSpace\"]": {
-      "title": "Admissible interval curves",
-      "summary": "A member is an E-valued function on the closed time interval with Lipschitz constant at most L and value at t₀ in the closed radius-r ball.",
-      "why_here": "The curve-space construction uses these two defining constraints.",
+      "title": "Admissible curve space",
+      "summary": "Its elements are curves from the closed time interval into the state space. They have Lipschitz constant at most L and take a value in the radius-r ball at the initial time.",
+      "why_here": "This is the space used in the curve-space construction.",
       "concepts": [
-        "admissible-curves"
+        "complete-curve-space"
       ],
       "support_edges": [
         1
@@ -1664,16 +1670,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]": {
-      "title": "Completeness of the admissible curve space",
-      "summary": "When E is complete, the admissible curves form a closed subset of the complete space of continuous maps with the supremum metric. The Lipschitz inequalities and the closed-ball constraint at t₀ are preserved under uniform limits.",
-      "why_here": "This instance supplies the completeness part of the curve-space construction.",
+      "title": "Completeness of the curve space",
+      "summary": "Continuous curves into the complete state space form a complete space in the supremum metric. The Lipschitz bound and the closed-ball condition at the initial time are both preserved by uniform limits, so their intersection is complete.",
+      "why_here": "This supplies the completeness part of the curve-space construction.",
       "concepts": [
-        "admissible-curves",
-        "fixed-point"
+        "complete-curve-space"
       ],
       "support_edges": [
         2
@@ -1683,16 +1690,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "lean:[\"ODE\",\"picard\"]": {
       "title": "Picard integral operator",
-      "summary": "For a candidate curve α, the formula adds the integral of the field along α from t₀ to t to the prescribed initial state. This defines the integral update used to build a solution.",
-      "compact_latex": "(T\\alpha)(t)=x+\\int_{t_0}^{t} f(s,\\alpha(s))\\,ds",
-      "why_here": "The self-map construction uses this formula for its output values.",
+      "summary": "Integrate the field along the input curve from the initial time to the requested time, then add the prescribed initial state. The integral is zero at the initial time.",
+      "why_here": "Its integral formula defines the update used in the self-map construction.",
       "concepts": [
-        "picard"
+        "picard-iteration"
       ],
       "support_edges": [
         6
@@ -1702,16 +1710,19 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "lean:[\"ODE\",\"FunSpace\",\"next\"]": {
-      "title": "Picard update on admissible curves",
-      "summary": "The bound L on the field bounds the difference between two output values by L times their time separation. The integral vanishes at t₀, so the prescribed x gives the output its required initial-ball membership.",
-      "why_here": "It is the self-map used in the construction and the update expanded in the fixed-point equation.",
+      "title": "Picard self-map",
+      "summary": "The operator applies the Picard formula to the endpoint extension of an admissible curve and restricts the output to the time interval. The uniform field bound controls the output's Lipschitz constant, and its initial value is the prescribed state in the initial ball.",
+      "compact_latex": "T:X\\to X",
+      "why_here": "Its definition both makes iteration possible and identifies the fixed-point equation with the integral formula.",
       "concepts": [
-        "admissible-curves",
-        "picard"
+        "picard-iteration",
+        "complete-curve-space"
       ],
       "support_edges": [
         7,
@@ -1722,17 +1733,19 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]": {
-      "title": "Pointwise factorial estimate",
-      "summary": "At zero iterations, pointwise distance is bounded by the supremum distance of the two curves. Each further iteration applies the state Lipschitz bound and integrates a power of the elapsed time, giving the next factorial denominator.",
-      "compact_latex": "d((T^n\\alpha)(t),(T^n\\beta)(t))\\le \\frac{(K|t-t_0|)^n}{n!}\\,d_\\infty(\\alpha,\\beta)",
-      "why_here": "This is the time-dependent estimate used in the factorial-bound argument.",
+      "title": "Pointwise Picard iterate bound",
+      "summary": "The initial estimate bounds pointwise distance by supremum distance. Each new Picard update introduces a factor K from the spatial Lipschitz estimate and integrates the previous power of elapsed time. This gives a coefficient of power n divided by n factorial at each time.",
+      "compact_latex": "\\frac{(K|t-t_0|)^n}{n!}",
+      "why_here": "This is the pointwise estimate used in the factorial-bound argument.",
       "concepts": [
-        "factorial",
-        "picard"
+        "factorial-decay",
+        "spatial-lipschitz"
       ],
       "support_edges": [
         11
@@ -1742,17 +1755,19 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]": {
-      "title": "Uniform factorial estimate",
-      "summary": "Every time in the interval is at distance at most R from t₀, where R is the larger endpoint distance. Replacing the pointwise elapsed time by R and taking the supremum yields a bound in the curve-space metric.",
-      "compact_latex": "d_\\infty(T^n\\alpha,T^n\\beta)\\le \\frac{(KR)^n}{n!}\\,d_\\infty(\\alpha,\\beta)",
-      "why_here": "This is the uniform estimate recorded by the factorial-bound step.",
+      "title": "Uniform Picard iterate bound",
+      "summary": "The pointwise coefficient is bounded uniformly by replacing the elapsed time with the maximum distance R to either endpoint. Taking the supremum gives a Lipschitz estimate for the whole iterate in the curve metric.",
+      "compact_latex": "\\frac{(KR)^n}{n!}",
+      "why_here": "This turns the pointwise estimate into a bound on the operator between curves.",
       "concepts": [
-        "factorial",
-        "admissible-curves"
+        "factorial-decay",
+        "complete-curve-space"
       ],
       "support_edges": [
         12
@@ -1762,16 +1777,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]": {
-      "title": "A contraction iterate uniform in the initial state",
-      "summary": "The bound (KR)ⁿ/n! tends to zero and is independent of x. One may therefore choose a single iterate number and coefficient below one that work for every permitted initial state.",
-      "why_here": "It supplies the uniform choice underlying the contracting-iterate step.",
+      "title": "Contracting Picard iterate",
+      "summary": "The uniform coefficients tend to zero, so some iterate has a Lipschitz constant below one. The coefficient depends only on the interval and the field's Lipschitz bound, so the same iteration count and contraction bound work for every permitted initial state.",
+      "why_here": "This is the general contraction result summarized by the iterate-selection step.",
       "concepts": [
-        "factorial",
-        "fixed-point"
+        "factorial-decay",
+        "contraction"
       ],
       "support_edges": [
         15
@@ -1781,15 +1798,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "lean:[\"ContractingWith\",\"isFixedPt_fixedPoint_iterate\"]": {
       "title": "Fixed point of a contracting iterate",
-      "summary": "If p is the fixed point of Tⁿ, then Tp is also fixed by Tⁿ because T commutes with its own iterates. The contraction bound gives d(p,Tp) ≤ C d(p,Tp) with C < 1, forcing Tp = p.",
-      "why_here": "It turns the fixed point of the contracting Picard iterate into a fixed point of the original update.",
+      "summary": "In a complete space let p be the fixed point of the contracting iterate of T. Since T commutes with its iterate, T(p) is also fixed by that iterate. Uniqueness of the iterate's fixed point gives T(p)=p.",
+      "why_here": "It transfers the fixed-point conclusion from the contracting iterate to the Picard map.",
       "concepts": [
-        "fixed-point"
+        "contraction"
       ],
       "support_edges": [
         19
@@ -1799,16 +1818,19 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]": {
-      "title": "Existence of an admissible fixed curve",
-      "summary": "For a chosen permissible x, specialize the uniform contraction result to the corresponding Picard update. Completeness and the fixed-point result for contracting iterates give an admissible curve fixed by that update.",
-      "why_here": "This is the reusable existence lemma summarized by the fixed-curve step.",
+      "title": "Existence of a Picard fixed point",
+      "summary": "For each permitted initial state, the Picard self-map has a contracting power on the complete admissible curve space. Its fixed point is also fixed by the Picard map and provides an admissible curve.",
+      "compact_latex": "\\exists\\alpha\\in X,\\ T\\alpha=\\alpha",
+      "why_here": "This is the existence result summarized by the fixed-curve step.",
       "concepts": [
-        "fixed-point",
-        "picard"
+        "picard-iteration",
+        "contraction"
       ],
       "support_edges": [
         20
@@ -1818,16 +1840,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "lean:[\"ODE\",\"FunSpace\",\"compProj\"]": {
       "title": "Constant endpoint extension",
-      "summary": "Project each real time to the nearest point of the closed interval before evaluating the curve. This preserves the curve on the interval and extends it by its endpoint values outside.",
-      "why_here": "This supplies the real-line representative in the integral equation.",
+      "summary": "Project each real time onto the closed interval and then evaluate the curve there. This preserves its values on the interval and continues it constantly beyond each endpoint.",
+      "why_here": "It gives the fixed curve a real-line domain for the integral equation.",
       "concepts": [
-        "admissible-curves",
-        "within-derivative"
+        "picard-iteration"
       ],
       "support_edges": [
         24
@@ -1837,16 +1860,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]": {
-      "title": "Derivative of the Picard integral",
-      "summary": "Joint continuity of the field on the time-state domain and continuity of a curve staying in that domain make the integrand continuous along the curve. The fundamental theorem of calculus then gives the derivative within the closed interval by evaluating the integrand at t.",
-      "why_here": "It supplies the derivative of the integral expression used to verify the solution.",
+      "title": "Fundamental theorem of calculus",
+      "summary": "Joint continuity of the field on the time–state region and continuity of a curve staying in that region give a continuous integrand along the curve. Differentiating the integral with respect to its upper limit gives the field along the curve, using derivatives within the closed interval.",
+      "why_here": "The existence proof applies this result to recover the differential equation from the integral equation.",
       "concepts": [
-        "picard",
-        "within-derivative"
+        "fundamental-theorem",
+        "picard-iteration"
       ],
       "support_edges": [
         30
@@ -1856,17 +1881,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]": {
-      "title": "Uniqueness from the right endpoint",
-      "summary": "For curves with the stipulated left derivatives on (a,b], equality at b implies agreement on [a,b]. Reflection turns these into right derivatives for the field −v(−t,·), to which forward uniqueness applies.",
-      "why_here": "It is applied with the initial time t₀ as the right endpoint of the left half.",
+      "title": "Backward ODE uniqueness",
+      "summary": "With equality at the right endpoint and left derivatives on the interval excluding its left endpoint, reflect time and negate the field at the reflected time. The chain rule supplies the sign and converts the left derivatives to right derivatives. Forward uniqueness on the reflected interval then gives equality on the original interval.",
+      "why_here": "This is the reusable theorem applied on the half of the interval preceding the common initial time.",
       "concepts": [
         "time-reversal",
-        "gronwall",
-        "within-derivative"
+        "gronwall"
       ],
       "support_edges": [
         49
@@ -1876,16 +1902,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]": {
-      "title": "Uniqueness from the left endpoint",
-      "summary": "For continuous trajectories with the stipulated right derivatives and state membership on [a,b), the comparison estimate bounds their distance by zero when they agree at a. Thus they agree on the closed interval.",
-      "why_here": "It applies directly on the right half and also underlies the reflected uniqueness argument.",
+      "title": "Forward ODE uniqueness",
+      "summary": "For continuous trajectories satisfying the ODE by right derivatives on the half-open forward interval and staying in the permitted sets there, use the trajectory comparison bound. Equality at the left endpoint makes the initial separation zero, so the distance stays zero on the closed interval.",
+      "why_here": "It applies directly to the forward half and underlies the reflected-time argument.",
       "concepts": [
         "gronwall",
-        "within-derivative"
+        "spatial-lipschitz"
       ],
       "support_edges": [
         44,
@@ -1896,15 +1924,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]": {
-      "title": "Exponential separation of exact trajectories",
-      "summary": "Exact ODE trajectories satisfy the approximate-trajectory estimate with both derivative errors equal to zero. The bound then reduces to initial separation δ multiplied by exp(K(t−a)).",
-      "why_here": "It supplies the estimate specialized to zero initial distance in forward uniqueness.",
+      "title": "Grönwall trajectory estimate",
+      "summary": "For two forward trajectories in the permitted state sets, the spatial Lipschitz bound controls the derivative of their difference by K times their separation. The approximate-trajectory estimate specializes to exact solutions by taking both equation errors to be zero. An initial separation at most δ then yields a bound of δ times the usual exponential factor throughout the closed interval.",
+      "why_here": "The comparison step summarizes this estimate, and forward uniqueness applies it with zero initial separation.",
       "concepts": [
-        "gronwall"
+        "gronwall",
+        "spatial-lipschitz"
       ],
       "support_edges": [
         34,
@@ -1915,16 +1946,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "lean:[\"norm_le_gronwallBound_of_norm_deriv_right_le\"]": {
-      "title": "Grönwall bound for the norm of a curve",
-      "summary": "The norm of a continuous curve with right derivatives has right slopes controlled by the norm of those derivatives. A bound of the form ‖h′‖ ≤ K‖h‖ + ε and an initial norm bound δ therefore give the scalar Grönwall bound.",
-      "why_here": "It identifies the underlying differential estimate summarized in the trajectory comparison.",
+      "title": "Differential Grönwall inequality",
+      "summary": "Start with a continuous curve whose initial norm is bounded by δ and whose right derivative has norm at most K times the curve norm plus a constant error. The bound on the derivative controls the lower limit of the right-hand slopes of the norm. The scalar Grönwall inequality then bounds the norm on the closed interval.",
+      "why_here": "It is the general norm estimate represented in the trajectory-comparison argument.",
       "concepts": [
-        "gronwall",
-        "within-derivative"
+        "gronwall"
       ],
       "support_edges": [
         33
@@ -1934,16 +1966,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "fact:state-space": {
-      "title": "Complete state space and initial time",
-      "summary": "The state space E is a complete real normed space and t₀ belongs to the closed time interval I.",
-      "why_here": "These are inputs to the curve-space construction and the verification of the derivative within I.",
+      "title": "Complete state space and time interval",
+      "summary": "The existence argument takes place in a real Banach space and starts at a time belonging to the closed interval.",
+      "why_here": "Completeness supports the curve-space construction and the state-space integration used to obtain the solution.",
       "concepts": [
-        "admissible-curves",
-        "within-derivative"
+        "complete-curve-space",
+        "fundamental-theorem"
       ],
       "support_edges": [
         0,
@@ -1954,18 +1988,19 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "fact:existence-hypotheses": {
-      "title": "Field bounds and admissible initial state",
-      "summary": "The field is K-Lipschitz in the state, continuous in time and bounded by L on the larger ball. The room between radii r and a accommodates the drift LR, and the chosen initial state x lies in the smaller ball.",
-      "compact_latex": "x\\in\\overline B(x_0,r),\\qquad LR\\le a-r,\\qquad R=\\max(t_{\\max}-t_0,t_0-t_{\\min})",
-      "why_here": "These bounds keep Picard updates admissible, control differences between updates and allow differentiation of the integral along the fixed curve.",
+      "title": "Field bounds and starting region",
+      "summary": "On the radius-a ball the field is uniformly K-Lipschitz in state, continuous in time, and bounded in norm by L. The initial state lies within radius r, and the maximum travel budget LR is at most a−r, where R is the largest time distance from the initial time to an endpoint.",
+      "compact_latex": "LR\\le a-r",
+      "why_here": "These controls keep the update admissible, bound differences of iterates, and support differentiation of the integral.",
       "concepts": [
-        "admissible-curves",
-        "picard",
-        "factorial"
+        "picard-iteration",
+        "spatial-lipschitz"
       ],
       "support_edges": [
         4,
@@ -1977,16 +2012,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "step:curve-space": {
-      "title": "Build a complete space of candidate curves",
-      "summary": "Use the supremum metric on E-valued curves over I with Lipschitz constant at most L and starting value in the radius-r ball. Uniform limits preserve the Lipschitz bound and the closed initial-ball constraint, so the space is closed in the complete continuous-map space. The constant curve at x₀ gives a member.",
-      "why_here": "It produces the admissible complete space on which the Picard update acts.",
+      "title": "Completeness in the supremum metric",
+      "summary": "Start with continuous curves into the complete state space, with distance given by the supremum of their pointwise distances. Uniform limits preserve the Lipschitz bound and the closed initial-ball constraint, so the admissible subset is closed and complete. The constant curve at the ball center is admissible, giving nonemptiness.",
+      "why_here": "This constructs the complete metric space needed for the fixed-point argument.",
       "concepts": [
-        "admissible-curves",
-        "fixed-point"
+        "complete-curve-space"
       ],
       "support_edges": [
         0,
@@ -1999,16 +2035,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "fact:curve-space": {
-      "title": "Nonempty complete space of admissible curves",
-      "summary": "The admissible curve space X has a member and is complete in the supremum metric.",
-      "why_here": "It gives the domain of the integral update and the complete space used by the fixed-point argument.",
+      "title": "Complete admissible curve space",
+      "summary": "The space X of admissible curves is nonempty and complete in the supremum metric.",
+      "why_here": "It is the domain of the Picard self-map and the complete space on which the contracting iterate has a fixed point.",
       "concepts": [
-        "admissible-curves",
-        "fixed-point"
+        "complete-curve-space"
       ],
       "support_edges": [
         3,
@@ -2020,16 +2057,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "step:picard-self-map": {
-      "title": "Show that the Picard update preserves admissibility",
-      "summary": "An admissible input curve stays within distance r+LR of x₀, by its initial-ball condition and its L-Lipschitz bound. This is within the larger ball, so the field bound implies that integrating between any two output times yields a difference of norm at most L|t−s|. At t₀ the integral vanishes and the output equals x, so it is again an admissible curve.",
-      "why_here": "It makes repeated Picard updates possible on the same space.",
+      "title": "Picard operator preserves admissibility",
+      "summary": "An admissible curve stays within distance r+LR of the ball center, so the field bound applies along the curve. The difference between two output values is an integral between the two times, with norm at most L times their distance. The output starts at the prescribed state, so it satisfies both defining constraints.",
+      "why_here": "The field and time bounds make the integral operation repeatable on the same curve space.",
       "concepts": [
-        "picard",
-        "admissible-curves"
+        "picard-iteration",
+        "complete-curve-space"
       ],
       "support_edges": [
         4,
@@ -2043,16 +2082,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "fact:picard-self-map": {
-      "title": "Picard self-map on the curve space",
-      "summary": "For the chosen x, the integral update defines a map T from the admissible curve space to itself.",
-      "why_here": "It provides both the map to iterate and the formula to expand at a fixed point.",
+      "title": "Picard update on admissible curves",
+      "summary": "For the prescribed initial state x, the map T sends an admissible curve to the curve obtained by integrating the field along it and adding x.",
+      "compact_latex": "T:X\\to X",
+      "why_here": "It gives both the operator to iterate and the formula to substitute into the fixed-point identity.",
       "concepts": [
-        "picard",
-        "admissible-curves"
+        "picard-iteration"
       ],
       "support_edges": [
         8,
@@ -2064,16 +2105,19 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "step:factorial-bound": {
-      "title": "Estimate repeated Picard updates",
-      "summary": "Start with the supremum distance between two admissible curves. After one more update, the common initial state cancels and the field Lipschitz bound gives K times the preceding pointwise difference under the integral. Integrating an elapsed-time power gives uⁿ⁺¹/(n+1) from uⁿ, producing the factorial by induction. Using the largest elapsed time R gives the estimate in the supremum metric.",
-      "why_here": "It supplies the bound from which a contracting iterate is chosen.",
+      "title": "Factorial estimate by induction",
+      "summary": "At iteration zero, the pointwise distance is bounded by the supremum distance. At each successor step, spatial Lipschitz continuity contributes a factor K, and integrating the elapsed-time power changes the factor |t−t₀|ⁿ/n! to |t−t₀|ⁿ⁺¹/(n+1)!. Replacing elapsed time by R and taking the supremum gives the operator bound.",
+      "why_here": "This produces a uniform coefficient for the iterated map from pointwise integral estimates.",
       "concepts": [
-        "picard",
-        "factorial"
+        "factorial-decay",
+        "picard-iteration",
+        "spatial-lipschitz"
       ],
       "support_edges": [
         9,
@@ -2087,17 +2131,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "fact:factorial-bound": {
-      "title": "Lipschitz bound for the nth update",
-      "summary": "The supremum distance between two curves after n updates is at most their original distance multiplied by (KR)ⁿ/n!.",
-      "compact_latex": "d_\\infty(T^n\\alpha,T^n\\beta)\\le \\frac{(KR)^n}{n!}\\,d_\\infty(\\alpha,\\beta)",
-      "why_here": "The coefficient in this bound is the quantity made smaller than one.",
+      "title": "Lipschitz bound for Picard iterates",
+      "summary": "In the supremum metric, the distance between the nth iterates is bounded by the starting distance times the factorial coefficient.",
+      "compact_latex": "\\frac{(KR)^n}{n!}",
+      "why_here": "This coefficient can be made smaller than one to obtain a contraction.",
       "concepts": [
-        "factorial",
-        "fixed-point"
+        "factorial-decay"
       ],
       "support_edges": [
         13,
@@ -2108,16 +2153,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "step:contracting-iterate": {
-      "title": "Choose an iterate that shrinks distances",
-      "summary": "The uniform distance bound has coefficient (KR)ⁿ/n!. Consecutive coefficients satisfy cₙ₊₁ = cₙ·KR/(n+1), so the coefficient tends to zero. Choose n with cₙ < 1 to obtain a contraction, with the same choice valid for every permitted x.",
-      "why_here": "It turns the distance bound into the contraction needed for the fixed-point argument.",
+      "title": "Choose a contracting iterate",
+      "summary": "The Lipschitz coefficients are bounded by (KR)ⁿ/n!, which tends to zero for fixed K and R. Choose an iteration count for which the coefficient is strictly below one. The uniform distance estimate then makes that iterate a contraction.",
+      "why_here": "The choice supplies the contraction needed for the fixed-point step.",
       "concepts": [
-        "factorial",
-        "fixed-point"
+        "factorial-decay",
+        "contraction"
       ],
       "support_edges": [
         14,
@@ -2129,16 +2176,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "fact:contracting-iterate": {
-      "title": "A contracting Picard iterate",
-      "summary": "The Picard update under consideration has an iterate Tⁿ whose Lipschitz coefficient is strictly less than one.",
-      "why_here": "This is the contraction input to the fixed-curve construction.",
+      "title": "A power of the Picard map contracts",
+      "summary": "There is an iteration count for which the iterated Picard map has a Lipschitz constant strictly below one on the admissible space.",
+      "why_here": "It supplies the contraction premise for obtaining a curve fixed by the original update.",
       "concepts": [
-        "factorial",
-        "fixed-point"
+        "contraction"
       ],
       "support_edges": [
         16,
@@ -2149,16 +2197,19 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "step:fixed-curve": {
-      "title": "Find a curve fixed by the Picard update",
-      "summary": "Apply the contraction fixed-point theorem to Tⁿ on the complete admissible curve space. If α is its fixed point, then Tα is also fixed by Tⁿ because T and Tⁿ commute. Uniqueness of the fixed point of Tⁿ gives Tα = α.",
-      "why_here": "It produces the fixed curve from which the integral solution is built.",
+      "title": "Banach’s fixed-point theorem",
+      "summary": "The contracting iterate acts on the nonempty complete curve space, so Banach’s theorem gives its unique fixed point. Applying the original Picard map to that point gives another fixed point of the iterate because the maps commute. Uniqueness shows that the original map fixes the same curve.",
+      "why_here": "It turns the contraction estimate into an admissible curve satisfying the Picard identity.",
       "concepts": [
-        "fixed-point",
-        "picard"
+        "contraction",
+        "complete-curve-space",
+        "picard-iteration"
       ],
       "support_edges": [
         17,
@@ -2172,16 +2223,19 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "fact:fixed-curve": {
-      "title": "An admissible fixed curve",
-      "summary": "For the chosen initial state, there exists an admissible curve α satisfying Tα = α.",
-      "why_here": "The next step takes such a curve and expands its fixed-point identity.",
+      "title": "An admissible fixed curve exists",
+      "summary": "For the prescribed starting state, there is an admissible curve fixed by the Picard update. The next step uses such a curve as its witness.",
+      "compact_latex": "\\exists\\alpha\\in X,\\ T\\alpha=\\alpha",
+      "why_here": "A fixed curve supplies the local witness whose extension satisfies the integral equation.",
       "concepts": [
-        "fixed-point",
-        "picard"
+        "picard-iteration",
+        "contraction"
       ],
       "support_edges": [
         21,
@@ -2192,16 +2246,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "step:integral-equation": {
-      "title": "Read the fixed-point identity as an integral equation",
-      "summary": "Choose an admissible fixed curve α and extend it to a real-line function g by holding its endpoint values constant outside the interval. For t in the interval, g(t) equals α(t), which equals the value of Tα at t. The definition of Tα uses the extended curve g under the integral, giving the stated equation on I.",
-      "why_here": "It gives an equation for the particular real-line witness used in the existence proof.",
+      "title": "Unfold the Picard fixed-point identity",
+      "summary": "Take the admissible fixed curve and extend it by its endpoint values. On the original interval the extension agrees with the curve, and the fixed-point identity says that its values equal the Picard update. Substituting the update formula gives the integral equation there.",
+      "why_here": "It expresses the fixed-point condition in the integral form needed for differentiation.",
       "concepts": [
-        "fixed-point",
-        "picard"
+        "picard-iteration"
       ],
       "support_edges": [
         22,
@@ -2215,17 +2270,19 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "fact:integral-equation": {
       "title": "Integral equation for the extended curve",
-      "summary": "The particular extended fixed curve g satisfies the Picard integral equation at every time in I.",
-      "compact_latex": "\\forall t\\in I,\\quad g(t)=x+\\int_{t_0}^{t}f(s,g(s))\\,ds",
-      "why_here": "This equality gives the initial value and transfers the derivative of the integral expression to g.",
+      "summary": "The chosen extended curve agrees on the time interval with its prescribed initial state plus the integral of the field along that same curve.",
+      "statement_latex": "\\forall t\\in I,\\quad g(t)=x+\\int_{t_0}^{t} f(s,g(s))\\,ds,\\qquad g\\text{ is the endpoint extension of the chosen Picard fixed curve}.",
+      "why_here": "This equality gives both the initial value and a formula to differentiate.",
       "concepts": [
-        "picard",
-        "within-derivative"
+        "picard-iteration",
+        "fundamental-theorem"
       ],
       "support_edges": [
         26,
@@ -2236,16 +2293,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "step:ode-solution": {
-      "title": "Verify the initial value and the ODE",
-      "summary": "Setting t = t₀ in the integral equation gives g(t₀) = x because the integral over a zero-length interval vanishes. The continuity and ball bounds allow the fundamental theorem of calculus to give the derivative of the integral expression within I as f(t,g(t)). Since g equals that expression on I, it has the same within-interval derivative there.",
-      "why_here": "It verifies both requirements for the existential solution.",
+      "title": "Fundamental theorem of calculus",
+      "summary": "At the initial time the integral has identical limits, so the extended curve takes the prescribed value x. The field is jointly continuous on the region traversed by the curve, using time continuity and the uniform state Lipschitz bound. The fundamental theorem gives the derivative of the integral expression within the interval, and equality on the interval transfers that derivative to the extended curve.",
+      "why_here": "This verifies the initial value and the ODE for the chosen witness.",
       "concepts": [
-        "picard",
-        "within-derivative"
+        "fundamental-theorem",
+        "picard-iteration"
       ],
       "support_edges": [
         27,
@@ -2259,17 +2318,19 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "fact:ode-solution": {
-      "title": "Existence of a solution on the closed interval",
-      "summary": "Under the existence hypotheses, there is a real-line curve with the prescribed initial state and the required derivative within I at every time in I.",
-      "compact_latex": "\\exists g:\\mathbb R\\to E,\\quad g(t_0)=x\\ \\land\\ \\forall t\\in I,\\ \\operatorname{HasDerivWithinAt}(g,f(t,g(t)),I,t)",
-      "why_here": "This is the explicit concluding assertion of the existence theorem.",
+      "title": "Existence of an interval solution",
+      "summary": "The extended curve witnesses the existence of a real-line function taking the prescribed value at the initial time and satisfying the ODE by derivatives within the closed interval.",
+      "compact_latex": "g'_I(t)=f(t,g(t))",
+      "why_here": "This is the explicit existential conclusion of the existence argument.",
       "concepts": [
-        "picard",
-        "within-derivative"
+        "picard-iteration",
+        "fundamental-theorem"
       ],
       "support_edges": [
         31,
@@ -2281,16 +2342,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "fact:uniqueness-hypotheses": {
-      "title": "Interior equation and state constraints",
-      "summary": "The initial time t₀ lies strictly inside [a,b]. Both curves are continuous on the closed interval, satisfy the same ODE in its interior and lie in s(t) there, where the field has a common state Lipschitz bound.",
-      "why_here": "These hypotheses restrict to the half-intervals used in the two uniqueness applications.",
+      "title": "Interior trajectory hypotheses",
+      "summary": "The two trajectories are continuous on the closed interval. At each interior time both solve the ODE and lie in the permitted state set, where the field has a uniform state Lipschitz constant. The comparison time is strictly interior.",
+      "why_here": "These hypotheses can be restricted to the two half-intervals with the required one-sided derivatives.",
       "concepts": [
-        "gronwall",
-        "within-derivative"
+        "spatial-lipschitz",
+        "time-reversal"
       ],
       "support_edges": [
         39
@@ -2300,17 +2363,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "fact:same-initial-value": {
-      "title": "Equal values at the initial time",
-      "summary": "The two trajectories have zero separation at t₀.",
+      "title": "Common value at the initial time",
+      "summary": "The two given trajectories meet at the specified interior time.",
       "compact_latex": "f(t_0)=g(t_0)",
-      "why_here": "This supplies the endpoint equality for both half-interval applications.",
+      "why_here": "This supplies the common endpoint value for both applications of one-sided uniqueness.",
       "concepts": [
-        "gronwall",
-        "time-reversal"
+        "gronwall"
       ],
       "support_edges": [
         43,
@@ -2321,16 +2385,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "step:trajectory-comparison": {
-      "title": "Bound separation by Grönwall’s inequality",
-      "summary": "For two forward trajectories in the permitted sets, the right derivative of h = f−g is the difference of their field values, so ‖h′‖ ≤ K‖h‖ by the state Lipschitz bound. The exact-trajectory comparison uses the approximate-trajectory bound with zero errors. An initial distance at most δ then gives distance at most δ exp(K(t−a)) on the closed interval.",
-      "why_here": "It produces a reusable estimate that can be applied with zero initial separation.",
+      "title": "Grönwall’s inequality",
+      "summary": "For two forward trajectories in the permitted sets, the derivative of their difference is the difference of the two field values. Its norm is bounded by K times the norm of the trajectory difference. Grönwall’s inequality gives a reusable exponential bound from an initial separation at most δ. In the supplied exact-trajectory lemma, the two approximation errors are zero.",
+      "why_here": "It supplies the general comparison estimate before the initial separation is specialized to zero.",
       "concepts": [
         "gronwall",
-        "within-derivative"
+        "spatial-lipschitz"
       ],
       "support_edges": [
         33,
@@ -2342,14 +2408,16 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "fact:trajectory-comparison": {
-      "title": "Forward separation estimate",
-      "summary": "Under the forward comparison hypotheses, initial distance at most δ gives an exponential bound on the distance at every time in [a,b].",
-      "compact_latex": "d(f(a),g(a))\\le\\delta\\quad\\Longrightarrow\\quad \\forall t\\in[a,b],\\ d(f(t),g(t))\\le\\delta e^{K(t-a)}",
-      "why_here": "It is the reusable premise specialized to equal initial values.",
+      "title": "Exponential separation bound",
+      "summary": "For forward solutions under the one-sided comparison hypotheses, a separation at most δ at time a grows by at most the factor e raised to K(t−a) on the closed interval.",
+      "compact_latex": "\\|f(t)-g(t)\\|\\le\\delta e^{K(t-a)}",
+      "why_here": "Forward uniqueness follows by setting the initial separation bound to zero.",
       "concepts": [
         "gronwall"
       ],
@@ -2362,13 +2430,15 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "step:one-sided-principle": {
-      "title": "Deduce forward uniqueness from zero separation",
-      "summary": "Equality at the left endpoint allows the forward separation estimate with δ = 0. Its upper bound is then zero at every time, and metric distance zero implies equality. This gives the reusable forward uniqueness principle under the one-sided hypotheses.",
-      "why_here": "It converts a quantitative comparison into a one-sided uniqueness theorem.",
+      "title": "Grönwall bound with zero initial distance",
+      "summary": "Equal values at the left endpoint give the comparison lemma an initial distance bound of zero. Its exponential upper bound is then zero throughout the interval. Distance is nonnegative and vanishes only at equality, giving forward uniqueness.",
+      "why_here": "This derives the reusable one-sided principle from the more general trajectory estimate.",
       "concepts": [
         "gronwall"
       ],
@@ -2382,13 +2452,15 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "fact:one-sided-principle": {
-      "title": "Reusable forward uniqueness principle",
-      "summary": "Under the one-sided equation, continuity, membership and Lipschitz hypotheses, equality at the left endpoint implies agreement on the entire forward interval.",
-      "why_here": "It supplies forward uniqueness directly and through time reversal.",
+      "title": "Forward uniqueness principle",
+      "summary": "Under the one-sided hypotheses, two solutions agreeing at the left endpoint agree on the entire forward interval.",
+      "why_here": "It applies directly to the later half and provides the principle used after reflecting the earlier half.",
       "concepts": [
         "gronwall",
         "time-reversal"
@@ -2403,16 +2475,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "step:split-interval": {
-      "title": "Restrict the hypotheses to the two halves",
-      "summary": "Since a < t₀ < b, the intervals [a,t₀] and [t₀,b] cover [a,b]. The derivative and field hypotheses are needed on (a,t₀] and [t₀,b), respectively, both of which lie inside (a,b). Restrict continuity to each closed half and use the ordinary derivatives to obtain the needed left or right derivatives.",
-      "why_here": "It prepares the hypotheses for the two one-sided applications and supplies the cover for the final conclusion.",
+      "title": "Restrict to two half-intervals",
+      "summary": "The interior time t₀ splits [a,b] into [a,t₀] and [t₀,b]. The derivative and state-set hypotheses are needed on (a,t₀] on the left and [t₀,b) on the right, both subsets of (a,b). Ordinary derivatives restrict to the required one-sided derivatives, and continuity restricts to both closed halves.",
+      "why_here": "This gives each one-sided theorem the hypotheses it needs and supplies the cover used at the end.",
       "concepts": [
-        "within-derivative",
-        "time-reversal"
+        "time-reversal",
+        "interval-cover"
       ],
       "support_edges": [
         39,
@@ -2423,16 +2497,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "fact:split-interval": {
-      "title": "Two covering halves with restricted hypotheses",
-      "summary": "The two halves cover [a,b] and inherit the hypotheses for their respective one-sided uniqueness results.",
-      "compact_latex": "[a,b]=[a,t_0]\\cup[t_0,b]",
-      "why_here": "It feeds both one-sided applications and identifies the union on which their conclusions combine.",
+      "title": "Half-interval cover and restricted hypotheses",
+      "summary": "The two closed halves cover the full interval, and each inherits the hypotheses for uniqueness in its direction of time.",
+      "compact_latex": "[a,t_0]\\cup[t_0,b]=[a,b]",
+      "why_here": "The restricted hypotheses support both applications, and the cover combines their conclusions.",
       "concepts": [
-        "within-derivative",
+        "interval-cover",
         "time-reversal"
       ],
       "support_edges": [
@@ -2446,16 +2522,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "step:forward-agreement": {
-      "title": "Apply forward uniqueness on the right half",
-      "summary": "On [t₀,b], the two curves have the required right derivatives and permitted state values at times in [t₀,b). Their equality at the left endpoint t₀ lets the forward theorem give agreement on all of [t₀,b].",
-      "why_here": "It produces the right-half equality used in the full-interval conclusion.",
+      "title": "Apply forward ODE uniqueness",
+      "summary": "On [t₀,b], the restricted hypotheses give right derivatives and the required state constraints. Equality at the left endpoint t₀ lets forward uniqueness give equality on the whole half-interval, including b.",
+      "why_here": "It applies the general forward theorem to the given pair of trajectories.",
       "concepts": [
-        "gronwall",
-        "within-derivative"
+        "gronwall"
       ],
       "support_edges": [
         41,
@@ -2469,16 +2546,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "fact:forward-agreement": {
-      "title": "Agreement on the right half",
-      "summary": "The two trajectories in the main theorem agree from t₀ through b.",
-      "compact_latex": "\\forall t\\in[t_0,b],\\quad f(t)=g(t)",
-      "why_here": "This supplies equality at each point of the right half of the cover.",
+      "title": "Agreement after the initial time",
+      "summary": "The two given trajectories coincide from t₀ through b.",
+      "compact_latex": "f|_{[t_0,b]}=g|_{[t_0,b]}",
+      "why_here": "This supplies equality on the later part of the cover.",
       "concepts": [
-        "gronwall"
+        "interval-cover"
       ],
       "support_edges": [
         45,
@@ -2489,17 +2568,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "step:backward-agreement": {
-      "title": "Apply backward uniqueness on the left half",
-      "summary": "On [a,t₀], use the restricted left-derivative hypotheses and equality at the right endpoint t₀. The backward theorem follows by reflecting time: differentiating a reflected curve introduces a minus sign, so the reflected field is −v(−t,·), with the same state Lipschitz constant. Forward uniqueness on the reflected interval gives agreement back on [a,t₀].",
-      "why_here": "It produces the left-half equality used in the full-interval conclusion.",
+      "title": "Apply backward ODE uniqueness",
+      "summary": "On [a,t₀], the given curves agree at the right endpoint and satisfy the restricted left-derivative hypotheses. Backward uniqueness reflects time and uses the field −v(−t,y), since differentiating a reflected trajectory introduces a minus sign. Forward uniqueness of the reflected curves yields agreement from a through t₀.",
+      "why_here": "It applies the backward theorem to the given pair on the earlier half of the interval.",
       "concepts": [
         "time-reversal",
-        "gronwall",
-        "within-derivative"
+        "gronwall"
       ],
       "support_edges": [
         46,
@@ -2514,15 +2594,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "fact:backward-agreement": {
-      "title": "Agreement on the left half",
-      "summary": "The two trajectories in the main theorem agree from a through t₀.",
-      "compact_latex": "\\forall t\\in[a,t_0],\\quad f(t)=g(t)",
-      "why_here": "This supplies equality at each point of the left half of the cover.",
+      "title": "Agreement before the initial time",
+      "summary": "The two given trajectories coincide from a through t₀.",
+      "compact_latex": "f|_{[a,t_0]}=g|_{[a,t_0]}",
+      "why_here": "This supplies equality on the earlier part of the cover.",
       "concepts": [
+        "interval-cover",
         "time-reversal"
       ],
       "support_edges": [
@@ -2534,16 +2617,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "step:agreement-on-interval": {
       "title": "Combine equality on the two halves",
-      "summary": "Any t in [a,b] belongs to [a,t₀] or [t₀,b]. The corresponding half-interval equality gives f(t) = g(t), so the curves agree on the whole interval.",
-      "why_here": "It joins the particular forward and backward conclusions into the theorem’s assertion.",
+      "summary": "Take any time in [a,b]. It belongs to at least one of the two closed halves, where the corresponding one-sided result gives equality. Thus the trajectories coincide on the full interval.",
+      "why_here": "It combines the two local applications into the conclusion of closed-interval uniqueness.",
       "concepts": [
-        "time-reversal",
-        "gronwall"
+        "interval-cover"
       ],
       "support_edges": [
         52,
@@ -2556,17 +2640,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     "fact:agreement-on-interval": {
-      "title": "Agreement on the full interval",
-      "summary": "Under the main uniqueness hypotheses, the two trajectories agree at every point of [a,b].",
-      "compact_latex": "\\forall t\\in[a,b],\\quad f(t)=g(t)",
-      "why_here": "This is the explicit concluding assertion of the uniqueness theorem.",
+      "title": "Agreement on the closed interval",
+      "summary": "Under the hypotheses of the uniqueness argument, the two given trajectories agree at every time from a through b.",
+      "compact_latex": "f|_{[a,b]}=g|_{[a,b]}",
+      "why_here": "This is the explicit conclusion establishing the uniqueness theorem.",
       "concepts": [
-        "gronwall",
-        "time-reversal"
+        "interval-cover"
       ],
       "support_edges": [
         55,
@@ -2578,15 +2663,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     }
   },
   "concepts": [
     {
-      "id": "admissible-curves",
-      "title": "Complete space of admissible curves",
-      "summary": "The supremum metric measures the largest pointwise distance between two curves. A common Lipschitz bound and a closed constraint at the initial time both survive uniform convergence, allowing completeness to pass from continuous maps to the constrained curves.",
+      "id": "spatial-lipschitz",
+      "title": "Spatial Lipschitz continuity",
+      "summary": "At a fixed time, the distance between two field values is at most K times the distance between their states, provided both states lie in the permitted set.",
       "detail": "foundation",
       "kind": "concept",
       "annotation_provenance": {
@@ -2594,39 +2681,60 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
-      "id": "picard",
-      "title": "Picard integration",
-      "summary": "Integrate the field along a candidate curve and add the initial state. A curve fixed by this update satisfies the integral equation for the ODE, from which differentiation recovers the differential equation.",
+      "id": "complete-curve-space",
+      "title": "Complete metric space of curves",
+      "summary": "The supremum metric measures the largest pointwise separation. Uniform limits of continuous curves into a complete state space exist in that metric, and closed constraints such as a common Lipschitz bound pass to the limit.",
       "kind": "concept",
       "annotation_provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
-      "id": "factorial",
-      "title": "Factorial decay under repeated integration",
-      "summary": "Each integration of an elapsed-time power increases its exponent and divides by the new exponent. Iteration yields a factor 1/n!, which makes the Lipschitz bound tend to zero even for a fixed positive value of KR.",
+      "id": "picard-iteration",
+      "title": "Picard iteration",
+      "summary": "Turn an ODE into an integral update by integrating the field along a candidate curve and adding the initial value. A curve fixed by the update satisfies the associated integral equation.",
       "kind": "concept",
       "annotation_provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
-      "id": "fixed-point",
-      "title": "Contraction and fixed points",
-      "summary": "A contraction on a nonempty complete metric space has a unique fixed point. When the contraction is an iterate Tⁿ, the map T sends that fixed point to another fixed point of Tⁿ, so uniqueness forces T to fix it as well.",
+      "id": "factorial-decay",
+      "title": "Factorial decay of iterate bounds",
+      "summary": "Each integration of a power of elapsed time raises the exponent and divides by the new exponent. The resulting coefficient cⁿ/n! eventually falls below one for every fixed nonnegative c.",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
+      }
+    },
+    {
+      "id": "contraction",
+      "title": "Banach’s fixed-point theorem",
+      "summary": "A self-map with Lipschitz constant below one on a nonempty complete metric space has a unique fixed point. If a power of a map contracts, that power’s fixed point is also fixed by the map because the map commutes with its power.",
       "detail": "foundation",
       "kind": "concept",
       "annotation_provenance": {
@@ -2634,13 +2742,15 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
-      "id": "within-derivative",
-      "title": "Derivatives within a set",
-      "summary": "A derivative within a set uses increments that stay in that set. For a closed interval this permits differentiation at the endpoints from the available side, and equality of two functions on the interval transfers any such derivative between them.",
+      "id": "fundamental-theorem",
+      "title": "Fundamental theorem of calculus",
+      "summary": "Differentiating the integral of a continuous integrand with respect to the upper limit recovers the integrand. Within a closed interval, the derivative is tested using increments that remain in the interval.",
       "detail": "foundation",
       "kind": "concept",
       "annotation_provenance": {
@@ -2648,13 +2758,15 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "id": "gronwall",
-      "title": "Grönwall comparison",
-      "summary": "A differential growth bound gives an exponential bound on how far apart two solutions can move. With zero initial distance and zero derivative error, the growth bound forces their distance to remain zero.",
+      "title": "Grönwall’s inequality",
+      "summary": "A differential bound proportional to the size of a difference gives an exponential bound in terms of its initial size when the error term is zero. With zero initial size, the difference stays zero.",
       "detail": "foundation",
       "kind": "concept",
       "annotation_provenance": {
@@ -2662,20 +2774,40 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "id": "time-reversal",
       "title": "Time reversal",
-      "summary": "Replacing t by −t swaps the interval endpoints and exchanges right and left derivatives. The chain rule negates the reflected vector field, and negation preserves distances and hence the state Lipschitz constant.",
+      "summary": "Reflecting time converts a backward problem into a forward one. The chain rule changes the sign of the reflected vector field and exchanges left and right derivatives.",
       "kind": "concept",
       "annotation_provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
+      }
+    },
+    {
+      "id": "interval-cover",
+      "title": "Equality on an interval cover",
+      "summary": "If two functions agree on each subinterval of a cover, they agree at every point of the covered interval.",
+      "detail": "foundation",
+      "kind": "concept",
+      "annotation_provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     }
   ],
@@ -2683,38 +2815,44 @@
   "semantic_edges": [
     {
       "source": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
-      "target": "picard",
+      "target": "picard-iteration",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
-      "target": "fixed-point",
+      "target": "contraction",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
-      "target": "within-derivative",
+      "target": "fundamental-theorem",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
@@ -2726,7 +2864,9 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
@@ -2738,271 +2878,275 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
-      "target": "within-derivative",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"IsPicardLindelof\"]",
-      "target": "admissible-curves",
+      "target": "spatial-lipschitz",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"IsPicardLindelof\"]",
-      "target": "picard",
+      "target": "picard-iteration",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\"]",
-      "target": "admissible-curves",
+      "target": "complete-curve-space",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
-      "target": "admissible-curves",
+      "target": "complete-curve-space",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
-      "target": "fixed-point",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"ODE\",\"picard\"]",
-      "target": "picard",
+      "target": "picard-iteration",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
-      "target": "admissible-curves",
+      "target": "picard-iteration",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
-      "target": "picard",
+      "target": "complete-curve-space",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]",
-      "target": "factorial",
+      "target": "factorial-decay",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]",
-      "target": "picard",
+      "target": "spatial-lipschitz",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]",
-      "target": "factorial",
+      "target": "factorial-decay",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]",
-      "target": "admissible-curves",
+      "target": "complete-curve-space",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]",
-      "target": "factorial",
+      "target": "factorial-decay",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]",
-      "target": "fixed-point",
+      "target": "contraction",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"ContractingWith\",\"isFixedPt_fixedPoint_iterate\"]",
-      "target": "fixed-point",
+      "target": "contraction",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]",
-      "target": "fixed-point",
+      "target": "picard-iteration",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]",
-      "target": "picard",
+      "target": "contraction",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"ODE\",\"FunSpace\",\"compProj\"]",
-      "target": "admissible-curves",
+      "target": "picard-iteration",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "lean:[\"ODE\",\"FunSpace\",\"compProj\"]",
-      "target": "within-derivative",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]",
-      "target": "picard",
+      "target": "fundamental-theorem",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]",
-      "target": "within-derivative",
+      "target": "picard-iteration",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
@@ -3014,7 +3158,9 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
@@ -3026,19 +3172,9 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
-      "target": "within-derivative",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
@@ -3050,19 +3186,23 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
-      "target": "within-derivative",
+      "target": "spatial-lipschitz",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
@@ -3074,7 +3214,23 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
+      }
+    },
+    {
+      "source": "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]",
+      "target": "spatial-lipschitz",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
@@ -3086,455 +3242,419 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "lean:[\"norm_le_gronwallBound_of_norm_deriv_right_le\"]",
-      "target": "within-derivative",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "fact:state-space",
-      "target": "admissible-curves",
+      "target": "complete-curve-space",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "fact:state-space",
-      "target": "within-derivative",
+      "target": "fundamental-theorem",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "fact:existence-hypotheses",
-      "target": "admissible-curves",
+      "target": "picard-iteration",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "fact:existence-hypotheses",
-      "target": "picard",
+      "target": "spatial-lipschitz",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "fact:existence-hypotheses",
-      "target": "factorial",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "step:curve-space",
-      "target": "admissible-curves",
+      "target": "complete-curve-space",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "step:curve-space",
-      "target": "fixed-point",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "fact:curve-space",
-      "target": "admissible-curves",
+      "target": "complete-curve-space",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "fact:curve-space",
-      "target": "fixed-point",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "step:picard-self-map",
-      "target": "picard",
+      "target": "picard-iteration",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "step:picard-self-map",
-      "target": "admissible-curves",
+      "target": "complete-curve-space",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "fact:picard-self-map",
-      "target": "picard",
+      "target": "picard-iteration",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "fact:picard-self-map",
-      "target": "admissible-curves",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "step:factorial-bound",
-      "target": "picard",
+      "target": "factorial-decay",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "step:factorial-bound",
-      "target": "factorial",
+      "target": "picard-iteration",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
+      }
+    },
+    {
+      "source": "step:factorial-bound",
+      "target": "spatial-lipschitz",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "fact:factorial-bound",
-      "target": "factorial",
+      "target": "factorial-decay",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "fact:factorial-bound",
-      "target": "fixed-point",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "step:contracting-iterate",
-      "target": "factorial",
+      "target": "factorial-decay",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "step:contracting-iterate",
-      "target": "fixed-point",
+      "target": "contraction",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "fact:contracting-iterate",
-      "target": "factorial",
+      "target": "contraction",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "fact:contracting-iterate",
-      "target": "fixed-point",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "step:fixed-curve",
-      "target": "fixed-point",
+      "target": "contraction",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "step:fixed-curve",
-      "target": "picard",
+      "target": "complete-curve-space",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
+      }
+    },
+    {
+      "source": "step:fixed-curve",
+      "target": "picard-iteration",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "fact:fixed-curve",
-      "target": "fixed-point",
+      "target": "picard-iteration",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "fact:fixed-curve",
-      "target": "picard",
+      "target": "contraction",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "step:integral-equation",
-      "target": "fixed-point",
+      "target": "picard-iteration",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "step:integral-equation",
-      "target": "picard",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "fact:integral-equation",
-      "target": "picard",
+      "target": "picard-iteration",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "fact:integral-equation",
-      "target": "within-derivative",
+      "target": "fundamental-theorem",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "step:ode-solution",
-      "target": "picard",
+      "target": "fundamental-theorem",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "step:ode-solution",
-      "target": "within-derivative",
+      "target": "picard-iteration",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "fact:ode-solution",
-      "target": "picard",
+      "target": "picard-iteration",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "fact:ode-solution",
-      "target": "within-derivative",
+      "target": "fundamental-theorem",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "fact:uniqueness-hypotheses",
-      "target": "gronwall",
+      "target": "spatial-lipschitz",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "fact:uniqueness-hypotheses",
-      "target": "within-derivative",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "fact:same-initial-value",
-      "target": "gronwall",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "fact:same-initial-value",
       "target": "time-reversal",
       "relation": "about",
       "provenance": {
@@ -3542,7 +3662,23 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
+      }
+    },
+    {
+      "source": "fact:same-initial-value",
+      "target": "gronwall",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
@@ -3554,19 +3690,23 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "step:trajectory-comparison",
-      "target": "within-derivative",
+      "target": "spatial-lipschitz",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
@@ -3578,7 +3718,9 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
@@ -3590,7 +3732,9 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
@@ -3602,7 +3746,9 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
@@ -3614,19 +3760,9 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "step:split-interval",
-      "target": "within-derivative",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
@@ -3638,19 +3774,37 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
-      "source": "fact:split-interval",
-      "target": "within-derivative",
+      "source": "step:split-interval",
+      "target": "interval-cover",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
+      }
+    },
+    {
+      "source": "fact:split-interval",
+      "target": "interval-cover",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
@@ -3662,7 +3816,9 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
@@ -3674,31 +3830,23 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "step:forward-agreement",
-      "target": "within-derivative",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "fact:forward-agreement",
-      "target": "gronwall",
+      "target": "interval-cover",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
@@ -3710,7 +3858,9 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
@@ -3722,19 +3872,23 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
-      "source": "step:backward-agreement",
-      "target": "within-derivative",
+      "source": "fact:backward-agreement",
+      "target": "interval-cover",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
@@ -3746,55 +3900,37 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "step:agreement-on-interval",
-      "target": "time-reversal",
+      "target": "interval-cover",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "step:agreement-on-interval",
-      "target": "gronwall",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     },
     {
       "source": "fact:agreement-on-interval",
-      "target": "gronwall",
+      "target": "interval-cover",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "fact:agreement-on-interval",
-      "target": "time-reversal",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "picard-lindelof.json",
+        "retained_merges": 2
       }
     }
   ],
@@ -3851,13 +3987,15 @@
       "fact:backward-agreement",
       "step:agreement-on-interval",
       "fact:agreement-on-interval",
-      "admissible-curves",
-      "picard",
-      "factorial",
-      "fixed-point",
-      "within-derivative",
+      "spatial-lipschitz",
+      "complete-curve-space",
+      "picard-iteration",
+      "factorial-decay",
+      "contraction",
+      "fundamental-theorem",
       "gronwall",
-      "time-reversal"
+      "time-reversal",
+      "interval-cover"
     ],
     "size_roles": {
       "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]": "root",
@@ -3908,13 +4046,15 @@
       "fact:backward-agreement": "standard",
       "step:agreement-on-interval": "standard",
       "fact:agreement-on-interval": "standard",
-      "admissible-curves": "standard",
-      "picard": "standard",
-      "factorial": "standard",
-      "fixed-point": "standard",
-      "within-derivative": "standard",
+      "spatial-lipschitz": "standard",
+      "complete-curve-space": "standard",
+      "picard-iteration": "standard",
+      "factorial-decay": "standard",
+      "contraction": "standard",
+      "fundamental-theorem": "standard",
       "gronwall": "standard",
-      "time-reversal": "standard"
+      "time-reversal": "standard",
+      "interval-cover": "standard"
     },
     "hidden": [],
     "collapsed_into": {},
@@ -4377,7 +4517,7 @@
       },
       {
         "source": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
-        "target": "picard",
+        "target": "picard-iteration",
         "relation": "about",
         "semantic_edge_indices": [
           0
@@ -4385,7 +4525,7 @@
       },
       {
         "source": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
-        "target": "fixed-point",
+        "target": "contraction",
         "relation": "about",
         "semantic_edge_indices": [
           1
@@ -4393,7 +4533,7 @@
       },
       {
         "source": "lean:[\"IsPicardLindelof\",\"exists_eq_forall_mem_Icc_hasDerivWithinAt\"]",
-        "target": "within-derivative",
+        "target": "fundamental-theorem",
         "relation": "about",
         "semantic_edge_indices": [
           2
@@ -4416,8 +4556,8 @@
         ]
       },
       {
-        "source": "lean:[\"ODE_solution_unique_of_mem_Icc\"]",
-        "target": "within-derivative",
+        "source": "lean:[\"IsPicardLindelof\"]",
+        "target": "spatial-lipschitz",
         "relation": "about",
         "semantic_edge_indices": [
           5
@@ -4425,170 +4565,146 @@
       },
       {
         "source": "lean:[\"IsPicardLindelof\"]",
-        "target": "admissible-curves",
+        "target": "picard-iteration",
         "relation": "about",
         "semantic_edge_indices": [
           6
         ]
       },
       {
-        "source": "lean:[\"IsPicardLindelof\"]",
-        "target": "picard",
+        "source": "lean:[\"ODE\",\"FunSpace\"]",
+        "target": "complete-curve-space",
         "relation": "about",
         "semantic_edge_indices": [
           7
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\"]",
-        "target": "admissible-curves",
+        "source": "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
+        "target": "complete-curve-space",
         "relation": "about",
         "semantic_edge_indices": [
           8
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
-        "target": "admissible-curves",
+        "source": "lean:[\"ODE\",\"picard\"]",
+        "target": "picard-iteration",
         "relation": "about",
         "semantic_edge_indices": [
           9
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"instCompleteSpace\"]",
-        "target": "fixed-point",
+        "source": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
+        "target": "picard-iteration",
         "relation": "about",
         "semantic_edge_indices": [
           10
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"picard\"]",
-        "target": "picard",
+        "source": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
+        "target": "complete-curve-space",
         "relation": "about",
         "semantic_edge_indices": [
           11
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
-        "target": "admissible-curves",
+        "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]",
+        "target": "factorial-decay",
         "relation": "about",
         "semantic_edge_indices": [
           12
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"next\"]",
-        "target": "picard",
+        "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]",
+        "target": "spatial-lipschitz",
         "relation": "about",
         "semantic_edge_indices": [
           13
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]",
-        "target": "factorial",
+        "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]",
+        "target": "factorial-decay",
         "relation": "about",
         "semantic_edge_indices": [
           14
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_apply_le\"]",
-        "target": "picard",
+        "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]",
+        "target": "complete-curve-space",
         "relation": "about",
         "semantic_edge_indices": [
           15
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]",
-        "target": "factorial",
+        "source": "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]",
+        "target": "factorial-decay",
         "relation": "about",
         "semantic_edge_indices": [
           16
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"dist_iterate_next_iterate_next_le\"]",
-        "target": "admissible-curves",
+        "source": "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]",
+        "target": "contraction",
         "relation": "about",
         "semantic_edge_indices": [
           17
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]",
-        "target": "factorial",
+        "source": "lean:[\"ContractingWith\",\"isFixedPt_fixedPoint_iterate\"]",
+        "target": "contraction",
         "relation": "about",
         "semantic_edge_indices": [
           18
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"exists_contractingWith_iterate_next\"]",
-        "target": "fixed-point",
+        "source": "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]",
+        "target": "picard-iteration",
         "relation": "about",
         "semantic_edge_indices": [
           19
         ]
       },
       {
-        "source": "lean:[\"ContractingWith\",\"isFixedPt_fixedPoint_iterate\"]",
-        "target": "fixed-point",
+        "source": "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]",
+        "target": "contraction",
         "relation": "about",
         "semantic_edge_indices": [
           20
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]",
-        "target": "fixed-point",
+        "source": "lean:[\"ODE\",\"FunSpace\",\"compProj\"]",
+        "target": "picard-iteration",
         "relation": "about",
         "semantic_edge_indices": [
           21
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"exists_isFixedPt_next\"]",
-        "target": "picard",
+        "source": "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]",
+        "target": "fundamental-theorem",
         "relation": "about",
         "semantic_edge_indices": [
           22
         ]
       },
       {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"compProj\"]",
-        "target": "admissible-curves",
+        "source": "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]",
+        "target": "picard-iteration",
         "relation": "about",
         "semantic_edge_indices": [
           23
-        ]
-      },
-      {
-        "source": "lean:[\"ODE\",\"FunSpace\",\"compProj\"]",
-        "target": "within-derivative",
-        "relation": "about",
-        "semantic_edge_indices": [
-          24
-        ]
-      },
-      {
-        "source": "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]",
-        "target": "picard",
-        "relation": "about",
-        "semantic_edge_indices": [
-          25
-        ]
-      },
-      {
-        "source": "lean:[\"ODE\",\"hasDerivWithinAt_picard_Icc\"]",
-        "target": "within-derivative",
-        "relation": "about",
-        "semantic_edge_indices": [
-          26
         ]
       },
       {
@@ -4596,39 +4712,31 @@
         "target": "time-reversal",
         "relation": "about",
         "semantic_edge_indices": [
+          24
+        ]
+      },
+      {
+        "source": "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
+        "target": "gronwall",
+        "relation": "about",
+        "semantic_edge_indices": [
+          25
+        ]
+      },
+      {
+        "source": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
+        "target": "gronwall",
+        "relation": "about",
+        "semantic_edge_indices": [
+          26
+        ]
+      },
+      {
+        "source": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
+        "target": "spatial-lipschitz",
+        "relation": "about",
+        "semantic_edge_indices": [
           27
-        ]
-      },
-      {
-        "source": "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
-        "target": "gronwall",
-        "relation": "about",
-        "semantic_edge_indices": [
-          28
-        ]
-      },
-      {
-        "source": "lean:[\"ODE_solution_unique_of_mem_Icc_left\"]",
-        "target": "within-derivative",
-        "relation": "about",
-        "semantic_edge_indices": [
-          29
-        ]
-      },
-      {
-        "source": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
-        "target": "gronwall",
-        "relation": "about",
-        "semantic_edge_indices": [
-          30
-        ]
-      },
-      {
-        "source": "lean:[\"ODE_solution_unique_of_mem_Icc_right\"]",
-        "target": "within-derivative",
-        "relation": "about",
-        "semantic_edge_indices": [
-          31
         ]
       },
       {
@@ -4636,335 +4744,287 @@
         "target": "gronwall",
         "relation": "about",
         "semantic_edge_indices": [
-          32
+          28
+        ]
+      },
+      {
+        "source": "lean:[\"dist_le_of_trajectories_ODE_of_mem\"]",
+        "target": "spatial-lipschitz",
+        "relation": "about",
+        "semantic_edge_indices": [
+          29
         ]
       },
       {
         "source": "lean:[\"norm_le_gronwallBound_of_norm_deriv_right_le\"]",
         "target": "gronwall",
+        "relation": "about",
+        "semantic_edge_indices": [
+          30
+        ]
+      },
+      {
+        "source": "fact:state-space",
+        "target": "complete-curve-space",
+        "relation": "about",
+        "semantic_edge_indices": [
+          31
+        ]
+      },
+      {
+        "source": "fact:state-space",
+        "target": "fundamental-theorem",
+        "relation": "about",
+        "semantic_edge_indices": [
+          32
+        ]
+      },
+      {
+        "source": "fact:existence-hypotheses",
+        "target": "picard-iteration",
         "relation": "about",
         "semantic_edge_indices": [
           33
         ]
       },
       {
-        "source": "lean:[\"norm_le_gronwallBound_of_norm_deriv_right_le\"]",
-        "target": "within-derivative",
+        "source": "fact:existence-hypotheses",
+        "target": "spatial-lipschitz",
         "relation": "about",
         "semantic_edge_indices": [
           34
         ]
       },
       {
-        "source": "fact:state-space",
-        "target": "admissible-curves",
+        "source": "step:curve-space",
+        "target": "complete-curve-space",
         "relation": "about",
         "semantic_edge_indices": [
           35
         ]
       },
       {
-        "source": "fact:state-space",
-        "target": "within-derivative",
+        "source": "fact:curve-space",
+        "target": "complete-curve-space",
         "relation": "about",
         "semantic_edge_indices": [
           36
         ]
       },
       {
-        "source": "fact:existence-hypotheses",
-        "target": "admissible-curves",
+        "source": "step:picard-self-map",
+        "target": "picard-iteration",
         "relation": "about",
         "semantic_edge_indices": [
           37
         ]
       },
       {
-        "source": "fact:existence-hypotheses",
-        "target": "picard",
+        "source": "step:picard-self-map",
+        "target": "complete-curve-space",
         "relation": "about",
         "semantic_edge_indices": [
           38
         ]
       },
       {
-        "source": "fact:existence-hypotheses",
-        "target": "factorial",
+        "source": "fact:picard-self-map",
+        "target": "picard-iteration",
         "relation": "about",
         "semantic_edge_indices": [
           39
         ]
       },
       {
-        "source": "step:curve-space",
-        "target": "admissible-curves",
+        "source": "step:factorial-bound",
+        "target": "factorial-decay",
         "relation": "about",
         "semantic_edge_indices": [
           40
         ]
       },
       {
-        "source": "step:curve-space",
-        "target": "fixed-point",
+        "source": "step:factorial-bound",
+        "target": "picard-iteration",
         "relation": "about",
         "semantic_edge_indices": [
           41
         ]
       },
       {
-        "source": "fact:curve-space",
-        "target": "admissible-curves",
+        "source": "step:factorial-bound",
+        "target": "spatial-lipschitz",
         "relation": "about",
         "semantic_edge_indices": [
           42
         ]
       },
       {
-        "source": "fact:curve-space",
-        "target": "fixed-point",
+        "source": "fact:factorial-bound",
+        "target": "factorial-decay",
         "relation": "about",
         "semantic_edge_indices": [
           43
         ]
       },
       {
-        "source": "step:picard-self-map",
-        "target": "picard",
+        "source": "step:contracting-iterate",
+        "target": "factorial-decay",
         "relation": "about",
         "semantic_edge_indices": [
           44
         ]
       },
       {
-        "source": "step:picard-self-map",
-        "target": "admissible-curves",
+        "source": "step:contracting-iterate",
+        "target": "contraction",
         "relation": "about",
         "semantic_edge_indices": [
           45
         ]
       },
       {
-        "source": "fact:picard-self-map",
-        "target": "picard",
+        "source": "fact:contracting-iterate",
+        "target": "contraction",
         "relation": "about",
         "semantic_edge_indices": [
           46
         ]
       },
       {
-        "source": "fact:picard-self-map",
-        "target": "admissible-curves",
+        "source": "step:fixed-curve",
+        "target": "contraction",
         "relation": "about",
         "semantic_edge_indices": [
           47
         ]
       },
       {
-        "source": "step:factorial-bound",
-        "target": "picard",
+        "source": "step:fixed-curve",
+        "target": "complete-curve-space",
         "relation": "about",
         "semantic_edge_indices": [
           48
         ]
       },
       {
-        "source": "step:factorial-bound",
-        "target": "factorial",
+        "source": "step:fixed-curve",
+        "target": "picard-iteration",
         "relation": "about",
         "semantic_edge_indices": [
           49
         ]
       },
       {
-        "source": "fact:factorial-bound",
-        "target": "factorial",
+        "source": "fact:fixed-curve",
+        "target": "picard-iteration",
         "relation": "about",
         "semantic_edge_indices": [
           50
         ]
       },
       {
-        "source": "fact:factorial-bound",
-        "target": "fixed-point",
+        "source": "fact:fixed-curve",
+        "target": "contraction",
         "relation": "about",
         "semantic_edge_indices": [
           51
         ]
       },
       {
-        "source": "step:contracting-iterate",
-        "target": "factorial",
+        "source": "step:integral-equation",
+        "target": "picard-iteration",
         "relation": "about",
         "semantic_edge_indices": [
           52
         ]
       },
       {
-        "source": "step:contracting-iterate",
-        "target": "fixed-point",
+        "source": "fact:integral-equation",
+        "target": "picard-iteration",
         "relation": "about",
         "semantic_edge_indices": [
           53
         ]
       },
       {
-        "source": "fact:contracting-iterate",
-        "target": "factorial",
+        "source": "fact:integral-equation",
+        "target": "fundamental-theorem",
         "relation": "about",
         "semantic_edge_indices": [
           54
         ]
       },
       {
-        "source": "fact:contracting-iterate",
-        "target": "fixed-point",
+        "source": "step:ode-solution",
+        "target": "fundamental-theorem",
         "relation": "about",
         "semantic_edge_indices": [
           55
         ]
       },
       {
-        "source": "step:fixed-curve",
-        "target": "fixed-point",
+        "source": "step:ode-solution",
+        "target": "picard-iteration",
         "relation": "about",
         "semantic_edge_indices": [
           56
         ]
       },
       {
-        "source": "step:fixed-curve",
-        "target": "picard",
+        "source": "fact:ode-solution",
+        "target": "picard-iteration",
         "relation": "about",
         "semantic_edge_indices": [
           57
         ]
       },
       {
-        "source": "fact:fixed-curve",
-        "target": "fixed-point",
+        "source": "fact:ode-solution",
+        "target": "fundamental-theorem",
         "relation": "about",
         "semantic_edge_indices": [
           58
         ]
       },
       {
-        "source": "fact:fixed-curve",
-        "target": "picard",
+        "source": "fact:uniqueness-hypotheses",
+        "target": "spatial-lipschitz",
         "relation": "about",
         "semantic_edge_indices": [
           59
         ]
       },
       {
-        "source": "step:integral-equation",
-        "target": "fixed-point",
+        "source": "fact:uniqueness-hypotheses",
+        "target": "time-reversal",
         "relation": "about",
         "semantic_edge_indices": [
           60
         ]
       },
       {
-        "source": "step:integral-equation",
-        "target": "picard",
+        "source": "fact:same-initial-value",
+        "target": "gronwall",
         "relation": "about",
         "semantic_edge_indices": [
           61
         ]
       },
       {
-        "source": "fact:integral-equation",
-        "target": "picard",
+        "source": "step:trajectory-comparison",
+        "target": "gronwall",
         "relation": "about",
         "semantic_edge_indices": [
           62
         ]
       },
       {
-        "source": "fact:integral-equation",
-        "target": "within-derivative",
+        "source": "step:trajectory-comparison",
+        "target": "spatial-lipschitz",
         "relation": "about",
         "semantic_edge_indices": [
           63
-        ]
-      },
-      {
-        "source": "step:ode-solution",
-        "target": "picard",
-        "relation": "about",
-        "semantic_edge_indices": [
-          64
-        ]
-      },
-      {
-        "source": "step:ode-solution",
-        "target": "within-derivative",
-        "relation": "about",
-        "semantic_edge_indices": [
-          65
-        ]
-      },
-      {
-        "source": "fact:ode-solution",
-        "target": "picard",
-        "relation": "about",
-        "semantic_edge_indices": [
-          66
-        ]
-      },
-      {
-        "source": "fact:ode-solution",
-        "target": "within-derivative",
-        "relation": "about",
-        "semantic_edge_indices": [
-          67
-        ]
-      },
-      {
-        "source": "fact:uniqueness-hypotheses",
-        "target": "gronwall",
-        "relation": "about",
-        "semantic_edge_indices": [
-          68
-        ]
-      },
-      {
-        "source": "fact:uniqueness-hypotheses",
-        "target": "within-derivative",
-        "relation": "about",
-        "semantic_edge_indices": [
-          69
-        ]
-      },
-      {
-        "source": "fact:same-initial-value",
-        "target": "gronwall",
-        "relation": "about",
-        "semantic_edge_indices": [
-          70
-        ]
-      },
-      {
-        "source": "fact:same-initial-value",
-        "target": "time-reversal",
-        "relation": "about",
-        "semantic_edge_indices": [
-          71
-        ]
-      },
-      {
-        "source": "step:trajectory-comparison",
-        "target": "gronwall",
-        "relation": "about",
-        "semantic_edge_indices": [
-          72
-        ]
-      },
-      {
-        "source": "step:trajectory-comparison",
-        "target": "within-derivative",
-        "relation": "about",
-        "semantic_edge_indices": [
-          73
         ]
       },
       {
@@ -4972,7 +5032,7 @@
         "target": "gronwall",
         "relation": "about",
         "semantic_edge_indices": [
-          74
+          64
         ]
       },
       {
@@ -4980,7 +5040,7 @@
         "target": "gronwall",
         "relation": "about",
         "semantic_edge_indices": [
-          75
+          65
         ]
       },
       {
@@ -4988,7 +5048,7 @@
         "target": "gronwall",
         "relation": "about",
         "semantic_edge_indices": [
-          76
+          66
         ]
       },
       {
@@ -4996,15 +5056,7 @@
         "target": "time-reversal",
         "relation": "about",
         "semantic_edge_indices": [
-          77
-        ]
-      },
-      {
-        "source": "step:split-interval",
-        "target": "within-derivative",
-        "relation": "about",
-        "semantic_edge_indices": [
-          78
+          67
         ]
       },
       {
@@ -5012,15 +5064,23 @@
         "target": "time-reversal",
         "relation": "about",
         "semantic_edge_indices": [
-          79
+          68
+        ]
+      },
+      {
+        "source": "step:split-interval",
+        "target": "interval-cover",
+        "relation": "about",
+        "semantic_edge_indices": [
+          69
         ]
       },
       {
         "source": "fact:split-interval",
-        "target": "within-derivative",
+        "target": "interval-cover",
         "relation": "about",
         "semantic_edge_indices": [
-          80
+          70
         ]
       },
       {
@@ -5028,7 +5088,7 @@
         "target": "time-reversal",
         "relation": "about",
         "semantic_edge_indices": [
-          81
+          71
         ]
       },
       {
@@ -5036,23 +5096,15 @@
         "target": "gronwall",
         "relation": "about",
         "semantic_edge_indices": [
-          82
-        ]
-      },
-      {
-        "source": "step:forward-agreement",
-        "target": "within-derivative",
-        "relation": "about",
-        "semantic_edge_indices": [
-          83
+          72
         ]
       },
       {
         "source": "fact:forward-agreement",
-        "target": "gronwall",
+        "target": "interval-cover",
         "relation": "about",
         "semantic_edge_indices": [
-          84
+          73
         ]
       },
       {
@@ -5060,7 +5112,7 @@
         "target": "time-reversal",
         "relation": "about",
         "semantic_edge_indices": [
-          85
+          74
         ]
       },
       {
@@ -5068,15 +5120,15 @@
         "target": "gronwall",
         "relation": "about",
         "semantic_edge_indices": [
-          86
+          75
         ]
       },
       {
-        "source": "step:backward-agreement",
-        "target": "within-derivative",
+        "source": "fact:backward-agreement",
+        "target": "interval-cover",
         "relation": "about",
         "semantic_edge_indices": [
-          87
+          76
         ]
       },
       {
@@ -5084,39 +5136,23 @@
         "target": "time-reversal",
         "relation": "about",
         "semantic_edge_indices": [
-          88
+          77
         ]
       },
       {
         "source": "step:agreement-on-interval",
-        "target": "time-reversal",
+        "target": "interval-cover",
         "relation": "about",
         "semantic_edge_indices": [
-          89
-        ]
-      },
-      {
-        "source": "step:agreement-on-interval",
-        "target": "gronwall",
-        "relation": "about",
-        "semantic_edge_indices": [
-          90
+          78
         ]
       },
       {
         "source": "fact:agreement-on-interval",
-        "target": "gronwall",
+        "target": "interval-cover",
         "relation": "about",
         "semantic_edge_indices": [
-          91
-        ]
-      },
-      {
-        "source": "fact:agreement-on-interval",
-        "target": "time-reversal",
-        "relation": "about",
-        "semantic_edge_indices": [
-          92
+          79
         ]
       }
     ]

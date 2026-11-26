@@ -248,6 +248,7 @@ button:focus-visible, a:focus-visible, input:focus-visible {
   white-space: nowrap;
 }
 .node-formula .katex { font-size: 1em; }
+.node-formula[hidden] { display: none; }
 .hide-formulas:not(.is-fitting-labels) .node-formula { display: none; }
 
 .inspector {

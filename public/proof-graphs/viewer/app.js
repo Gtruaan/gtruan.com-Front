@@ -31,6 +31,7 @@ const labelWidthRatio = 1.50;
 const labelHeightRatio = 1.16;
 const nodeGap = 25;
 const linkedNodeGap = 46;
+const arrowHeadSize = 8;
 const minZoom = .19;
 const maxZoom = 3.3;
 const touchPoints = new Map();
@@ -44,6 +45,7 @@ let views;
 let layout;
 let selected = null;
 let mode = "steps";
+let downwardFlow = new URLSearchParams(location.search).get("layout") === "downward";
 let gesture = null;
 let pinch = null;
 let camera = { x: 0, y: 0, scale: 1, fitted: true, overview: true };
@@ -102,7 +104,7 @@ function noise(seed, index) {
   return ((Math.imul(seed ^ Math.imul(index + 97, 2654435761), 2246822519) >>> 0) % 4096) / 4096 - .5;
 }
 
-function anchorNodes(layout, portrait) {
+function anchorNodes(layout, portrait, fold = false, center = false) {
   const { nodes, nodeMap, neighbors, edges } = layout;
   const incoming = new Map(nodes.map((node) => [node.id, []]));
   for (const edge of edges) incoming.get(edge.target).push(edge.source);
@@ -145,13 +147,22 @@ function anchorNodes(layout, portrait) {
       if (!layers.has(rank)) layers.set(rank, []);
       layers.get(rank).push(nodeMap.get(id));
     }
+    if (fold && layers.size > 4) {
+      nextComponent = foldLayers([...layers.values()], portrait, nextComponent);
+      continue;
+    }
 
     const alongRadius = (node) => portrait ? node.ry : node.rx;
     const crossRadius = (node) => portrait ? node.rx : node.ry;
     let along = 0;
     let crossExtent = 0;
     const offsets = new Map();
-    for (const rank of [...layers.keys()].sort((a,b) => a-b)) {
+    const ranksInOrder = [...layers.keys()].sort((a, b) => a - b);
+    if (center && anchors.length && ranksInOrder.length > 2) {
+      const rootRank = ranksInOrder.shift();
+      ranksInOrder.splice(Math.floor(ranksInOrder.length / 2), 0, rootRank);
+    }
+    for (const rank of ranksInOrder) {
       const layer = layers.get(rank);
       const preferred = (node) => {
         const reference = [...neighbors.get(node.id)].filter((id) => offsets.has(id));
@@ -196,6 +207,148 @@ function anchorNodes(layout, portrait) {
     }
     nextComponent += crossExtent * 2 + 95;
   }
+}
+
+function placeNode(node, x, y) {
+  node.x = node.ax = x;
+  node.y = node.ay = y;
+  node.vx = node.vy = 0;
+}
+
+function foldLayers(layers, portrait, crossStart) {
+  const along = (node) => portrait ? node.ry : node.rx;
+  const cross = (node) => portrait ? node.rx : node.ry;
+  const stretch = Math.ceil(Math.sqrt(layers.length * (portrait ? 1.65 : 1.1)));
+  const bandCount = Math.ceil(layers.length / stretch);
+  const bandWidths = Array(bandCount).fill(0);
+  const rowHeights = Array(stretch).fill(0);
+  const cells = layers.map((nodes, i) => {
+    const band = Math.floor(i / stretch);
+    const offset = i % stretch;
+    const row = band % 2 ? stretch - 1 - offset : offset;
+    const width = nodes.reduce((sum, node) => sum + 2 * cross(node) + nodeGap, -nodeGap);
+    bandWidths[band] = Math.max(bandWidths[band], width);
+    rowHeights[row] = Math.max(rowHeights[row], ...nodes.map((node) => 2 * along(node)));
+    return { band, row, nodes, width };
+  });
+  const position = (sizes, offset) => sizes.map((size) => {
+    const middle = offset + size / 2;
+    offset += size + linkedNodeGap + 12;
+    return middle;
+  });
+  const bands = position(bandWidths, crossStart);
+  const rows = position(rowHeights, 0);
+  for (const { band, row, nodes, width } of cells) {
+    let offset = bands[band] - width / 2;
+    for (const node of nodes) {
+      const column = offset + cross(node);
+      placeNode(node, portrait ? column : -rows[row], portrait ? -rows[row] : column);
+      offset += 2 * cross(node) + nodeGap;
+    }
+  }
+  return bands.at(-1) + bandWidths.at(-1) / 2 + 95;
+}
+
+function centerBranches(layout, portrait) {
+  const { nodes, nodeMap, neighbors, edges } = layout;
+  const central = nodes.filter((node) => node.isRoot);
+  if (!central.length) return false;
+  const incoming = new Map(nodes.map((node) => [node.id, new Set()]));
+  for (const { source, target } of edges) incoming.get(target).add(source);
+  const severalRoots = central.length > 1;
+  const seeds = severalRoots ? central : [...incoming.get(central[0].id)].map((id) => nodeMap.get(id));
+  if (seeds.length < 2) return false;
+  if (nodes.length > 100) {
+    // Keep large reference graphs packed in layers so long cross-links stay routable.
+    anchorNodes(layout, portrait, false, true);
+    return true;
+  }
+
+  const branches = seeds.map(() => new Map());
+  const queue = seeds.map((node, branch) => ({ node, branch, rank: severalRoots ? 0 : 1 }));
+  const seen = new Set([...central, ...seeds].map(({ id }) => id));
+  const visit = ({ node, rank, branch }, links) => {
+    for (const id of links.get(node.id)) {
+      if (seen.has(id)) continue;
+      seen.add(id);
+      queue.push({ node: nodeMap.get(id), rank: rank + 1, branch });
+    }
+  };
+  for (const entry of queue) visit(entry, incoming);
+  for (const entry of queue) visit(entry, neighbors);
+  for (const { node, branch, rank } of queue) {
+    const rows = branches[branch];
+    if (!rows.has(rank)) rows.set(rank, []);
+    rows.get(rank).push(node);
+  }
+
+  const firstAngle = portrait ? -Math.PI / 2 : Math.PI;
+  const step = 2 * Math.PI / seeds.length;
+  const centerRadius = severalRoots ? 0 : Math.max(central[0].rx, central[0].ry);
+  const seedDiameter = Math.max(...seeds.map((node) => 2 * Math.max(node.rx, node.ry)));
+  const seedRadius = (seedDiameter + nodeGap) / (2 * Math.sin(step / 2));
+  const startRadius = severalRoots ? Math.max(seedRadius, seedDiameter * .45)
+    : Math.max(seedRadius, centerRadius + seedDiameter / 2 + linkedNodeGap);
+  const laneWidth = Math.max(300, Math.sqrt(queue.length / seeds.length) * 104);
+  if (!severalRoots) placeNode(central[0], 0, 0);
+
+  for (const [branch, rows] of branches.entries()) {
+    const angle = firstAngle + branch * step;
+    const ux = Math.cos(angle);
+    const uy = Math.sin(angle);
+    const along = (node) => projectedRadius(node, ux, uy);
+    const cross = (node) => projectedRadius(node, -uy, ux);
+    let radius = startRadius - along(seeds[branch]);
+    const preferred = new Map();
+    let ranks = [...rows].sort(([a], [b]) => a - b).map(([, row]) => row);
+    if (seeds.length === 2 && ranks.length > 4) {
+      const [head, ...rest] = ranks;
+      const chain = rest.flat();
+      const width = Math.ceil(Math.sqrt(chain.length * (portrait ? .9 : 1.5)));
+      ranks = [head];
+      for (let i = 0; i < chain.length; i += width) ranks.push(chain.slice(i, i + width));
+    }
+    const packed = ranks.length < rows.size;
+    for (const [rowIndex, row] of ranks.entries()) {
+      const byParent = (node) => {
+        const offsets = [...neighbors.get(node.id)].filter((id) => preferred.has(id));
+        return offsets.reduce((sum, id) => sum + preferred.get(id), 0) / (offsets.length || 1);
+      };
+      if (packed) {
+        if (rowIndex % 2) row.reverse();
+      } else {
+        row.sort((a, b) => byParent(a) - byParent(b));
+      }
+      let first = 0;
+      while (first < row.length) {
+        let end = first + 1;
+        let width = 2 * cross(row[first]);
+        while (end < row.length && (packed || width + 2 * cross(row[end]) + nodeGap <= laneWidth)) {
+          width += 2 * cross(row[end++]) + nodeGap;
+        }
+        const lane = row.slice(first, end);
+        const half = Math.max(...lane.map(along));
+        radius += half;
+        let lateral = -width / 2;
+        for (const node of lane) {
+          const offset = lateral + cross(node);
+          placeNode(node, radius * ux - offset * uy, radius * uy + offset * ux);
+          preferred.set(node.id, offset);
+          lateral += 2 * cross(node) + nodeGap;
+        }
+        radius += half + linkedNodeGap + 12;
+        first = end;
+      }
+    }
+  }
+  const loose = nodes.filter(({ id }) => !seen.has(id));
+  if (loose.length) {
+    anchorNodes({ ...layout, nodes: loose, edges: edges.filter(({ source }) => !seen.has(source)) }, portrait);
+    const offset = Math.max(...nodes.filter(({ id }) => seen.has(id)).map((node) => node.x + node.rx)) -
+      Math.min(...loose.map((node) => node.x - node.rx)) + 95;
+    for (const node of loose) placeNode(node, node.x + offset, node.y);
+  }
+  return true;
 }
 
 function ellipsePath(rx, ry, seed, offset = 0) {
@@ -274,7 +427,7 @@ function createLayout() {
   touchPoints.clear();
   diagram.classList.remove("is-dragging");
   const projection = views[mode];
-  const portrait = portraitLayout.matches;
+  const portrait = downwardFlow || portraitLayout.matches;
   nodeLayer.replaceChildren();
   edgeLayer.replaceChildren();
   labelWorld.replaceChildren();
@@ -289,7 +442,7 @@ function createLayout() {
   }
   layout = { nodes, nodeMap, edges, neighbors, collapsed: projection.collapsed_into || {}, portrait };
   fitLabels(nodes);
-  anchorNodes(layout, portrait);
+  if (downwardFlow || !centerBranches(layout, portrait)) anchorNodes(layout, portrait, !downwardFlow);
   if (nodes.length <= 100) {
     for (let i = 0; i < 42; i++) forceStep(.75);
     separateNodes(24);
@@ -298,13 +451,15 @@ function createLayout() {
   paintNodes();
   bySelector("#graph-count").textContent = `${nodes.length} nodes · ${edges.length} arrows`;
   const currentLayout = layout;
-  document.fonts?.ready.then(() => {
-    if (layout !== currentLayout) return;
-    fitLabels(nodes);
-    separateNodes(40);
-    paintNodes();
-    if (camera.fitted) fitGraph(camera.overview);
-  });
+  if (document.fonts?.status === "loading") {
+    document.fonts.ready.then(() => {
+      if (layout !== currentLayout) return;
+      fitLabels(nodes);
+      separateNodes(40);
+      paintNodes();
+      if (camera.fitted) fitGraph(camera.overview);
+    });
+  }
 }
 
 function setLabelBounds(node) {
@@ -325,14 +480,17 @@ function fitNodeLabel(node) {
   for (let attempt = 0; attempt < 6; attempt++) {
     const { width, height } = setLabelBounds(node);
     if (math) {
+      math.hidden = false;
       math.style.fontSize = "12px";
       if (math.offsetWidth > width) {
-        math.style.fontSize = `${Math.max(9, 12 * (width - 1) / math.offsetWidth)}px`;
+        math.style.fontSize = `${Math.max(8, 12 * (width - 1) / math.offsetWidth)}px`;
       }
-      if (math.offsetWidth > width) {
-        node.rx = Math.ceil((math.offsetWidth + 6) / labelWidthRatio);
+      const fittedRadius = Math.ceil((math.offsetWidth + 4) / labelWidthRatio);
+      if (math.offsetWidth > width && fittedRadius <= node.baseRx * 1.22) {
+        node.rx = fittedRadius;
         continue;
       }
+      math.hidden = math.offsetWidth > width;
     }
     title.style.fontSize = `${minTitleSize}px`;
     if (stack.offsetHeight > height) {
@@ -573,18 +731,21 @@ function smoothRoute({ a, b, bend }, spatial) {
   for (const extra of [curvature, -curvature, curvature * 2, -curvature * 2, 0]) {
     const x = -dy * extra * side / span;
     const y = dx * extra * side / span;
-    const first = [a.x + dx / 3 + x, a.y + dy / 3 + y];
-    const second = [b.x - dx / 3 + x, b.y - dy / 3 + y];
+    const sourceAngle = Math.atan2(dy / 3 + y, dx / 3 + x);
+    const targetAngle = Math.atan2(-dy / 3 + y, -dx / 3 + x);
+    const start = pointOutsideNode(a, sourceAngle);
+    const end = pointOutsideNode(b, targetAngle);
+    const handle = Math.hypot(end[0] - start[0], end[1] - start[1]) / 3;
     const curve = [
-      pointOutsideNode(a, Math.atan2(first[1] - a.y, first[0] - a.x)),
-      first, second,
-      pointOutsideNode(b, Math.atan2(second[1] - b.y, second[0] - b.x)),
+      start, [start[0] + Math.cos(sourceAngle) * handle, start[1] + Math.sin(sourceAngle) * handle],
+      [end[0] + Math.cos(targetAngle) * handle, end[1] + Math.sin(targetAngle) * handle], end,
     ];
     const samples = bezierSamples(curve);
     const xs = curve.map(([x]) => x);
     const ys = curve.map(([, y]) => y);
     const obstacles = Array.from(spatial.query(Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)))
       .filter((node) => node.id !== a.id && node.id !== b.id);
+    for (const { x: cx, y: cy, rx, ry } of [a, b]) obstacles.push({ cx, cy, rx, ry });
     if (samples.slice(1).every((point, i) => segmentClear(samples[i], point, obstacles))) {
       return { curve, samples };
     }
@@ -600,6 +761,7 @@ function bezierPath([start, first, second, end], offset = 0) {
 function paintEdge(edge, spatial) {
   const { a, b, paths } = edge;
   edge.routePoints = null;
+  edge.arrow = null;
   const clear = (start, end) => segmentClear(start, end,
     Array.from(spatial.query(...start, ...end)).filter((n) => n.id !== a.id && n.id !== b.id));
   const smooth = smoothRoute(edge, spatial);
@@ -608,8 +770,7 @@ function paintEdge(edge, spatial) {
     const [x, y] = curve.at(-1);
     const [u, v] = curve.at(-2);
     edge.routePoints = samples;
-    paintEdgePaths(paths, bezierPath(curve), bezierPath(curve, .8),
-      x, y, Math.atan2(y - v, x - u), Math.hypot(x - u, y - v));
+    paintEdgePaths(edge, bezierPath(curve), bezierPath(curve, .8), x, y, Math.atan2(y - v, x - u));
     return;
   }
   const nearby = (margin) => Array.from(spatial.query(a.x, a.y, b.x, b.y, margin))
@@ -630,20 +791,27 @@ function paintEdge(edge, spatial) {
   points[points.length - 1] = pointOutsideNode(b, targetAngle);
   edge.routePoints = points;
   const [x, y] = points.at(-1);
-  const [u, v] = points.at(-2);
-  paintEdgePaths(paths, roundedRoute(points), roundedRoute(points, .8),
-    x, y, targetAngle + Math.PI, Math.hypot(x - u, y - v));
+  paintEdgePaths(edge, roundedRoute(points), roundedRoute(points, .8), x, y, targetAngle + Math.PI);
 }
 
-function paintEdgePaths(paths, path, echo, x1, y1, tipAngle, space) {
-  const wing = (side, length) => [
-    x1 - Math.cos(tipAngle + side) * length, y1 - Math.sin(tipAngle + side) * length,
-  ];
-  const headSize = Math.min(10.2, space * .36);
-  const [lx, ly] = wing(-.49, headSize);
-  const [rx, ry] = wing(.52, headSize * .93);
-  const head = `M${lx} ${ly} Q${(lx + x1) / 2} ${(ly + y1) / 2 - .45} ${x1} ${y1} L${rx} ${ry}`;
-  [path, head, echo, path, head].forEach((value, i) => paths[i].setAttribute("d", value));
+function paintEdgePaths(edge, path, echo, x, y, angle) {
+  const [highlight, , trace, line] = edge.paths;
+  highlight.setAttribute("d", path);
+  trace.setAttribute("d", echo);
+  line.setAttribute("d", path);
+  edge.arrow = { x, y, angle: angle * 180 / Math.PI };
+  paintArrowhead(edge);
+}
+
+function paintArrowhead({ arrow, paths }) {
+  if (!arrow) return;
+  const { x, y, angle } = arrow;
+  // Share one ink size at the current zoom. Limit world-space reach on dense graphs.
+  const size = Math.min(arrowHeadSize / camera.scale, 22);
+  for (const tip of [paths[1], paths[4]]) {
+    tip.setAttribute("d", "M-.88 .48 Q-.48 .20 0 0 L-.86 -.49");
+    tip.setAttribute("transform", `translate(${x} ${y}) rotate(${angle}) scale(${size})`);
+  }
 }
 
 function paintNodes() {
@@ -674,6 +842,7 @@ function settle(iterations = 42) {
 function paintCamera() {
   world.setAttribute("transform", `translate(${camera.x},${camera.y}) scale(${camera.scale})`);
   labelWorld.style.transform = `translate(${camera.x}px, ${camera.y}px) scale(${camera.scale})`;
+  for (const edge of layout.edges) paintArrowhead(edge);
 }
 
 function fitGraph(initial = false) {
@@ -1018,6 +1187,20 @@ document.addEventListener("keydown", (event) => {
 });
 bySelector("#formula-toggle").addEventListener("change", (event) => {
   stage.classList.toggle("hide-formulas", !event.target.checked);
+});
+const flowToggle = bySelector("#downward-flow");
+flowToggle.checked = downwardFlow;
+flowToggle.addEventListener("change", () => {
+  downwardFlow = flowToggle.checked;
+  const url = new URL(location.href);
+  if (downwardFlow) url.searchParams.set("layout", "downward");
+  else url.searchParams.delete("layout");
+  history.replaceState(history.state, "", url);
+  if (!layout) return;
+  createLayout();
+  updateHighlights();
+  fitGraph(true);
+  if (selected) reveal(selected);
 });
 bySelector("#reset-layout").addEventListener("click", () => {
   if (!proof) return;

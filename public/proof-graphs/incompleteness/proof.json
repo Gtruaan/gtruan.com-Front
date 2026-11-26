@@ -1263,17 +1263,17 @@
       }
     }
   ],
-  "title": "Gödel’s First and Second Incompleteness Theorems",
+  "title": "Gödel’s incompleteness theorems",
   "annotations": {
     "lean:LO.FirstOrder.Arithmetic.incomplete": {
-      "title": "First incompleteness for Σ₁-sound arithmetic",
-      "summary": "A Δ₁-presented arithmetic theory extending R₀ and sound for Σ₁ sentences has an undecided sentence. The proof constructs a particular sentence π for which a proof of either π or its negation would give a proof of the other, contradicting consistency.",
-      "statement_latex": "\\forall T\\in\\mathrm{ArithmeticTheory},\\quad \\bigl(\\Delta_1\\text{-presented}(T)\\land R_0\\preceq T\\land\\mathrm{Sound}_{\\Sigma_1}(T)\\bigr)\\Longrightarrow\\mathrm{Incomplete}(T)",
-      "compact_latex": "\\exists\\sigma\\;\\bigl(T\\nvdash\\sigma\\land T\\nvdash\\neg\\sigma\\bigr)",
-      "why_here": "The local undecided sentence supplies the witness for incompleteness.",
+      "title": "First incompleteness theorem",
+      "summary": "A Σ₁-sound arithmetic theory with a Δ₁ presentation that extends R₀ leaves some sentence undecided. The proof constructs a sentence for which a proof of either side would give a proof of the other side, contradicting consistency.",
+      "statement_latex": "\\text{If }T\\text{ is an arithmetic theory with a }\\Delta_1\\text{ presentation, }R_0\\preceq T,\\text{ and }T\\text{ is }\\Sigma_1\\text{-sound, then }\\exists\\varphi\\in\\operatorname{Sent}(\\mathcal L_{\\mathrm A})\\;\\bigl(T\\nvdash\\varphi\\ \\land\\ T\\nvdash\\neg\\varphi\\bigr).",
+      "compact_latex": "\\exists\\varphi\\;(T\\nvdash\\varphi\\land T\\nvdash\\neg\\varphi)",
+      "why_here": "The constructed sentence supplies the witness required by the theorem.",
       "concepts": [
         "self-substitution",
-        "consistency"
+        "soundness-consistency"
       ],
       "support_edges": [
         15
@@ -1283,18 +1283,20 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "lean:LO.FirstOrder.Arithmetic.consistent_unprovable": {
-      "title": "Unprovability of arithmetic consistency",
-      "summary": "In the supplied arithmetic setting, a consistent theory T cannot prove its standard arithmetical consistency sentence. The proof applies the generic unprovability theorem to T’s standard provability predicate.",
-      "statement_latex": "\\text{For the arithmetic theory }T\\text{ in the supplied setting},\\quad \\mathrm{Consistent}(T)\\Longrightarrow T\\nvdash\\operatorname{Con}(T),\\qquad \\operatorname{Con}(T)=\\neg\\operatorname{Prov}_T(\\ulcorner\\bot\\urcorner)",
-      "compact_latex": "[\\mathrm{Consistent}(T)]\\quad T\\nvdash\\operatorname{Con}(T)",
-      "why_here": "This is the arithmetic specialization of the generic conclusion.",
+      "title": "Second incompleteness theorem",
+      "summary": "In the arithmetic setting of the graph, a consistent theory cannot prove its standard arithmetical consistency sentence. The result applies the generic provability theorem to the standard predicate for proofs in the given theory.",
+      "statement_latex": "\\text{Let }T\\text{ be an arithmetic theory with a }\\Delta_1\\text{ presentation and }I\\Sigma_1\\preceq T.\\text{ If }T\\nvdash\\bot,\\text{ then }T\\nvdash\\operatorname{Con}(T),\\quad \\operatorname{Con}(T):=\\neg\\operatorname{Pr}_T(\\ulcorner\\bot\\urcorner),\\text{ where }\\operatorname{Pr}_T\\text{ is standard arithmetical provability for }T.",
+      "compact_latex": "T\\nvdash\\bot\\Rightarrow T\\nvdash\\operatorname{Con}(T)",
+      "why_here": "The final edge specializes the generic result to arithmetic provability and the arithmetic consistency sentence.",
       "concepts": [
-        "internal-provability",
-        "consistency"
+        "arithmetized-provability",
+        "derivability",
+        "soundness-consistency"
       ],
       "support_edges": [
         45
@@ -1304,13 +1306,14 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "lean:LO.FirstOrder.Arithmetic.re_iff_sigma1": {
-      "title": "Recursive enumerability and Σ₁ definability",
-      "summary": "The direction used here converts a Σ₁ definition of a numerical predicate into recursive enumerability.",
-      "why_here": "The enumerability step applies this direction to D.",
+      "title": "Σ₁ Definability and Recursive Enumerability",
+      "summary": " A predicate on natural numbers is recursively enumerable exactly when it is Σ₁-definable. Here the direction from definability to enumerability is used.",
+      "why_here": "It converts the definability calculation for D into recursive enumerability.",
       "concepts": [
         "representability"
       ],
@@ -1322,13 +1325,14 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "lean:LO.FirstOrder.Arithmetic.re_complete": {
-      "title": "Provability representation of enumerable predicates",
-      "summary": "In the supplied application, an enumerable numerical predicate is represented by a formula whose numeral instance is provable in T exactly when the predicate holds of that number.",
-      "why_here": "It supplies the representation of D under the R₀ base assumption.",
+      "title": "Representability of Recursively Enumerable Predicates",
+      "summary": "In the setting of the first proof, an enumerable predicate has a representing formula whose numeral instances are provable precisely for numbers in the predicate.",
+      "why_here": "It supplies the general result used to choose the particular formula δ for D.",
       "concepts": [
         "representability"
       ],
@@ -1340,15 +1344,16 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "lean:LO.FirstOrder.Theory.standardProvability": {
-      "title": "Standard arithmetical provability",
-      "summary": "This definition packages T’s arithmetized proof predicate with the rule sending an actual T-proof of σ to an IΣ₁-proof of the corresponding provability sentence.",
-      "why_here": "Its construction is unfolded to identify the arithmetic provability structure.",
+      "title": "Standard Provability Predicate",
+      "summary": "The standard provability structure pairs the arithmetical predicate for proofs in T with the rule that an actual T-proof yields an IΣ₁-proof of the corresponding provability assertion.",
+      "why_here": "The arithmetic construction unfolds this definition.",
       "concepts": [
-        "internal-provability",
+        "arithmetized-provability",
         "derivability"
       ],
       "support_edges": [
@@ -1359,16 +1364,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "lean:LO.FirstOrder.Theory.consistent": {
-      "title": "Arithmetical consistency sentence",
-      "summary": "The standard Π₁ consistency sentence for T says that the arithmetized proof predicate does not hold of the code of contradiction.",
-      "why_here": "The consistency-sentence step unfolds this definition.",
+      "title": "Arithmetical Consistency Sentence",
+      "summary": "The Π₁ sentence for consistency states that the code of absurdity has no T-proof according to the standard provability predicate.",
+      "why_here": "Unfolding the definition identifies the sentence to which the arithmetic conclusion applies.",
       "concepts": [
-        "internal-provability",
-        "consistency"
+        "arithmetized-provability",
+        "soundness-consistency"
       ],
       "support_edges": [
         26
@@ -1378,14 +1384,15 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "lean:LO.FirstOrder.Arithmetic.provable_D3": {
-      "title": "Positive introspection in arithmetic",
-      "summary": "Under the supplied hypothesis PA⁻ ≼ T, IΣ₁ proves that if σ is T-provable, then the sentence asserting its T-provability is itself T-provable.",
-      "statement_latex": "\\mathrm{PA}^{-}\\preceq T\\quad\\Longrightarrow\\quad I\\Sigma_1\\vdash \\Box_T\\sigma\\to\\Box_T\\Box_T\\sigma",
-      "why_here": "This is the D3 component described in the derivability step.",
+      "title": "Third Derivability Condition",
+      "summary": "Under the hypothesis that T extends PA⁻, IΣ₁ proves that provability in T implies provability in T of that very provability assertion.",
+      "statement_latex": "\\text{If }\\mathrm{PA}^{-}\\preceq T,\\text{ then for each arithmetic sentence }\\sigma,\\quad I\\Sigma_1\\vdash\\Box_T\\sigma\\to\\Box_T\\Box_T\\sigma,\\qquad \\Box_T\\theta:=\\operatorname{Pr}_T(\\ulcorner\\theta\\urcorner).",
+      "why_here": "The derivability step includes this condition, which lets the internal argument reason about iterated provability.",
       "concepts": [
         "derivability"
       ],
@@ -1397,16 +1404,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "lean:LO.ProvabilityLogic.Provability.gödel_spec": {
-      "title": "Generic Gödel fixed-point equation",
-      "summary": "With sentence coding and diagonalization available, the base theory T₀ proves that the Gödel sentence G is equivalent to the sentence denying its provability according to the chosen predicate.",
-      "why_here": "The diagonalization step summarizes the argument establishing this specification.",
+      "title": "Gödel Sentence Fixed-Point Equation",
+      "summary": "For a provability predicate B for T and a base theory T₀ admitting diagonalization, the associated Gödel sentence is provably equivalent in T₀ to the assertion of its own unprovability.",
+      "why_here": "The diagonalization step summarizes this specification.",
       "concepts": [
-        "diagonalization",
-        "internal-provability"
+        "self-substitution",
+        "arithmetized-provability"
       ],
       "support_edges": [
         30
@@ -1416,16 +1424,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "lean:LO.ProvabilityLogic.Provability.con_unprovable": {
-      "title": "Generic consistency unprovability",
-      "summary": "Under the generic provability hypotheses, external consistency of T rules out a T-proof of the consistency sentence associated with the chosen provability predicate.",
-      "why_here": "The generic proof step summarizes this theorem, which the arithmetic root invokes.",
+      "title": "Abstract Second Incompleteness Theorem",
+      "summary": "With diagonalization in the base theory, transfer to T, and the derivability conditions for B, consistency of T rules out a T-proof of the sentence that denies B-provability of absurdity.",
+      "why_here": "The generic proof step summarizes this theorem before its arithmetic specialization.",
       "concepts": [
-        "internal-provability",
-        "consistency"
+        "derivability",
+        "soundness-consistency"
       ],
       "support_edges": [
         44
@@ -1435,16 +1444,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "fact:presentation": {
-      "title": "Δ₁ presentation of T",
-      "summary": "The presentation of T’s axioms is Δ₁, supporting the arithmetization of proofs from T.",
-      "why_here": "It is supplied to the construction on the first branch and to the standard provability setup on the second.",
+      "title": "Δ₁ Presentation",
+      "summary": "The theory’s presentation supplies definability information about its axioms for reasoning about coded proofs.",
+      "why_here": "It is part of the setting for the coded refutation predicate and the arithmetic provability structure.",
       "concepts": [
         "representability",
-        "internal-provability"
+        "arithmetized-provability"
       ],
       "support_edges": [
         0,
@@ -1455,13 +1465,14 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "fact:r0": {
-      "title": "T extends R₀",
-      "summary": "The first theorem assumes that T extends the weak arithmetic base R₀.",
-      "why_here": "This is the arithmetic base hypothesis used to represent D by provability in T.",
+      "title": "Extension of R₀",
+      "summary": "The arithmetic theory T extends the base theory R₀.",
+      "why_here": "The extension provides the arithmetic base used to represent D by provability.",
       "concepts": [
         "representability"
       ],
@@ -1473,15 +1484,16 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "fact:soundness": {
-      "title": "Σ₁ soundness of T",
-      "summary": "Each Σ₁ sentence proved by T is true in the standard natural numbers. In particular, this rules out a proof of contradiction.",
-      "why_here": "It supplies the consistency needed when either putative proof of the diagonal sentence would force a contradiction.",
+      "title": "Σ₁ Soundness",
+      "summary": "Every Σ₁ sentence proved by T is true in the standard natural numbers. An inconsistent theory would prove false Σ₁ sentences, so this hypothesis implies consistency.",
+      "why_here": "Consistency is what rules out simultaneous proofs of the constructed sentence and its negation.",
       "concepts": [
-        "consistency"
+        "soundness-consistency"
       ],
       "support_edges": [
         13
@@ -1491,16 +1503,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "fact:isigma": {
-      "title": "Arithmetic base IΣ₁",
-      "summary": "IΣ₁ is the arithmetic base for the standard provability construction. The generic argument uses T₀ for the theory in which the fixed-point equation and internal implications are proved.",
-      "why_here": "The graph supplies this base to the standard provability, derivability, and fixed-point steps.",
+      "title": "Arithmetic Base IΣ₁",
+      "summary": "IΣ₁ is arithmetic with induction for Σ₁ formulas. It serves as the base in which the arithmetic provability conditions and the fixed-point equivalence are proved.",
+      "why_here": "It supplies the base theory for the arithmetic instances of these constructions.",
       "concepts": [
         "derivability",
-        "diagonalization"
+        "self-substitution"
       ],
       "support_edges": [
         17,
@@ -1512,15 +1525,16 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "fact:consistency": {
-      "title": "Consistency of T as a hypothesis",
-      "summary": "The external assumption says that there is no T-proof of contradiction.",
-      "why_here": "It contradicts the proof of ⊥ obtained from a hypothetical T-proof of G.",
+      "title": "External Consistency",
+      "summary": "The assumption is that there exists no T-proof of absurdity.",
+      "why_here": "It rules out the actual T-proof of absurdity that would follow from a proof of the Gödel sentence.",
       "concepts": [
-        "consistency"
+        "soundness-consistency"
       ],
       "support_edges": [
         32
@@ -1530,16 +1544,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "step:define-D": {
-      "title": "Encode refutation after self-substitution",
-      "summary": "Use the proof predicate for the presented theory T to define D(n) by two requirements. The number n must code a one-variable arithmetic formula, and T must prove the negation of the sentence obtained by substituting the numeral for n into that formula. For a genuine formula φ, the first requirement holds automatically at its code, leaving exactly the refutability test for φ at its own code.",
-      "why_here": "It sets up the test that the proof will represent and then apply to the representing formula itself.",
+      "title": "Code Self-Substitution and Refutation",
+      "summary": "Take a natural number n and check whether it codes a formula with one free variable. For a valid code, substitute the numeral for n into that formula, negate the resulting sentence, and ask whether T proves it. This defines D and gives its interpretation on actual formula codes.",
+      "why_here": "It creates the predicate that will be represented and then evaluated at its representing formula’s own code.",
       "concepts": [
         "self-substitution",
-        "internal-provability"
+        "arithmetized-provability"
       ],
       "support_edges": [
         0,
@@ -1550,16 +1565,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "fact:define-D": {
-      "title": "The numerical predicate D",
-      "summary": "For a one-variable formula φ, D holds of its code exactly when T proves the negation of φ instantiated with the numeral for that code.",
-      "compact_latex": "D(\\ulcorner\\varphi\\urcorner)\\iff T\\vdash\\neg\\varphi(\\overline{\\ulcorner\\varphi\\urcorner})",
-      "why_here": "The definition is used both to establish enumerability and to read off the refutation test at the diagonal input.",
+      "title": "Coded Refutation Predicate",
+      "summary": "On the code of a one-variable formula, D asserts that T proves the negation of the sentence obtained by substituting that code’s numeral into the formula.",
+      "statement_latex": "\\text{For each one-variable arithmetic formula }\\varphi(x),\\quad D(\\ulcorner\\varphi\\urcorner)\\iff\\bigl(T\\vdash\\neg\\varphi(\\overline{\\ulcorner\\varphi\\urcorner})\\bigr).",
+      "why_here": "This description supports both the definability calculation and the later evaluation at the code of δ.",
       "concepts": [
-        "self-substitution"
+        "self-substitution",
+        "arithmetized-provability"
       ],
       "support_edges": [
         1,
@@ -1571,13 +1588,14 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "step:enumerate-D": {
-      "title": "Obtain recursive enumerability",
-      "summary": "Start with the coded syntax and provability tests defining D. The supplied argument gives their combined test a Σ₁ definition, so the Σ₁-to-enumerable direction of the characterization shows that D is recursively enumerable.",
-      "why_here": "Enumerability is the hypothesis needed to obtain a representing formula.",
+      "title": "Σ₁ Definability Gives Enumerability",
+      "summary": "The coded formula test, substitution, and provability condition in D together give a Σ₁ definition. The equivalence between Σ₁ definability and recursive enumerability then gives that D is recursively enumerable.",
+      "why_here": "It establishes the hypothesis needed to represent D.",
       "concepts": [
         "representability"
       ],
@@ -1591,13 +1609,14 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "fact:enumerate-D": {
-      "title": "D is recursively enumerable",
-      "summary": "There is an effective enumeration of the codes passing D’s refutation test.",
-      "why_here": "This is the enumerability input to the representation step.",
+      "title": "Recursive Enumerability of D",
+      "summary": "The numbers satisfying D form a recursively enumerable set.",
+      "why_here": "This is the input to the representability theorem.",
       "concepts": [
         "representability"
       ],
@@ -1610,15 +1629,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "step:represent-D": {
-      "title": "Represent D through provability",
-      "summary": "Apply the representation theorem to the recursively enumerable predicate D in the setting R₀ ≼ T. It supplies a one-variable formula δ such that, for every number n, D(n) holds exactly when T proves the sentence obtained by inserting the numeral for n into δ.",
-      "why_here": "The representation holds for every n, including the code of δ itself.",
+      "title": "Representability Theorem",
+      "summary": "Apply representability to the recursively enumerable predicate D in the theory extending R₀. This provides a particular formula δ whose instance at the numeral for n is provable in T exactly when D holds of n.",
+      "why_here": "It supplies both the formula for self-substitution and the equivalence used at its code.",
       "concepts": [
-        "representability"
+        "representability",
+        "self-substitution"
       ],
       "support_edges": [
         5,
@@ -1631,17 +1652,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "fact:represent-D": {
-      "title": "Numeral-by-numeral representation",
-      "summary": "The chosen formula δ represents D through an external equivalence between D(n) and the existence of a T-proof of δ at the numeral for n.",
-      "compact_latex": "\\forall n\\in\\mathbb N,\\quad D(n)\\iff T\\vdash\\delta(\\bar n)",
-      "why_here": "The equivalence can be instantiated at the code of the chosen δ.",
+      "title": "Representing Formula δ",
+      "summary": "The formula δ chosen for D satisfies an equivalence about T-proofs for every numeral instance.",
+      "statement_latex": "\\forall n\\in\\mathbb N\\;\\bigl(D(n)\\iff(T\\vdash\\delta(\\overline n))\\bigr).",
+      "why_here": "The next step uses the instance with n equal to the code of δ.",
       "concepts": [
         "representability",
-        "internal-provability"
+        "self-substitution"
       ],
       "support_edges": [
         7,
@@ -1652,16 +1674,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "step:self-substitute": {
-      "title": "Apply the representation to δ’s code",
-      "summary": "Put the numeral for δ’s code into δ to form the sentence π. The representation equates T-provability of π with D at that code, while the defining property of D equates the same test with T-provability of ¬π. Composing these gives an equivalence between the two external proof-existence claims.",
-      "why_here": "This is the point where the general representation becomes a statement about one particular sentence.",
+      "title": "Substitute δ’s Own Code",
+      "summary": "Set π to the instance of δ at the numeral for its own code. Representability identifies a proof of π with D holding of that code, and the definition of D identifies the same condition with a proof of ¬π. This gives an equivalence between the two external provability claims.",
+      "why_here": "It ties proofs of the two opposite sentences to the same predicate value.",
       "concepts": [
         "self-substitution",
-        "internal-provability"
+        "representability"
       ],
       "support_edges": [
         9,
@@ -1673,17 +1696,19 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "fact:self-substitute": {
-      "title": "Proofs of π and ¬π imply each other",
-      "summary": "For the particular diagonal instance π, existence of a T-proof of π is equivalent to existence of a T-proof of ¬π.",
+      "title": "Equivalent Proof Claims",
+      "summary": "For this particular π, a T-proof of π exists exactly when a T-proof of its negation exists.",
+      "statement_latex": "\\pi:=\\delta(\\overline{\\ulcorner\\delta\\urcorner}),\\qquad (T\\vdash\\pi)\\iff(T\\vdash\\neg\\pi).",
       "compact_latex": "(T\\vdash\\pi)\\iff(T\\vdash\\neg\\pi)",
-      "why_here": "Either hypothetical derivation now gives a contradictory pair of derivations.",
+      "why_here": "Either proposed proof forces the opposite proof in the final contradiction.",
       "concepts": [
         "self-substitution",
-        "internal-provability"
+        "soundness-consistency"
       ],
       "support_edges": [
         11,
@@ -1694,16 +1719,16 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "step:exclude-both": {
-      "title": "Exclude both proofs by consistency",
-      "summary": "Take the equivalence between proofs of π and proofs of ¬π and the consistency furnished by Σ₁ soundness. A proof on either side yields a proof on the other side, and together they yield contradiction. Hence π is an undecided sentence witnessing incompleteness.",
-      "why_here": "It turns the diagonal equivalence into the two failures of provability required for the first theorem.",
+      "title": "Exclude Both Proofs by Consistency",
+      "summary": "Assume T proves π or assume it proves ¬π. In each case the equivalence supplies a proof of the opposite sentence, so T would prove absurdity, contrary to the consistency supplied by Σ₁ soundness. Thus π witnesses incompleteness.",
+      "why_here": "It turns the equivalence of proof claims into failure of both claims.",
       "concepts": [
-        "consistency",
-        "self-substitution"
+        "soundness-consistency"
       ],
       "support_edges": [
         12,
@@ -1715,17 +1740,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "fact:exclude-both": {
-      "title": "The local undecided sentence π",
-      "summary": "The specific sentence π constructed from δ has neither a proof nor a refutation in T.",
-      "compact_latex": "T\\nvdash\\pi\\quad\\land\\quad T\\nvdash\\neg\\pi",
-      "why_here": "It provides the concrete witness packaged by the theorem as incompleteness.",
+      "title": "Undecided Sentence π",
+      "summary": "The particular sentence obtained by substituting δ’s own code into δ has neither a proof nor a refutation in T.",
+      "statement_latex": "\\pi:=\\delta(\\overline{\\ulcorner\\delta\\urcorner}),\\qquad T\\nvdash\\pi\\ \\land\\ T\\nvdash\\neg\\pi.",
+      "why_here": "This local witness establishes the existential conclusion of the first theorem.",
       "concepts": [
-        "consistency",
-        "self-substitution"
+        "self-substitution",
+        "soundness-consistency"
       ],
       "support_edges": [
         14,
@@ -1736,15 +1762,16 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "step:standard-provability": {
-      "title": "Package the standard proof predicate",
-      "summary": "Start from T’s arithmetized proof predicate and write □σ for the arithmetic sentence saying that σ has a T-proof. D1 turns an actual T-proof of σ into an IΣ₁-proof of □σ. The supplied construction also verifies D2 in IΣ₁ by formalizing the combination of a proof of an implication with a proof of its antecedent.",
-      "why_here": "This supplies the arithmetic provability structure used to instantiate the generic argument.",
+      "title": "Construct Standard Provability",
+      "summary": "Use T’s coded proof predicate as the arithmetic provability predicate. An actual T-proof yields an IΣ₁-proof of the corresponding provability sentence by D1. The formalized combination of proofs by modus ponens supplies D2 over the same base.",
+      "why_here": "It furnishes the arithmetic provability structure used in the second theorem.",
       "concepts": [
-        "internal-provability",
+        "arithmetized-provability",
         "derivability"
       ],
       "support_edges": [
@@ -1758,15 +1785,16 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "fact:standard-provability": {
-      "title": "Standard predicate for T-proofs",
-      "summary": "The chosen provability structure uses T’s own arithmetized proof predicate, with IΣ₁ as the base for its derivability rules.",
-      "why_here": "It supplies the predicate for the derivability conditions, the consistency sentence, and the fixed-point construction.",
+      "title": "Arithmetic Provability Structure",
+      "summary": "For the given arithmetic theory T, the standard structure uses the coded proof predicate and works over IΣ₁.",
+      "why_here": "It supplies the predicate used in the derivability conditions, consistency sentence, and arithmetic Gödel sentence.",
       "concepts": [
-        "internal-provability",
+        "arithmetized-provability",
         "derivability"
       ],
       "support_edges": [
@@ -1780,15 +1808,15 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "step:hbl-conditions": {
-      "title": "Complete the derivability conditions",
-      "summary": "The arithmetic construction already supplies internalization of proofs and formalized modus ponens. Since □σ is Σ₁, the supplied formalized Σ₁-completeness result gives D3 under the stated PA⁻ base hypothesis on T, so IΣ₁ proves □σ → □□σ. This completes the Hilbert–Bernays–Löb conditions for the standard predicate.",
-      "why_here": "The internal unprovability argument needs to combine proofs inside the predicate and to iterate the predicate.",
+      "title": "Hilbert–Bernays–Löb Derivability Conditions",
+      "summary": "Start with standard provability and the previously supplied D1 and D2. With PA⁻ contained in T, formalized Σ₁ completeness applies to the Σ₁ assertion that T proves σ, giving D3. This completes the derivability conditions used in the internal argument.",
+      "why_here": "It supplies the iteration and proof-combination rules needed to derive internal provability of absurdity.",
       "concepts": [
-        "internal-provability",
         "derivability"
       ],
       "support_edges": [
@@ -1802,13 +1830,14 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "fact:hbl-conditions": {
-      "title": "Hilbert–Bernays–Löb conditions",
-      "summary": "The standard structure supports internalization of actual proofs, formalized modus ponens, and formalized iteration of provability.",
-      "why_here": "These rules let the base theory reason about what a purported proof of G would entail.",
+      "title": "Derivability Conditions for Standard Provability",
+      "summary": "The arithmetic instance has D1 for internalizing proofs, D2 for combining internalized implications with their premises, and D3 for iterating provability.",
+      "why_here": "The internal proof uses these conditions to work with assertions about proofs inside the base theory.",
       "concepts": [
         "derivability"
       ],
@@ -1821,16 +1850,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "step:consistency-sentence": {
-      "title": "Express consistency as an arithmetic sentence",
-      "summary": "Apply T’s proof predicate to the code of contradiction and negate the resulting sentence. This produces a Π₁ sentence whose evaluation in a model expresses the absence of a T-proof of contradiction according to that model.",
-      "why_here": "This identifies the arithmetic sentence to which the generic consistency-unprovability theorem is applied.",
+      "title": "Define the Consistency Sentence",
+      "summary": "Apply the standard provability predicate to the code of absurdity and negate the result. The resulting Π₁ sentence holds in a model exactly when the model satisfies the corresponding coded consistency assertion.",
+      "why_here": "It identifies the arithmetic sentence whose unprovability is at issue.",
       "concepts": [
-        "internal-provability",
-        "consistency"
+        "arithmetized-provability",
+        "soundness-consistency"
       ],
       "support_edges": [
         24,
@@ -1842,17 +1872,19 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "fact:consistency-sentence": {
-      "title": "The internal sentence Con(T)",
-      "summary": "Con(T) is the arithmetic sentence denying provability of contradiction under the standard predicate for T.",
+      "title": "Internal Consistency of T",
+      "summary": "Con(T) is the arithmetic sentence asserting that there is no coded T-proof of absurdity.",
+      "statement_latex": "\\operatorname{Con}(T):=\\neg\\operatorname{Pr}_T(\\ulcorner\\bot\\urcorner).",
       "compact_latex": "\\operatorname{Con}(T)=\\neg\\Box_T\\bot",
-      "why_here": "It is the antecedent of the formalized implication denying provability of G.",
+      "why_here": "Its abstract counterpart is the antecedent of the internal unprovability implication.",
       "concepts": [
-        "internal-provability",
-        "consistency"
+        "arithmetized-provability",
+        "soundness-consistency"
       ],
       "support_edges": [
         25,
@@ -1863,16 +1895,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "step:godel-sentence": {
-      "title": "Take a fixed point of nonprovability",
-      "summary": "Apply diagonalization in the base theory T₀ to the one-variable formula that denies membership in the chosen proof predicate. It supplies a sentence G such that T₀ proves G equivalent to the result of applying that formula to G’s own code. The arithmetic specialization takes IΣ₁ as the base and uses the standard predicate for T.",
-      "why_here": "The resulting equation supplies the self-reference used in both the external and internal arguments about G.",
+      "title": "Diagonal Lemma",
+      "summary": "Apply the diagonal lemma over the base theory T₀ to the one-variable formula denying B-provability of the sentence coded by its input. It gives a sentence G such that T₀ proves G equivalent to the denial of B-provability of G itself.",
+      "why_here": "The fixed-point equivalence is used in both the external and the internal unprovability arguments.",
       "concepts": [
-        "diagonalization",
-        "internal-provability"
+        "self-substitution",
+        "arithmetized-provability"
       ],
       "support_edges": [
         27,
@@ -1885,17 +1918,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "fact:godel-sentence": {
-      "title": "The local Gödel fixed point",
-      "summary": "For the chosen predicate and its fixed point G, the base theory proves an equivalence between G and the sentence asserting that G has no proof under that predicate.",
+      "title": "Fixed-Point Equivalence for G",
+      "summary": "The base theory proves the fixed-point equivalence for the particular Gödel sentence associated with B. Here □ denotes the sentence asserting B-provability of its argument.",
       "compact_latex": "T_0\\vdash G\\leftrightarrow\\neg\\Box G",
-      "why_here": "The equation is used to rule out a proof of G, derive an internal implication, and identify G with consistency.",
+      "why_here": "It supplies the negated provability assertion used in each argument involving G.",
       "concepts": [
-        "diagonalization",
-        "internal-provability"
+        "self-substitution",
+        "arithmetized-provability"
       ],
       "support_edges": [
         29,
@@ -1908,17 +1942,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "step:godel-unprovable": {
-      "title": "Derive contradiction from a proof of G",
-      "summary": "Suppose T proves G. D1 gives a proof of □G in the base, hence also in T, and the fixed-point equation transferred from the base gives a T-proof of ¬□G from G. Thus T would prove contradiction, which external consistency rules out.",
-      "why_here": "It establishes the external impossibility used to reject a hypothetical proof of consistency.",
+      "title": "External Unprovability of the Gödel Sentence",
+      "summary": "Suppose T proves G. D1 gives a proof in the base of the assertion that G is provable, which transfers to T. The fixed-point equivalence also transfers to T and lets T derive the denial of that assertion from G. This gives an actual proof of absurdity, contradicting the external consistency assumption.",
+      "why_here": "It supplies the contradiction used if a proof of consistency is converted into a proof of G.",
       "concepts": [
-        "diagonalization",
+        "self-substitution",
         "derivability",
-        "consistency"
+        "soundness-consistency"
       ],
       "support_edges": [
         31,
@@ -1930,17 +1965,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "fact:godel-unprovable": {
-      "title": "No T-proof of G",
-      "summary": "Under external consistency and the generic base theory hypotheses, the chosen G has no proof in T.",
-      "compact_latex": "T\\nvdash G",
-      "why_here": "It is the external conclusion against which the final reduction argues.",
+      "title": "No T-Proof of G",
+      "summary": "Under the external consistency assumption and the given base-theory setup, there is no proof of the chosen Gödel sentence in T.",
+      "why_here": "It eliminates the proof of G obtained from the hypothetical consistency proof.",
       "concepts": [
-        "internal-provability",
-        "consistency"
+        "soundness-consistency",
+        "self-substitution"
       ],
       "support_edges": [
         33,
@@ -1951,17 +1986,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "step:internal-unprovability": {
-      "title": "Formalize why a proof of G yields contradiction",
-      "summary": "Inside T₀, D3 turns □G into □□G. The fixed-point equation and the provability rules also turn □G into □(□G → ⊥), and D2 combines these two boxed claims to yield □⊥. Contraposition inside T₀ then yields Con(T) → ¬□G, with Con(T) interpreted through the chosen predicate.",
-      "why_here": "This proves one direction of the internal relationship between consistency and the Gödel sentence.",
+      "title": "Formalized First Incompleteness Theorem",
+      "summary": "Work in T₀ and write □ for B-provability. From □G, D3 gives □□G, and internalizing the fixed-point consequence that G implies ¬□G gives □(□G → ⊥). D2 combines these to give □⊥. Contraposition yields the internal implication from consistency to ¬□G.",
+      "why_here": "It supplies the direction from internal consistency to the right side of the fixed-point equivalence.",
       "concepts": [
-        "derivability",
-        "internal-provability",
-        "consistency"
+        "arithmetized-provability",
+        "derivability"
       ],
       "support_edges": [
         34,
@@ -1974,17 +2009,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "fact:internal-unprovability": {
-      "title": "Consistency implies unprovability internally",
-      "summary": "The base theory proves that the internal consistency sentence implies the sentence denying provability of G.",
+      "title": "Consistency Implies Internal Unprovability",
+      "summary": "The base theory proves that the consistency sentence for B implies the sentence denying B-provability of G.",
       "compact_latex": "T_0\\vdash\\neg\\Box\\bot\\to\\neg\\Box G",
-      "why_here": "This is the forward implication from consistency needed to obtain the equivalence with G.",
+      "why_here": "This implication is one direction of the equivalence between internal consistency and ¬□G.",
       "concepts": [
-        "internal-provability",
-        "consistency"
+        "arithmetized-provability",
+        "derivability"
       ],
       "support_edges": [
         37,
@@ -1995,17 +2031,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "step:equate-godel-consistency": {
-      "title": "Prove G equivalent to consistency",
-      "summary": "Within T₀, D1 and D2 formalize the fact that a proof of contradiction would give a proof of G, using the theorem ⊥ → G. Contraposition gives ¬□G → ¬□⊥. The internal unprovability implication gives the reverse direction, and the fixed-point equation identifies ¬□G with G, yielding the desired equivalence in T₀.",
-      "why_here": "The equivalence allows an assumed proof of consistency to be used as a proof of G in any T extending the base.",
+      "title": "Gödel Sentence–Consistency Equivalence",
+      "summary": "The formalized first theorem gives consistency implying ¬□G in T₀. For the reverse, a proof of absurdity would yield a proof of G by internalizing the implication from absurdity to G and applying D2, so ¬□G implies consistency. The fixed-point equivalence then replaces ¬□G with G.",
+      "why_here": "It gives the implication from consistency to G that can be transferred to T.",
       "concepts": [
-        "diagonalization",
+        "self-substitution",
         "derivability",
-        "consistency"
+        "soundness-consistency"
       ],
       "support_edges": [
         38,
@@ -2017,17 +2054,18 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "fact:equate-godel-consistency": {
-      "title": "G and consistency are equivalent in T₀",
-      "summary": "The base theory proves that G is equivalent to the consistency sentence for the chosen provability predicate.",
-      "compact_latex": "T_0\\vdash G\\leftrightarrow\\neg\\Box\\bot",
-      "why_here": "This supplies the implication from the consistency sentence to G for the generic unprovability step.",
+      "title": "G Equivalent to Internal Consistency",
+      "summary": "The base theory proves that G and the consistency sentence for B are equivalent.",
+      "compact_latex": "T_0\\vdash G\\leftrightarrow\\operatorname{Con}_B",
+      "why_here": "It allows a hypothetical T-proof of the consistency sentence to be converted into a T-proof of G.",
       "concepts": [
-        "internal-provability",
-        "consistency"
+        "self-substitution",
+        "soundness-consistency"
       ],
       "support_edges": [
         40,
@@ -2038,16 +2076,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "step:generic-unprovability": {
-      "title": "Reduce a consistency proof to a proof of G",
-      "summary": "Assume that T proves the consistency sentence for the chosen predicate. Since T extends T₀, it can use T₀’s proved implication from that sentence to G and derive G. This contradicts the external result that T has no proof of G.",
-      "why_here": "It establishes the generic conclusion that the arithmetic theorem specializes.",
+      "title": "Second Incompleteness Theorem",
+      "summary": "Suppose T proves the consistency sentence for B. Transfer the base theory’s equivalence between that sentence and G to T, and apply the direction from consistency to G. The resulting T-proof of G contradicts the external unprovability result.",
+      "why_here": "It proves the generic result used with standard provability in the arithmetic theorem.",
       "concepts": [
-        "internal-provability",
-        "consistency"
+        "derivability",
+        "soundness-consistency"
       ],
       "support_edges": [
         41,
@@ -2060,17 +2099,17 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     "fact:generic-unprovability": {
-      "title": "Generic failure of consistency provability",
-      "summary": "A consistent T satisfying the generic hypotheses has no proof of the consistency sentence associated with the chosen provability structure.",
-      "compact_latex": "T\\nvdash\\neg\\Box\\bot",
-      "why_here": "Choosing the standard arithmetic provability structure yields the second root.",
+      "title": "Unprovability of the Generic Consistency Sentence",
+      "summary": "For the abstract provability predicate B in the stated setup, consistency of T rules out a T-proof of the sentence denying B-provability of absurdity.",
+      "why_here": "The arithmetic root takes B to be T’s standard provability predicate.",
       "concepts": [
-        "internal-provability",
-        "consistency"
+        "arithmetized-provability",
+        "soundness-consistency"
       ],
       "support_edges": [
         43,
@@ -2081,15 +2120,16 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     }
   },
   "concepts": [
     {
       "id": "representability",
-      "title": "Representability of enumerable predicates",
-      "summary": "A recursively enumerable numerical predicate can be represented here by an arithmetic formula whose numeral instances are provable exactly at the numbers satisfying the predicate.",
+      "title": "Recursive Enumerability and Representability",
+      "summary": "A recursively enumerable predicate admits a search that eventually confirms every positive instance. Representability here turns membership into provability of the corresponding numeral instance of a formula.",
       "detail": "foundation",
       "kind": "concept",
       "annotation_provenance": {
@@ -2097,13 +2137,14 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "id": "self-substitution",
-      "title": "Substitution of a formula’s own code",
-      "summary": "A formula with one free input can be turned into a sentence by inserting the numeral for its own syntactic code. This allows a general test on codes to be applied to the formula representing the test.",
+      "title": "Gödel Coding and Diagonalization",
+      "summary": "An arithmetical formula can take the numeral for a formula’s code as input. Using its own code yields a self-substitution instance, and the diagonal lemma uses coding to obtain a sentence with a provable fixed-point equivalence.",
       "detail": "foundation",
       "kind": "concept",
       "annotation_provenance": {
@@ -2111,13 +2152,14 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
-      "id": "diagonalization",
-      "title": "Diagonal fixed points",
-      "summary": "Diagonalization applied to a formula A(x) produces a sentence G such that the base theory proves G equivalent to A applied to the numeral for G’s code.",
+      "id": "arithmetized-provability",
+      "title": "Arithmetized Provability",
+      "summary": "The expression □σ abbreviates a sentence asserting that the code of σ has a proof according to the chosen predicate. The judgment T ⊢ σ asserts, in the metatheory, that a T-proof exists.",
       "detail": "foundation",
       "kind": "concept",
       "annotation_provenance": {
@@ -2125,27 +2167,14 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "id": "internal-provability",
-      "title": "Arithmetized and external provability",
-      "summary": "The notation T ⊢ σ asserts externally that a T-proof exists. The expression □σ is a sentence in arithmetic that asserts provability via a predicate on the code of σ and can itself occur in a theorem or inside another box.",
-      "detail": "foundation",
-      "kind": "concept",
-      "annotation_provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "id": "derivability",
-      "title": "Hilbert–Bernays–Löb derivability conditions",
-      "summary": "D1 internalizes actual proofs, D2 formalizes modus ponens for provability claims, and D3 formalizes the passage from □σ to □□σ.",
+      "title": "Hilbert–Bernays–Löb Conditions",
+      "summary": "D1 makes actual proofs yield provable assertions of provability. D2 formalizes modus ponens for those assertions, and D3 says that a provability assertion implies its own provability.",
       "detail": "foundation",
       "kind": "concept",
       "annotation_provenance": {
@@ -2153,13 +2182,14 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
-      "id": "consistency",
-      "title": "Consistency and its arithmetic expression",
-      "summary": "External consistency says that no proof of contradiction exists in T. Its standard arithmetic expression is the sentence ¬□⊥, which a theory may reason about using its proof predicate.",
+      "id": "soundness-consistency",
+      "title": "Soundness and Consistency",
+      "summary": "External consistency means that the theory has no proof of absurdity. Σ₁ soundness implies this because an inconsistent theory proves false Σ₁ sentences. The internal consistency sentence expresses the absence of a proof of absurdity using an arithmetical proof predicate.",
       "detail": "foundation",
       "kind": "concept",
       "annotation_provenance": {
@@ -2167,7 +2197,8 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     }
   ],
@@ -2182,43 +2213,60 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "lean:LO.FirstOrder.Arithmetic.incomplete",
-      "target": "consistency",
+      "target": "soundness-consistency",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "lean:LO.FirstOrder.Arithmetic.consistent_unprovable",
-      "target": "internal-provability",
+      "target": "arithmetized-provability",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "lean:LO.FirstOrder.Arithmetic.consistent_unprovable",
-      "target": "consistency",
+      "target": "derivability",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
+      }
+    },
+    {
+      "source": "lean:LO.FirstOrder.Arithmetic.consistent_unprovable",
+      "target": "soundness-consistency",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2230,7 +2278,8 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2242,19 +2291,21 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "lean:LO.FirstOrder.Theory.standardProvability",
-      "target": "internal-provability",
+      "target": "arithmetized-provability",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2266,31 +2317,34 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "lean:LO.FirstOrder.Theory.consistent",
-      "target": "internal-provability",
+      "target": "arithmetized-provability",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "lean:LO.FirstOrder.Theory.consistent",
-      "target": "consistency",
+      "target": "soundness-consistency",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2302,55 +2356,60 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "lean:LO.ProvabilityLogic.Provability.gödel_spec",
-      "target": "diagonalization",
+      "target": "self-substitution",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "lean:LO.ProvabilityLogic.Provability.gödel_spec",
-      "target": "internal-provability",
+      "target": "arithmetized-provability",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "lean:LO.ProvabilityLogic.Provability.con_unprovable",
-      "target": "internal-provability",
+      "target": "derivability",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "lean:LO.ProvabilityLogic.Provability.con_unprovable",
-      "target": "consistency",
+      "target": "soundness-consistency",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2362,19 +2421,21 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "fact:presentation",
-      "target": "internal-provability",
+      "target": "arithmetized-provability",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2386,19 +2447,21 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "fact:soundness",
-      "target": "consistency",
+      "target": "soundness-consistency",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2410,31 +2473,34 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "fact:isigma",
-      "target": "diagonalization",
+      "target": "self-substitution",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "fact:consistency",
-      "target": "consistency",
+      "target": "soundness-consistency",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2446,19 +2512,21 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "step:define-D",
-      "target": "internal-provability",
+      "target": "arithmetized-provability",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2470,7 +2538,21 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
+      }
+    },
+    {
+      "source": "fact:define-D",
+      "target": "arithmetized-provability",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2482,7 +2564,8 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2494,7 +2577,8 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2506,7 +2590,21 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
+      }
+    },
+    {
+      "source": "step:represent-D",
+      "target": "self-substitution",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2518,19 +2616,21 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "fact:represent-D",
-      "target": "internal-provability",
+      "target": "self-substitution",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2542,19 +2642,21 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "step:self-substitute",
-      "target": "internal-provability",
+      "target": "representability",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2566,55 +2668,34 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "fact:self-substitute",
-      "target": "internal-provability",
+      "target": "soundness-consistency",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "step:exclude-both",
-      "target": "consistency",
+      "target": "soundness-consistency",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "step:exclude-both",
-      "target": "self-substitution",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "fact:exclude-both",
-      "target": "consistency",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2626,19 +2707,34 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
+      }
+    },
+    {
+      "source": "fact:exclude-both",
+      "target": "soundness-consistency",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "step:standard-provability",
-      "target": "internal-provability",
+      "target": "arithmetized-provability",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2650,19 +2746,21 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "fact:standard-provability",
-      "target": "internal-provability",
+      "target": "arithmetized-provability",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2674,19 +2772,8 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "step:hbl-conditions",
-      "target": "internal-provability",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2698,7 +2785,8 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2710,115 +2798,125 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "step:consistency-sentence",
-      "target": "internal-provability",
+      "target": "arithmetized-provability",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "step:consistency-sentence",
-      "target": "consistency",
+      "target": "soundness-consistency",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "fact:consistency-sentence",
-      "target": "internal-provability",
+      "target": "arithmetized-provability",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "fact:consistency-sentence",
-      "target": "consistency",
+      "target": "soundness-consistency",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "step:godel-sentence",
-      "target": "diagonalization",
+      "target": "self-substitution",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "step:godel-sentence",
-      "target": "internal-provability",
+      "target": "arithmetized-provability",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "fact:godel-sentence",
-      "target": "diagonalization",
+      "target": "self-substitution",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "fact:godel-sentence",
-      "target": "internal-provability",
+      "target": "arithmetized-provability",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "step:godel-unprovable",
-      "target": "diagonalization",
+      "target": "self-substitution",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2830,43 +2928,60 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "step:godel-unprovable",
-      "target": "consistency",
+      "target": "soundness-consistency",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "fact:godel-unprovable",
-      "target": "internal-provability",
+      "target": "soundness-consistency",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "fact:godel-unprovable",
-      "target": "consistency",
+      "target": "self-substitution",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
+      }
+    },
+    {
+      "source": "step:internal-unprovability",
+      "target": "arithmetized-provability",
+      "relation": "about",
+      "provenance": {
+        "kind": "model",
+        "provider": "Codex CLI",
+        "auth": "ChatGPT",
+        "discarded_groups": true,
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2878,67 +2993,47 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "step:internal-unprovability",
-      "target": "internal-provability",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
-      }
-    },
-    {
-      "source": "step:internal-unprovability",
-      "target": "consistency",
-      "relation": "about",
-      "provenance": {
-        "kind": "model",
-        "provider": "Codex CLI",
-        "auth": "ChatGPT",
-        "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "fact:internal-unprovability",
-      "target": "internal-provability",
+      "target": "arithmetized-provability",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "fact:internal-unprovability",
-      "target": "consistency",
+      "target": "derivability",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "step:equate-godel-consistency",
-      "target": "diagonalization",
+      "target": "self-substitution",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
@@ -2950,91 +3045,99 @@
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "step:equate-godel-consistency",
-      "target": "consistency",
+      "target": "soundness-consistency",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "fact:equate-godel-consistency",
-      "target": "internal-provability",
+      "target": "self-substitution",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "fact:equate-godel-consistency",
-      "target": "consistency",
+      "target": "soundness-consistency",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "step:generic-unprovability",
-      "target": "internal-provability",
+      "target": "derivability",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "step:generic-unprovability",
-      "target": "consistency",
+      "target": "soundness-consistency",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "fact:generic-unprovability",
-      "target": "internal-provability",
+      "target": "arithmetized-provability",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     },
     {
       "source": "fact:generic-unprovability",
-      "target": "consistency",
+      "target": "soundness-consistency",
       "relation": "about",
       "provenance": {
         "kind": "model",
         "provider": "Codex CLI",
         "auth": "ChatGPT",
         "discarded_groups": true,
-        "prompt_version": 5
+        "prompt_version": 6,
+        "reused_annotations_from": "incompleteness.json"
       }
     }
   ],
@@ -3085,10 +3188,9 @@
       "fact:generic-unprovability",
       "representability",
       "self-substitution",
-      "diagonalization",
-      "internal-provability",
+      "arithmetized-provability",
       "derivability",
-      "consistency"
+      "soundness-consistency"
     ],
     "size_roles": {
       "lean:LO.FirstOrder.Arithmetic.incomplete": "root",
@@ -3133,10 +3235,9 @@
       "fact:generic-unprovability": "standard",
       "representability": "standard",
       "self-substitution": "standard",
-      "diagonalization": "standard",
-      "internal-provability": "standard",
+      "arithmetized-provability": "standard",
       "derivability": "standard",
-      "consistency": "standard"
+      "soundness-consistency": "standard"
     },
     "hidden": [],
     "collapsed_into": {},
@@ -3519,7 +3620,7 @@
       },
       {
         "source": "lean:LO.FirstOrder.Arithmetic.incomplete",
-        "target": "consistency",
+        "target": "soundness-consistency",
         "relation": "about",
         "semantic_edge_indices": [
           1
@@ -3527,7 +3628,7 @@
       },
       {
         "source": "lean:LO.FirstOrder.Arithmetic.consistent_unprovable",
-        "target": "internal-provability",
+        "target": "arithmetized-provability",
         "relation": "about",
         "semantic_edge_indices": [
           2
@@ -3535,10 +3636,18 @@
       },
       {
         "source": "lean:LO.FirstOrder.Arithmetic.consistent_unprovable",
-        "target": "consistency",
+        "target": "derivability",
         "relation": "about",
         "semantic_edge_indices": [
           3
+        ]
+      },
+      {
+        "source": "lean:LO.FirstOrder.Arithmetic.consistent_unprovable",
+        "target": "soundness-consistency",
+        "relation": "about",
+        "semantic_edge_indices": [
+          4
         ]
       },
       {
@@ -3546,7 +3655,7 @@
         "target": "representability",
         "relation": "about",
         "semantic_edge_indices": [
-          4
+          5
         ]
       },
       {
@@ -3554,28 +3663,20 @@
         "target": "representability",
         "relation": "about",
         "semantic_edge_indices": [
-          5
-        ]
-      },
-      {
-        "source": "lean:LO.FirstOrder.Theory.standardProvability",
-        "target": "internal-provability",
-        "relation": "about",
-        "semantic_edge_indices": [
           6
         ]
       },
       {
         "source": "lean:LO.FirstOrder.Theory.standardProvability",
-        "target": "derivability",
+        "target": "arithmetized-provability",
         "relation": "about",
         "semantic_edge_indices": [
           7
         ]
       },
       {
-        "source": "lean:LO.FirstOrder.Theory.consistent",
-        "target": "internal-provability",
+        "source": "lean:LO.FirstOrder.Theory.standardProvability",
+        "target": "derivability",
         "relation": "about",
         "semantic_edge_indices": [
           8
@@ -3583,10 +3684,18 @@
       },
       {
         "source": "lean:LO.FirstOrder.Theory.consistent",
-        "target": "consistency",
+        "target": "arithmetized-provability",
         "relation": "about",
         "semantic_edge_indices": [
           9
+        ]
+      },
+      {
+        "source": "lean:LO.FirstOrder.Theory.consistent",
+        "target": "soundness-consistency",
+        "relation": "about",
+        "semantic_edge_indices": [
+          10
         ]
       },
       {
@@ -3594,28 +3703,20 @@
         "target": "derivability",
         "relation": "about",
         "semantic_edge_indices": [
-          10
-        ]
-      },
-      {
-        "source": "lean:LO.ProvabilityLogic.Provability.gödel_spec",
-        "target": "diagonalization",
-        "relation": "about",
-        "semantic_edge_indices": [
           11
         ]
       },
       {
         "source": "lean:LO.ProvabilityLogic.Provability.gödel_spec",
-        "target": "internal-provability",
+        "target": "self-substitution",
         "relation": "about",
         "semantic_edge_indices": [
           12
         ]
       },
       {
-        "source": "lean:LO.ProvabilityLogic.Provability.con_unprovable",
-        "target": "internal-provability",
+        "source": "lean:LO.ProvabilityLogic.Provability.gödel_spec",
+        "target": "arithmetized-provability",
         "relation": "about",
         "semantic_edge_indices": [
           13
@@ -3623,15 +3724,15 @@
       },
       {
         "source": "lean:LO.ProvabilityLogic.Provability.con_unprovable",
-        "target": "consistency",
+        "target": "derivability",
         "relation": "about",
         "semantic_edge_indices": [
           14
         ]
       },
       {
-        "source": "fact:presentation",
-        "target": "representability",
+        "source": "lean:LO.ProvabilityLogic.Provability.con_unprovable",
+        "target": "soundness-consistency",
         "relation": "about",
         "semantic_edge_indices": [
           15
@@ -3639,10 +3740,18 @@
       },
       {
         "source": "fact:presentation",
-        "target": "internal-provability",
+        "target": "representability",
         "relation": "about",
         "semantic_edge_indices": [
           16
+        ]
+      },
+      {
+        "source": "fact:presentation",
+        "target": "arithmetized-provability",
+        "relation": "about",
+        "semantic_edge_indices": [
+          17
         ]
       },
       {
@@ -3650,20 +3759,12 @@
         "target": "representability",
         "relation": "about",
         "semantic_edge_indices": [
-          17
-        ]
-      },
-      {
-        "source": "fact:soundness",
-        "target": "consistency",
-        "relation": "about",
-        "semantic_edge_indices": [
           18
         ]
       },
       {
-        "source": "fact:isigma",
-        "target": "derivability",
+        "source": "fact:soundness",
+        "target": "soundness-consistency",
         "relation": "about",
         "semantic_edge_indices": [
           19
@@ -3671,23 +3772,23 @@
       },
       {
         "source": "fact:isigma",
-        "target": "diagonalization",
+        "target": "derivability",
         "relation": "about",
         "semantic_edge_indices": [
           20
         ]
       },
       {
-        "source": "fact:consistency",
-        "target": "consistency",
+        "source": "fact:isigma",
+        "target": "self-substitution",
         "relation": "about",
         "semantic_edge_indices": [
           21
         ]
       },
       {
-        "source": "step:define-D",
-        "target": "self-substitution",
+        "source": "fact:consistency",
+        "target": "soundness-consistency",
         "relation": "about",
         "semantic_edge_indices": [
           22
@@ -3695,10 +3796,18 @@
       },
       {
         "source": "step:define-D",
-        "target": "internal-provability",
+        "target": "self-substitution",
         "relation": "about",
         "semantic_edge_indices": [
           23
+        ]
+      },
+      {
+        "source": "step:define-D",
+        "target": "arithmetized-provability",
+        "relation": "about",
+        "semantic_edge_indices": [
+          24
         ]
       },
       {
@@ -3706,7 +3815,15 @@
         "target": "self-substitution",
         "relation": "about",
         "semantic_edge_indices": [
-          24
+          25
+        ]
+      },
+      {
+        "source": "fact:define-D",
+        "target": "arithmetized-provability",
+        "relation": "about",
+        "semantic_edge_indices": [
+          26
         ]
       },
       {
@@ -3714,7 +3831,7 @@
         "target": "representability",
         "relation": "about",
         "semantic_edge_indices": [
-          25
+          27
         ]
       },
       {
@@ -3722,7 +3839,7 @@
         "target": "representability",
         "relation": "about",
         "semantic_edge_indices": [
-          26
+          28
         ]
       },
       {
@@ -3730,27 +3847,11 @@
         "target": "representability",
         "relation": "about",
         "semantic_edge_indices": [
-          27
-        ]
-      },
-      {
-        "source": "fact:represent-D",
-        "target": "representability",
-        "relation": "about",
-        "semantic_edge_indices": [
-          28
-        ]
-      },
-      {
-        "source": "fact:represent-D",
-        "target": "internal-provability",
-        "relation": "about",
-        "semantic_edge_indices": [
           29
         ]
       },
       {
-        "source": "step:self-substitute",
+        "source": "step:represent-D",
         "target": "self-substitution",
         "relation": "about",
         "semantic_edge_indices": [
@@ -3758,15 +3859,15 @@
         ]
       },
       {
-        "source": "step:self-substitute",
-        "target": "internal-provability",
+        "source": "fact:represent-D",
+        "target": "representability",
         "relation": "about",
         "semantic_edge_indices": [
           31
         ]
       },
       {
-        "source": "fact:self-substitute",
+        "source": "fact:represent-D",
         "target": "self-substitution",
         "relation": "about",
         "semantic_edge_indices": [
@@ -3774,23 +3875,23 @@
         ]
       },
       {
-        "source": "fact:self-substitute",
-        "target": "internal-provability",
+        "source": "step:self-substitute",
+        "target": "self-substitution",
         "relation": "about",
         "semantic_edge_indices": [
           33
         ]
       },
       {
-        "source": "step:exclude-both",
-        "target": "consistency",
+        "source": "step:self-substitute",
+        "target": "representability",
         "relation": "about",
         "semantic_edge_indices": [
           34
         ]
       },
       {
-        "source": "step:exclude-both",
+        "source": "fact:self-substitute",
         "target": "self-substitution",
         "relation": "about",
         "semantic_edge_indices": [
@@ -3798,11 +3899,19 @@
         ]
       },
       {
-        "source": "fact:exclude-both",
-        "target": "consistency",
+        "source": "fact:self-substitute",
+        "target": "soundness-consistency",
         "relation": "about",
         "semantic_edge_indices": [
           36
+        ]
+      },
+      {
+        "source": "step:exclude-both",
+        "target": "soundness-consistency",
+        "relation": "about",
+        "semantic_edge_indices": [
+          37
         ]
       },
       {
@@ -3810,35 +3919,27 @@
         "target": "self-substitution",
         "relation": "about",
         "semantic_edge_indices": [
-          37
-        ]
-      },
-      {
-        "source": "step:standard-provability",
-        "target": "internal-provability",
-        "relation": "about",
-        "semantic_edge_indices": [
           38
         ]
       },
       {
-        "source": "step:standard-provability",
-        "target": "derivability",
+        "source": "fact:exclude-both",
+        "target": "soundness-consistency",
         "relation": "about",
         "semantic_edge_indices": [
           39
         ]
       },
       {
-        "source": "fact:standard-provability",
-        "target": "internal-provability",
+        "source": "step:standard-provability",
+        "target": "arithmetized-provability",
         "relation": "about",
         "semantic_edge_indices": [
           40
         ]
       },
       {
-        "source": "fact:standard-provability",
+        "source": "step:standard-provability",
         "target": "derivability",
         "relation": "about",
         "semantic_edge_indices": [
@@ -3846,15 +3947,15 @@
         ]
       },
       {
-        "source": "step:hbl-conditions",
-        "target": "internal-provability",
+        "source": "fact:standard-provability",
+        "target": "arithmetized-provability",
         "relation": "about",
         "semantic_edge_indices": [
           42
         ]
       },
       {
-        "source": "step:hbl-conditions",
+        "source": "fact:standard-provability",
         "target": "derivability",
         "relation": "about",
         "semantic_edge_indices": [
@@ -3862,7 +3963,7 @@
         ]
       },
       {
-        "source": "fact:hbl-conditions",
+        "source": "step:hbl-conditions",
         "target": "derivability",
         "relation": "about",
         "semantic_edge_indices": [
@@ -3870,8 +3971,8 @@
         ]
       },
       {
-        "source": "step:consistency-sentence",
-        "target": "internal-provability",
+        "source": "fact:hbl-conditions",
+        "target": "derivability",
         "relation": "about",
         "semantic_edge_indices": [
           45
@@ -3879,15 +3980,15 @@
       },
       {
         "source": "step:consistency-sentence",
-        "target": "consistency",
+        "target": "arithmetized-provability",
         "relation": "about",
         "semantic_edge_indices": [
           46
         ]
       },
       {
-        "source": "fact:consistency-sentence",
-        "target": "internal-provability",
+        "source": "step:consistency-sentence",
+        "target": "soundness-consistency",
         "relation": "about",
         "semantic_edge_indices": [
           47
@@ -3895,15 +3996,15 @@
       },
       {
         "source": "fact:consistency-sentence",
-        "target": "consistency",
+        "target": "arithmetized-provability",
         "relation": "about",
         "semantic_edge_indices": [
           48
         ]
       },
       {
-        "source": "step:godel-sentence",
-        "target": "diagonalization",
+        "source": "fact:consistency-sentence",
+        "target": "soundness-consistency",
         "relation": "about",
         "semantic_edge_indices": [
           49
@@ -3911,15 +4012,15 @@
       },
       {
         "source": "step:godel-sentence",
-        "target": "internal-provability",
+        "target": "self-substitution",
         "relation": "about",
         "semantic_edge_indices": [
           50
         ]
       },
       {
-        "source": "fact:godel-sentence",
-        "target": "diagonalization",
+        "source": "step:godel-sentence",
+        "target": "arithmetized-provability",
         "relation": "about",
         "semantic_edge_indices": [
           51
@@ -3927,15 +4028,15 @@
       },
       {
         "source": "fact:godel-sentence",
-        "target": "internal-provability",
+        "target": "self-substitution",
         "relation": "about",
         "semantic_edge_indices": [
           52
         ]
       },
       {
-        "source": "step:godel-unprovable",
-        "target": "diagonalization",
+        "source": "fact:godel-sentence",
+        "target": "arithmetized-provability",
         "relation": "about",
         "semantic_edge_indices": [
           53
@@ -3943,7 +4044,7 @@
       },
       {
         "source": "step:godel-unprovable",
-        "target": "derivability",
+        "target": "self-substitution",
         "relation": "about",
         "semantic_edge_indices": [
           54
@@ -3951,15 +4052,15 @@
       },
       {
         "source": "step:godel-unprovable",
-        "target": "consistency",
+        "target": "derivability",
         "relation": "about",
         "semantic_edge_indices": [
           55
         ]
       },
       {
-        "source": "fact:godel-unprovable",
-        "target": "internal-provability",
+        "source": "step:godel-unprovable",
+        "target": "soundness-consistency",
         "relation": "about",
         "semantic_edge_indices": [
           56
@@ -3967,15 +4068,15 @@
       },
       {
         "source": "fact:godel-unprovable",
-        "target": "consistency",
+        "target": "soundness-consistency",
         "relation": "about",
         "semantic_edge_indices": [
           57
         ]
       },
       {
-        "source": "step:internal-unprovability",
-        "target": "derivability",
+        "source": "fact:godel-unprovable",
+        "target": "self-substitution",
         "relation": "about",
         "semantic_edge_indices": [
           58
@@ -3983,7 +4084,7 @@
       },
       {
         "source": "step:internal-unprovability",
-        "target": "internal-provability",
+        "target": "arithmetized-provability",
         "relation": "about",
         "semantic_edge_indices": [
           59
@@ -3991,7 +4092,7 @@
       },
       {
         "source": "step:internal-unprovability",
-        "target": "consistency",
+        "target": "derivability",
         "relation": "about",
         "semantic_edge_indices": [
           60
@@ -3999,7 +4100,7 @@
       },
       {
         "source": "fact:internal-unprovability",
-        "target": "internal-provability",
+        "target": "arithmetized-provability",
         "relation": "about",
         "semantic_edge_indices": [
           61
@@ -4007,7 +4108,7 @@
       },
       {
         "source": "fact:internal-unprovability",
-        "target": "consistency",
+        "target": "derivability",
         "relation": "about",
         "semantic_edge_indices": [
           62
@@ -4015,7 +4116,7 @@
       },
       {
         "source": "step:equate-godel-consistency",
-        "target": "diagonalization",
+        "target": "self-substitution",
         "relation": "about",
         "semantic_edge_indices": [
           63
@@ -4031,7 +4132,7 @@
       },
       {
         "source": "step:equate-godel-consistency",
-        "target": "consistency",
+        "target": "soundness-consistency",
         "relation": "about",
         "semantic_edge_indices": [
           65
@@ -4039,7 +4140,7 @@
       },
       {
         "source": "fact:equate-godel-consistency",
-        "target": "internal-provability",
+        "target": "self-substitution",
         "relation": "about",
         "semantic_edge_indices": [
           66
@@ -4047,7 +4148,7 @@
       },
       {
         "source": "fact:equate-godel-consistency",
-        "target": "consistency",
+        "target": "soundness-consistency",
         "relation": "about",
         "semantic_edge_indices": [
           67
@@ -4055,7 +4156,7 @@
       },
       {
         "source": "step:generic-unprovability",
-        "target": "internal-provability",
+        "target": "derivability",
         "relation": "about",
         "semantic_edge_indices": [
           68
@@ -4063,7 +4164,7 @@
       },
       {
         "source": "step:generic-unprovability",
-        "target": "consistency",
+        "target": "soundness-consistency",
         "relation": "about",
         "semantic_edge_indices": [
           69
@@ -4071,7 +4172,7 @@
       },
       {
         "source": "fact:generic-unprovability",
-        "target": "internal-provability",
+        "target": "arithmetized-provability",
         "relation": "about",
         "semantic_edge_indices": [
           70
@@ -4079,7 +4180,7 @@
       },
       {
         "source": "fact:generic-unprovability",
-        "target": "consistency",
+        "target": "soundness-consistency",
         "relation": "about",
         "semantic_edge_indices": [
           71
