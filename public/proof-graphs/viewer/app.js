@@ -31,6 +31,7 @@ const labelWidthRatio = 1.50;
 const labelHeightRatio = 1.16;
 const nodeGap = 25;
 const linkedNodeGap = 46;
+const pathLinkGap = 34;
 const arrowHeadSize = 8;
 const minZoom = .19;
 const maxZoom = 3.3;
@@ -49,7 +50,7 @@ let downwardFlow = new URLSearchParams(location.search).get("layout") === "downw
 let gesture = null;
 let pinch = null;
 let camera = { x: 0, y: 0, scale: 1, fitted: true, overview: true };
-let frame = 0;
+let dragFrame = 0;
 
 function svg(tag, attributes = {}) {
   const element = document.createElementNS(svgNS, tag);
@@ -249,21 +250,14 @@ function foldLayers(layers, portrait, crossStart) {
   return bands.at(-1) + bandWidths.at(-1) / 2 + 95;
 }
 
-function centerBranches(layout, portrait) {
-  const { nodes, nodeMap, neighbors, edges } = layout;
+function proofBranches({ nodes, nodeMap, neighbors, edges }) {
   const central = nodes.filter((node) => node.isRoot);
-  if (!central.length) return false;
+  if (!central.length) return null;
   const incoming = new Map(nodes.map((node) => [node.id, new Set()]));
   for (const { source, target } of edges) incoming.get(target).add(source);
   const severalRoots = central.length > 1;
   const seeds = severalRoots ? central : [...incoming.get(central[0].id)].map((id) => nodeMap.get(id));
-  if (seeds.length < 2) return false;
-  if (nodes.length > 100) {
-    // Keep large reference graphs packed in layers so long cross-links stay routable.
-    anchorNodes(layout, portrait, false, true);
-    return true;
-  }
-
+  if (seeds.length < 2) return null;
   const branches = seeds.map(() => new Map());
   const queue = seeds.map((node, branch) => ({ node, branch, rank: severalRoots ? 0 : 1 }));
   const seen = new Set([...central, ...seeds].map(({ id }) => id));
@@ -280,6 +274,17 @@ function centerBranches(layout, portrait) {
     const rows = branches[branch];
     if (!rows.has(rank)) rows.set(rank, []);
     rows.get(rank).push(node);
+  }
+  return { central, seeds, branches, seen, severalRoots, incoming, queue };
+}
+
+function centerBranches(layout, portrait, groups) {
+  const { nodes, neighbors, edges } = layout;
+  const { central, seeds, branches, seen, severalRoots, queue } = groups;
+  if (nodes.length > 100) {
+    // Keep large reference graphs packed in layers so long cross-links stay routable.
+    anchorNodes(layout, portrait, false, true);
+    return;
   }
 
   const firstAngle = portrait ? -Math.PI / 2 : Math.PI;
@@ -348,7 +353,247 @@ function centerBranches(layout, portrait) {
       Math.min(...loose.map((node) => node.x - node.rx)) + 95;
     for (const node of loose) placeNode(node, node.x + offset, node.y);
   }
-  return true;
+}
+
+function longestProofPath(seed, members, incoming) {
+  const active = new Set();
+  const cached = new Map();
+  const walk = (node) => {
+    if (active.has(node.id)) return [];
+    if (cached.has(node.id)) return cached.get(node.id);
+    active.add(node.id);
+    let upstream = [];
+    for (const id of incoming.get(node.id)) {
+      if (!members.has(id)) continue;
+      const path = walk(members.get(id));
+      if (path.length > upstream.length) upstream = path;
+    }
+    active.delete(node.id);
+    const path = [node, ...upstream];
+    cached.set(node.id, path);
+    return path;
+  };
+  // A reference view can contain cycles. Keep the connected prefix before any repeat.
+  const path = [];
+  const seen = new Set();
+  for (const node of walk(seed)) {
+    if (seen.has(node.id)) break;
+    seen.add(node.id);
+    path.push(node);
+  }
+  return path;
+}
+
+function linesCross(ax, ay, bx, by, cx, cy, dx, dy) {
+  if (Math.min(ax, bx) >= Math.max(cx, dx) || Math.max(ax, bx) <= Math.min(cx, dx) ||
+      Math.min(ay, by) >= Math.max(cy, dy) || Math.max(ay, by) <= Math.min(cy, dy)) return false;
+  const side = (x, y, u, v, a, b) => (u - x) * (b - y) - (v - y) * (a - x);
+  return side(ax, ay, bx, by, cx, cy) * side(ax, ay, bx, by, dx, dy) < 0 &&
+    side(cx, cy, dx, dy, ax, ay) * side(cx, cy, dx, dy, bx, by) < 0;
+}
+
+function shareEndpoint(edge, other) {
+  return edge.a === other.a || edge.b === other.b || edge.a === other.b || edge.b === other.a;
+}
+
+function roomFor(node, others, neighbors) {
+  return others.every((other) => {
+    if (node === other) return true;
+    const gap = neighbors.has(other.id) ? pathLinkGap : nodeGap;
+    const dx = node.x - other.x;
+    const dy = node.y - other.y;
+    const distance = Math.hypot(dx, dy);
+    if (distance > Math.max(node.rx, node.ry) + Math.max(other.rx, other.ry) + gap) return true;
+    if (!distance) return false;
+    const ux = dx / distance;
+    const uy = dy / distance;
+    return distance >= projectedRadius(node, ux, uy) + projectedRadius(other, ux, uy) + gap;
+  });
+}
+
+function localLayoutCost(node, incident, otherEdges, others) {
+  const obstacle = { cx: node.x, cy: node.y, rx: node.rx + 14, ry: node.ry + 14 };
+  let score = 0;
+  for (const edge of incident) {
+    const length = Math.hypot(edge.a.x - edge.b.x, edge.a.y - edge.b.y);
+    score += length + Math.max(0, length - 280) ** 2 / 220;
+    for (const other of others) {
+      if (other === edge.a || other === edge.b) continue;
+      if (!segmentClear([edge.a.x, edge.a.y], [edge.b.x, edge.b.y],
+        [{ cx: other.x, cy: other.y, rx: other.rx + 14, ry: other.ry + 14 }])) score += 100;
+    }
+  }
+  for (const other of otherEdges) {
+    const { a, b } = other;
+    if (!segmentClear([a.x, a.y], [b.x, b.y], [obstacle])) score += 100;
+    for (const edge of incident) {
+      if (shareEndpoint(edge, other)) continue;
+      if (linesCross(a.x, a.y, b.x, b.y, edge.a.x, edge.a.y, edge.b.x, edge.b.y)) score += 210;
+    }
+  }
+  return score;
+}
+
+function placeProofPaths(layout, portrait, groups, variant) {
+  const { neighbors, edges } = layout;
+  const { central, seeds, branches, severalRoots, incoming, seen } = groups;
+  const placed = new Set();
+  const rootSize = Math.max(...central.map((node) => Math.max(node.rx, node.ry)));
+  const origin = (rootSize + linkedNodeGap / 2) / Math.sin(Math.PI / seeds.length);
+  if (!severalRoots) {
+    placeNode(central[0], 0, 0);
+    placed.add(central[0]);
+  }
+  for (const [branch, seed] of seeds.entries()) {
+    const members = new Map([...branches[branch].values()].flat().map((node) => [node.id, node]));
+    const path = longestProofPath(seed, members, incoming);
+    const angle = (portrait ? -Math.PI / 2 : Math.PI) + branch * 2 * Math.PI / seeds.length;
+    const ux = Math.cos(angle);
+    const uy = Math.sin(angle);
+    const bend = (variant % 2 ? -1 : 1) * (branch % 2 ? -1 : 1);
+    const sweep = (variant < 2 ? 1.80 : 2.06) * Math.PI;
+    const stretch = portrait ? 1.16 : .86;
+    const advance = Math.min(sweep / Math.max(1, path.length - 1), Math.PI / 3);
+    const diameter = Math.max(...path.map((node) => 2 * Math.max(node.rx, node.ry)));
+    const radius = (diameter * .74 + pathLinkGap) / (2 * Math.sin(advance / 2));
+    const start = severalRoots ? origin : origin + rootSize;
+    for (const [i, node] of path.entries()) {
+      const turn = i * advance;
+      const ringRadius = radius - (variant < 2 ? 0 : Math.min(diameter, radius * .38) * turn / sweep);
+      const outward = start + radius - ringRadius * Math.cos(turn);
+      const lateral = bend * ringRadius * stretch * Math.sin(turn);
+      placeNode(node, outward * ux - lateral * uy, outward * uy + lateral * ux);
+      placed.add(node);
+    }
+  }
+
+  const pending = groups.queue.map(({ node }) => node).filter((node) => !placed.has(node));
+  while (pending.length) {
+    const count = (node) => [...neighbors.get(node.id)].filter((id) => placed.has(layout.nodeMap.get(id))).length;
+    pending.sort((a, b) => count(b) - count(a));
+    const node = pending.shift();
+    const incident = edges.filter((edge) => (edge.a === node && placed.has(edge.b)) ||
+      (edge.b === node && placed.has(edge.a)));
+    const otherEdges = edges.filter(({ a, b }) => placed.has(a) && placed.has(b));
+    const peers = incident.map(({ a, b }) => a === node ? b : a);
+    const x = peers.reduce((sum, peer) => sum + peer.x, 0) / (peers.length || 1);
+    const y = peers.reduce((sum, peer) => sum + peer.y, 0) / (peers.length || 1);
+    const others = [...placed];
+    let best = null;
+    let bestCost = Infinity;
+    const maximum = Math.max(300, Math.sqrt(others.length) * 110);
+    for (let radius = 40; radius <= maximum; radius += 40) {
+      for (let i = 0; i < 12; i++) {
+        const angle = (i + variant * .5) * Math.PI / 6;
+        node.x = x + radius * Math.cos(angle);
+        node.y = y + radius * Math.sin(angle);
+        if (!roomFor(node, others, neighbors.get(node.id))) continue;
+        const cost = localLayoutCost(node, incident, otherEdges, others) + radius * .15;
+        if (cost < bestCost) {
+          bestCost = cost;
+          best = [node.x, node.y];
+        }
+      }
+      if (best && radius >= 240) break;
+    }
+    const beyond = Math.max(...others.map((other) => other.x + other.rx)) + node.rx + linkedNodeGap;
+    placeNode(node, ...(best || [beyond, y]));
+    placed.add(node);
+  }
+  // Components without a visible root keep their own space beside the proof.
+  const loose = layout.nodes.filter(({ id }) => !seen.has(id));
+  if (loose.length) {
+    anchorNodes({ ...layout, nodes: loose, edges: edges.filter(({ source }) => !seen.has(source)) }, portrait);
+    const offset = Math.max(...[...placed].map((node) => node.x + node.rx)) -
+      Math.min(...loose.map((node) => node.x - node.rx)) + 95;
+    for (const node of loose) placeNode(node, node.x + offset, node.y);
+  }
+}
+
+function tightenProofLayout(layout, groups) {
+  const { nodes, neighbors, edges } = layout;
+  const movable = groups.queue.map(({ node }) => node).filter((node) => !node.isRoot);
+  for (const move of [46, 26, 13]) {
+    for (const node of movable) {
+      const incident = edges.filter(({ a, b }) => a === node || b === node);
+      const others = edges.filter(({ a, b }) => a !== node && b !== node);
+      const { x, y } = node;
+      const cost = () => localLayoutCost(node, incident, others, nodes) +
+        .24 * Math.hypot(node.x - node.ax, node.y - node.ay);
+      let bestCost = cost();
+      let best = [x, y];
+      for (let i = 0; i < 8; i++) {
+        const angle = i * Math.PI / 4;
+        node.x = x + move * Math.cos(angle);
+        node.y = y + move * Math.sin(angle);
+        if (!roomFor(node, nodes, neighbors.get(node.id))) continue;
+        const candidate = cost();
+        if (candidate < bestCost) {
+          best = [node.x, node.y];
+          bestCost = candidate;
+        }
+      }
+      [node.x, node.y] = best;
+    }
+  }
+}
+
+function pathsCross(first, second) {
+  return first.some(([x, y], i) => i && second.some(([u, v], j) => j &&
+    linesCross(x, y, ...first[i - 1], u, v, ...second[j - 1])));
+}
+
+function layoutQuality(layout, portrait) {
+  const index = obstacleIndex(layout.nodes);
+  const routed = [];
+  let crossings = 0;
+  let length = 0;
+  let longest = 0;
+  let missing = 0;
+  for (const edge of layout.edges) {
+    const route = edgeRoute(edge, index);
+    if (!route) { missing++; continue; }
+    const distance = polylineLength(route.samples);
+    length += distance + Math.max(0, distance - 270) ** 2 / 180;
+    longest = Math.max(longest, distance);
+    for (const other of routed) {
+      if (!shareEndpoint(edge, other.edge) && pathsCross(route.samples, other.points)) crossings++;
+    }
+    routed.push({ edge, points: route.samples });
+  }
+  const width = Math.max(...layout.nodes.map((node) => node.x + node.rx)) -
+    Math.min(...layout.nodes.map((node) => node.x - node.rx));
+  const height = Math.max(...layout.nodes.map((node) => node.y + node.ry)) -
+    Math.min(...layout.nodes.map((node) => node.y - node.ry));
+  return missing * 100000 + crossings * 390 + length + 2 * longest +
+    1.8 * Math.max(height, width / (portrait ? .72 : 1.9));
+}
+
+function arrangeProof(layout, portrait) {
+  const groups = !downwardFlow && proofBranches(layout);
+  if (groups) centerBranches(layout, portrait, groups);
+  else anchorNodes(layout, portrait, !downwardFlow);
+  if (layout.nodes.length > 100) return;
+  for (let i = 0; i < 42; i++) forceStep(.75);
+  separateNodes(24);
+  if (!groups || layout.nodes.length > 55 || layout.edges.length > 96 || groups.seeds.length > 4) return;
+
+  // Keep the layered placement available if it routes better than the curved paths.
+  const snapshot = () => layout.nodes.map(({ x, y }) => [x, y]);
+  let best = snapshot();
+  let score = layoutQuality(layout, portrait);
+  for (let variant = 0; variant < 4; variant++) {
+    placeProofPaths(layout, portrait, groups, variant);
+    for (let i = 0; i < 35; i++) forceStep(.75, .031, .037);
+    separateNodes(24, pathLinkGap);
+    tightenProofLayout(layout, groups);
+    const quality = layoutQuality(layout, portrait);
+    if (quality < score) {
+      score = quality;
+      best = snapshot();
+    }
+  }
+  layout.nodes.forEach((node, i) => placeNode(node, ...best[i]));
 }
 
 function ellipsePath(rx, ry, seed, offset = 0) {
@@ -403,7 +648,7 @@ function createNode(item, sizeRole) {
   labelWorld.append(label);
   return {
     id: item.id, item, isRoot, rx, ry, baseRx: rx, baseRy: ry, ax: 0, ay: 0,
-    x: 0, y: 0, vx: 0, vy: 0, group, pinned: false,
+    x: 0, y: 0, vx: 0, vy: 0, group,
     outline, echo, label, stack, titleElement, math,
   };
 }
@@ -421,7 +666,8 @@ function createEdge(link, nodes) {
 }
 
 function createLayout() {
-  cancelAnimationFrame(frame);
+  cancelAnimationFrame(dragFrame);
+  dragFrame = 0;
   gesture = null;
   pinch = null;
   touchPoints.clear();
@@ -442,18 +688,14 @@ function createLayout() {
   }
   layout = { nodes, nodeMap, edges, neighbors, collapsed: projection.collapsed_into || {}, portrait };
   fitLabels(nodes);
-  if (downwardFlow || !centerBranches(layout, portrait)) anchorNodes(layout, portrait, !downwardFlow);
-  if (nodes.length <= 100) {
-    for (let i = 0; i < 42; i++) forceStep(.75);
-    separateNodes(24);
-  }
+  arrangeProof(layout, portrait);
   for (const node of nodes) node.vx = node.vy = 0;
   paintNodes();
   bySelector("#graph-count").textContent = `${nodes.length} nodes · ${edges.length} arrows`;
   const currentLayout = layout;
   if (document.fonts?.status === "loading") {
     document.fonts.ready.then(() => {
-      if (layout !== currentLayout) return;
+      if (layout !== currentLayout || layout.manuallyPlaced) return;
       fitLabels(nodes);
       separateNodes(40);
       paintNodes();
@@ -524,7 +766,7 @@ function projectedRadius(node, ux, uy) {
   return Math.hypot(node.rx * ux, node.ry * uy);
 }
 
-function separateNodes(iterations) {
+function separateNodes(iterations, edgeGap = linkedNodeGap) {
   const { nodes, neighbors } = layout;
   for (let pass = 0; pass < iterations; pass++) {
     let moved = false;
@@ -532,7 +774,7 @@ function separateNodes(iterations) {
       const a = nodes[i];
       for (let j = i + 1; j < nodes.length; j++) {
         const b = nodes[j];
-        const gap = neighbors.get(a.id).has(b.id) ? linkedNodeGap : nodeGap;
+        const gap = neighbors.get(a.id).has(b.id) ? edgeGap : nodeGap;
         const dx = b.x - a.x;
         const dy = b.y - a.y;
         const distance = Math.hypot(dx, dy);
@@ -541,9 +783,8 @@ function separateNodes(iterations) {
         const uy = distance ? dy / distance : 0;
         const overlap = projectedRadius(a, ux, uy) + projectedRadius(b, ux, uy) + gap - distance;
         if (overlap < .1) continue;
-        const weightA = a.pinned ? 0 : a.isRoot ? .36 : 1;
-        const weightB = b.pinned ? 0 : b.isRoot ? .36 : 1;
-        if (!weightA && !weightB) continue;
+        const weightA = a.isRoot ? .36 : 1;
+        const weightB = b.isRoot ? .36 : 1;
         const push = overlap / (weightA + weightB);
         a.x -= ux * push * weightA;
         a.y -= uy * push * weightA;
@@ -556,7 +797,7 @@ function separateNodes(iterations) {
   }
 }
 
-function forceStep(strength) {
+function forceStep(strength, tension = .012, anchor = .16) {
   if (!layout) return;
   const { nodes, edges } = layout;
   for (let i = 0; i < nodes.length; i++) {
@@ -581,15 +822,14 @@ function forceStep(strength) {
     const distance = Math.hypot(dx, dy) || 1;
     const rest = projectedRadius(a, dx / distance, dy / distance) +
       projectedRadius(b, dx / distance, dy / distance) + linkedNodeGap + 9;
-    const pull = (distance - rest) * .012 * strength;
+    const pull = (distance - rest) * tension * strength;
     a.vx += dx * pull / distance;
     a.vy += dy * pull / distance;
     b.vx -= dx * pull / distance;
     b.vy -= dy * pull / distance;
   }
   for (const n of nodes) {
-    if (n.pinned) { n.vx = n.vy = 0; continue; }
-    const pull = n.isRoot ? .25 : .16;
+    const pull = n.isRoot ? .25 : anchor;
     n.vx = (n.vx + (n.ax - n.x) * pull * strength) * .78;
     n.vy = (n.vy + (n.ay - n.y) * pull * strength) * .78;
     n.x += n.vx;
@@ -653,6 +893,7 @@ function obstacleIndex(nodes) {
       return nearby;
     },
     boxes,
+    byId: new Map(boxes.map((box) => [box.id, box])),
   };
 }
 
@@ -660,10 +901,11 @@ function routeEdge(a, b, obstacles, clear) {
   const start = [a.x, a.y];
   const end = [b.x, b.y];
   const terminals = [a, b].map(({ x, y, rx, ry }) => ({ cx: x, cy: y, rx: rx + 8, ry: ry + 8 }));
-  const corners = Array.from(obstacles, ({ cx, cy, rx, ry }) => [
-    [cx - rx, cy - ry], [cx + rx, cy - ry], [cx - rx, cy + ry], [cx + rx, cy + ry],
-  ]).flat().filter((point) => segmentClear(point, point, terminals) && clear(point, point));
-  const points = [start, end, ...corners];
+  const corners = Array.from(obstacles, ({ id, cx, cy, rx, ry }) =>
+    [[-1, -1], [1, -1], [-1, 1], [1, 1]].map(([sx, sy]) =>
+      ({ id, sx, sy, point: [cx + sx * rx, cy + sy * ry] })))
+    .flat().filter(({ point }) => segmentClear(point, point, terminals) && clear(point, point));
+  const points = [start, end, ...corners.map(({ point }) => point)];
   const distance = ([x, y], [u, v]) => Math.hypot(x - u, y - v);
   const estimate = points.map((point) => distance(point, end));
   const costs = points.map(() => Infinity);
@@ -680,8 +922,12 @@ function routeEdge(a, b, obstacles, clear) {
     }
     if (current === 1) {
       const route = [];
-      for (let i = current; i !== undefined; i = previous[i]) route.push(points[i]);
-      return route.reverse();
+      for (let i = current; i !== undefined; i = previous[i]) route.push(i);
+      route.reverse();
+      return { points: route.map((i) => points[i]), waypoints: route.slice(1, -1).map((i) => {
+        const { id, sx, sy } = corners[i - 2];
+        return { id, sx, sy };
+      }) };
     }
     open.delete(current);
     seen.add(current);
@@ -722,13 +968,15 @@ function bezierSamples([start, first, second, end]) {
   });
 }
 
-function smoothRoute({ a, b, bend }, spatial) {
+function smoothRoute({ a, b, bend }, spatial, preferred) {
   const dx = b.x - a.x;
   const dy = b.y - a.y;
   const span = Math.hypot(dx, dy) || 1;
   const side = Math.sign(bend) || 1;
   const curvature = Math.min(span / 4, Math.max(10, Math.abs(bend)));
-  for (const extra of [curvature, -curvature, curvature * 2, -curvature * 2, 0]) {
+  const bends = preferred === undefined ? [1, -1, 2, -2, 0] : [preferred];
+  for (const multiplier of bends) {
+    const extra = curvature * multiplier;
     const x = -dy * extra * side / span;
     const y = dx * extra * side / span;
     const sourceAngle = Math.atan2(dy / 3 + y, dx / 3 + x);
@@ -746,8 +994,8 @@ function smoothRoute({ a, b, bend }, spatial) {
     const obstacles = Array.from(spatial.query(Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)))
       .filter((node) => node.id !== a.id && node.id !== b.id);
     for (const { x: cx, y: cy, rx, ry } of [a, b]) obstacles.push({ cx, cy, rx, ry });
-    if (samples.slice(1).every((point, i) => segmentClear(samples[i], point, obstacles))) {
-      return { curve, samples };
+    if (polylineClear(samples, obstacles)) {
+      return { curve, samples, multiplier };
     }
   }
   return null;
@@ -758,40 +1006,90 @@ function bezierPath([start, first, second, end], offset = 0) {
   return `M${coords(start)} C${coords(first)} ${coords(second)} ${coords(end)}`;
 }
 
-function paintEdge(edge, spatial) {
-  const { a, b, paths } = edge;
-  edge.routePoints = null;
-  edge.arrow = null;
+function polylineClear(points, obstacles) {
+  return points.every((point, i) => i === 0 || segmentClear(points[i - 1], point, obstacles));
+}
+
+function edgeRoute(edge, spatial, previous = null) {
+  const { a, b } = edge;
+  if (previous?.multiplier !== undefined) {
+    const bend = previous.multiplier;
+    return smoothRoute(edge, spatial, bend) ||
+      (bend ? smoothRoute(edge, spatial, Math.sign(bend) * (3 - Math.abs(bend))) : null);
+  }
   const clear = (start, end) => segmentClear(start, end,
     Array.from(spatial.query(...start, ...end)).filter((n) => n.id !== a.id && n.id !== b.id));
-  const smooth = smoothRoute(edge, spatial);
-  if (smooth) {
-    const { curve, samples } = smooth;
-    const [x, y] = curve.at(-1);
-    const [u, v] = curve.at(-2);
-    edge.routePoints = samples;
-    paintEdgePaths(edge, bezierPath(curve), bezierPath(curve, .8), x, y, Math.atan2(y - v, x - u));
-    return;
+  const start = [a.x, a.y];
+  const end = [b.x, b.y];
+  if (previous) {
+    // Move a detour's corners with their obstacles, keeping the side of the detour.
+    const corners = previous.waypoints.map(({ id, sx, sy }) => {
+      const box = spatial.byId.get(id);
+      return [box.cx + sx * box.rx, box.cy + sy * box.ry];
+    });
+    const points = [start, ...corners, end];
+    const terminals = [a, b].map(({ x, y, rx, ry }) => ({ cx: x, cy: y, rx: rx + 8, ry: ry + 8 }));
+    if (corners.some((point) => !segmentClear(point, point, terminals))) return null;
+    if (!points.every((point, i) => i === 0 || clear(points[i - 1], point))) return null;
+    return detourRoute(a, b, points, previous.waypoints);
   }
+  const smooth = smoothRoute(edge, spatial);
+  if (smooth) return smooth;
   const nearby = (margin) => Array.from(spatial.query(a.x, a.y, b.x, b.y, margin))
     .filter((n) => n.id !== a.id && n.id !== b.id);
-  const blockers = nearby(0).filter((n) => !segmentClear([a.x,a.y], [b.x,b.y], [n]));
-  const points = routeEdge(a, b, blockers, clear) ||
+  const blockers = nearby(0).filter((n) => !segmentClear(start, end, [n]));
+  const detour = routeEdge(a, b, blockers, clear) ||
     routeEdge(a, b, nearby(190), clear) ||
     routeEdge(a, b, spatial.boxes.filter((n) => n.id !== a.id && n.id !== b.id), clear);
-  if (!points) {
-    // During a drag, a node may close the gap at an endpoint.
-    for (const path of paths) path.setAttribute("d", "");
-    return;
-  }
+  return detour && detourRoute(a, b, detour.points, detour.waypoints);
+}
+
+function detourRoute(a, b, points, waypoints) {
   const angleTo = ([x, y], [u, v]) => Math.atan2(v - y, u - x);
   const sourceAngle = angleTo(points[0], points[1]);
   const targetAngle = angleTo(points.at(-1), points.at(-2));
-  points[0] = pointOutsideNode(a, sourceAngle);
-  points[points.length - 1] = pointOutsideNode(b, targetAngle);
-  edge.routePoints = points;
-  const [x, y] = points.at(-1);
-  paintEdgePaths(edge, roundedRoute(points), roundedRoute(points, .8), x, y, targetAngle + Math.PI);
+  const samples = [pointOutsideNode(a, sourceAngle), ...points.slice(1, -1), pointOutsideNode(b, targetAngle)];
+  return { samples, waypoints, angle: targetAngle + Math.PI };
+}
+
+function polylineLength(points) {
+  return points.reduce((sum, [x, y], i) => i
+    ? sum + Math.hypot(x - points[i - 1][0], y - points[i - 1][1])
+    : sum, 0);
+}
+
+function paintDraggedEdge(edge, spatial, phase, keepCurrent) {
+  const previous = keepCurrent ? edge.route : edge.route && edgeRoute(edge, spatial, edge.route);
+  let route = previous;
+  if (!previous || phase === "drop") {
+    const next = edgeRoute(edge, spatial);
+    const simpler = next?.curve && previous?.waypoints?.length;
+    if (!previous || (next && polylineLength(next.samples) + (simpler ? 12 : 24) <
+        polylineLength(previous.samples) * (simpler ? 1 : .84))) {
+      route = next;
+    }
+  }
+  paintEdge(edge, route, true);
+}
+
+function paintEdge(edge, route, preserve = false) {
+  edge.needsRoute = !route;
+  if (!route) {
+    // An obstructed drag can briefly leave no channel. Keep the last ink in place.
+    if (preserve && edge.route) return;
+    edge.route = edge.routePoints = edge.arrow = null;
+    for (const path of edge.paths) path.setAttribute("d", "");
+    return;
+  }
+  edge.route = route;
+  edge.routePoints = route.samples;
+  const [x, y] = route.samples.at(-1);
+  if (route.curve) {
+    const [u, v] = route.curve.at(-2);
+    paintEdgePaths(edge, bezierPath(route.curve), bezierPath(route.curve, .8), x, y, Math.atan2(y - v, x - u));
+  } else {
+    paintEdgePaths(edge, roundedRoute(route.samples), roundedRoute(route.samples, .8), x, y, route.angle);
+  }
 }
 
 function paintEdgePaths(edge, path, echo, x, y, angle) {
@@ -814,29 +1112,55 @@ function paintArrowhead({ arrow, paths }) {
   }
 }
 
-function paintNodes() {
-  for (const node of layout.nodes) {
-    node.group.setAttribute("transform", `translate(${node.x},${node.y})`);
-    node.label.style.transform = `translate(${node.x}px, ${node.y}px) translate(-50%, -50%)`;
-  }
-  const index = obstacleIndex(layout.nodes);
-  for (const edge of layout.edges) paintEdge(edge, index);
+function paintNode(node) {
+  node.group.setAttribute("transform", `translate(${node.x},${node.y})`);
+  node.label.style.transform = `translate(${node.x}px, ${node.y}px) translate(-50%, -50%)`;
 }
 
-function settle(iterations = 42) {
-  cancelAnimationFrame(frame);
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    separateNodes(40);
-    paintNodes();
-    return;
+function paintNodes() {
+  for (const node of layout.nodes) paintNode(node);
+  const index = obstacleIndex(layout.nodes);
+  const routes = layout.edges.map((edge) => edgeRoute(edge, index));
+  if (layout.edges.length <= 96) reduceRouteCrossings(layout.edges, routes, index);
+  layout.edges.forEach((edge, i) => paintEdge(edge, routes[i]));
+}
+
+function reduceRouteCrossings(edges, routes, spatial) {
+  for (const [i, edge] of edges.entries()) {
+    const initial = routes[i];
+    if (!initial) continue;
+    const others = routes.filter((other, j) => other && !shareEndpoint(edge, edges[j]));
+    const countCrossings = (route) =>
+      others.reduce((sum, other) => sum + Number(pathsCross(route.samples, other.samples)), 0);
+    let crossings = countCrossings(initial);
+    if (!crossings) continue;
+    const limit = polylineLength(initial.samples) + 60;
+    for (const bend of [1, -1, 2, -2, 0]) {
+      if (bend === initial.multiplier) continue;
+      const curve = smoothRoute(edge, spatial, bend);
+      if (!curve || polylineLength(curve.samples) > limit) continue;
+      const count = countCrossings(curve);
+      if (count < crossings) {
+        routes[i] = curve;
+        crossings = count;
+        if (!crossings) break;
+      }
+    }
   }
-  const tick = () => {
-    forceStep(.48);
-    separateNodes(iterations <= 1 && !gesture?.node ? 40 : 6);
-    paintNodes();
-    if (--iterations > 0 || gesture?.node) frame = requestAnimationFrame(tick);
-  };
-  frame = requestAnimationFrame(tick);
+}
+
+function paintDrag({ node, touched }, phase = "drag") {
+  paintNode(node);
+  const index = obstacleIndex(layout.nodes);
+  const obstacle = index.byId.get(node.id);
+  for (const edge of layout.edges) {
+    const incident = edge.a === node || edge.b === node;
+    const blocked = !incident && edge.routePoints && !polylineClear(edge.routePoints, [obstacle]);
+    if (incident || blocked || (touched.has(edge) && (edge.needsRoute || phase === "drop"))) {
+      if (!touched.has(edge)) touched.set(edge, edge.route);
+      paintDraggedEdge(edge, index, phase, !incident && !blocked && !edge.needsRoute);
+    }
+  }
 }
 
 function paintCamera() {
@@ -1057,7 +1381,34 @@ function pointerPosition(event) {
 
 function singlePointer(pointerId, { x, y }, node = null, moved = false) {
   return { x, y, pointerId, node, moved, cameraX: camera.x, cameraY: camera.y,
-    nodeX: node?.x, nodeY: node?.y };
+    nodeX: node?.x, nodeY: node?.y, touched: new Map() };
+}
+
+function clearDropPosition(node, original) {
+  const otherNodes = layout.nodes.filter((other) => other !== node);
+  const clear = (x, y) => otherNodes.every((other) => {
+    const dx = x - other.x;
+    const dy = y - other.y;
+    const distance = Math.hypot(dx, dy);
+    const gap = 8;
+    if (distance > Math.max(node.rx, node.ry) + Math.max(other.rx, other.ry) + gap) return true;
+    if (!distance) return false;
+    const ux = dx / distance;
+    const uy = dy / distance;
+    return distance >= projectedRadius(node, ux, uy) + projectedRadius(other, ux, uy) + gap;
+  });
+  if (clear(node.x, node.y)) return [node.x, node.y];
+
+  const direction = Math.atan2(original[1] - node.y, original[0] - node.x);
+  for (let radius = 8; radius <= 240; radius += 8) {
+    for (let i = 0; i < 16; i++) {
+      const angle = direction + i * Math.PI / 8;
+      const x = node.x + radius * Math.cos(angle);
+      const y = node.y + radius * Math.sin(angle);
+      if (clear(x, y)) return [x, y];
+    }
+  }
+  return original;
 }
 
 function pinchPosition() {
@@ -1108,15 +1459,18 @@ diagram.addEventListener("pointermove", (event) => {
   if (!gesture.moved) {
     gesture.moved = true;
     diagram.classList.add("is-dragging");
-    if (gesture.node) settle();
   }
   if (gesture.node) {
     const n = gesture.node;
-    n.pinned = true;
+    layout.manuallyPlaced = true;
     n.x = gesture.nodeX + dx / camera.scale;
     n.y = gesture.nodeY + dy / camera.scale;
-    separateNodes(8);
-    paintNodes();
+    if (!dragFrame) {
+      dragFrame = requestAnimationFrame(() => {
+        dragFrame = 0;
+        paintDrag(gesture);
+      });
+    }
   } else {
     camera.x = gesture.cameraX + dx;
     camera.y = gesture.cameraY + dy;
@@ -1126,14 +1480,21 @@ diagram.addEventListener("pointermove", (event) => {
 });
 
 function finishGesture(cancelled) {
-  const { node, moved } = gesture;
+  const drag = gesture;
+  const { node, moved } = drag;
   gesture = null;
   diagram.classList.remove("is-dragging");
   if (node && moved) {
-    node.pinned = false;
-    node.ax = node.x;
-    node.ay = node.y;
-    settle();
+    cancelAnimationFrame(dragFrame);
+    dragFrame = 0;
+    const [x, y] = clearDropPosition(node, [drag.nodeX, drag.nodeY]);
+    placeNode(node, x, y);
+    paintDrag(drag, "drop");
+    if ([...drag.touched].some(([edge, route]) => route && edge.needsRoute)) {
+      placeNode(node, drag.nodeX, drag.nodeY);
+      paintNode(node);
+      for (const [edge, route] of drag.touched) paintEdge(edge, route);
+    }
   } else if (!cancelled && !moved) {
     if (node) selectNode(node.id);
     else clearSelection();
