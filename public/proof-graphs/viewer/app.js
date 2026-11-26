@@ -1399,11 +1399,15 @@ function singlePointer(pointerId, { x, y }, node = null, moved = false) {
     nodeX: node?.x, nodeY: node?.y, touched: new Map() };
 }
 
+function dragBody(node, depth) {
+  return {
+    node, depth, x: node.x, y: node.y, vx: 0, vy: 0,
+    originalX: node.x, originalY: node.y, drawnX: node.x, drawnY: node.y,
+  };
+}
+
 function startDragMotion(drag) {
-  const snapshot = (node, depth) => ({
-    node, depth, x: node.x, y: node.y, vx: 0, vy: 0, drawnX: node.x, drawnY: node.y,
-  });
-  const bodies = [snapshot(drag.node, 0)];
+  const bodies = [dragBody(drag.node, 0)];
   const byId = new Map([[drag.node.id, bodies[0]]]);
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     for (const { node, depth } of bodies) {
@@ -1412,7 +1416,7 @@ function startDragMotion(drag) {
       nearby.sort((a, b) => Math.hypot(a.x - node.x, a.y - node.y) - Math.hypot(b.x - node.x, b.y - node.y));
       for (const peer of nearby) {
         if (byId.has(peer.id)) continue;
-        const body = snapshot(peer, depth + 1);
+        const body = dragBody(peer, depth + 1);
         byId.set(peer.id, body);
         bodies.push(body);
         if (bodies.length >= 17) break;
@@ -1431,8 +1435,65 @@ function startDragMotion(drag) {
   drag.motion = { bodies, followers, byId };
 }
 
+function advanceDraggedNode({ node, target, motion }) {
+  if (!target) return;
+  const dx = target.x - node.x;
+  const dy = target.y - node.y;
+  let remaining = Math.hypot(dx, dy);
+  if (!remaining) return;
+  const ux = dx / remaining;
+  const uy = dy / remaining;
+  while (remaining > .001) {
+    // Sweep in small increments near other nodes, even when pointer events skip over them.
+    let step = remaining;
+    for (const other of layout.nodes) {
+      if (other === node) continue;
+      const reach = Math.max(node.rx, node.ry) + Math.max(other.rx, other.ry) + 8;
+      const free = Math.hypot(other.x - node.x, other.y - node.y) - reach;
+      step = Math.min(step, Math.max(16, free));
+    }
+    node.x += ux * step;
+    node.y += uy * step;
+    remaining -= step;
+    pushDragContacts(node, motion, ux, uy);
+  }
+  node.x = target.x;
+  node.y = target.y;
+}
+
+function pushDragContacts(grabbed, motion, ux, uy) {
+  // Propagate the push through actual contacts, regardless of proof connections.
+  const queue = [grabbed];
+  const visited = new Set(queue);
+  for (const pusher of queue) {
+    for (const other of layout.nodes) {
+      if (visited.has(other)) continue;
+      const dx = other.x - pusher.x;
+      const dy = other.y - pusher.y;
+      const distance = Math.hypot(dx, dy);
+      if (distance > Math.max(pusher.rx, pusher.ry) + Math.max(other.rx, other.ry) + 8) continue;
+      const x = distance ? dx / distance : ux;
+      const y = distance ? dy / distance : uy;
+      const overlap = projectedRadius(pusher, x, y) + projectedRadius(other, x, y) + 8 - distance;
+      if (overlap <= .05) continue;
+      let body = motion.byId.get(other.id);
+      if (!body) {
+        body = dragBody(other, null);
+        motion.byId.set(other.id, body);
+        motion.bodies.push(body);
+      }
+      body.pushed = true;
+      other.x += x * (overlap + .1);
+      other.y += y * (overlap + .1);
+      visited.add(other);
+      queue.push(other);
+    }
+  }
+}
+
 function stepDragMotion({ followers }, releasing) {
   for (const body of followers) {
+    if (body.pushed) continue;
     const { node, depth, links } = body;
     const tether = releasing ? .22 : depth === 1 ? .115 : .16;
     let fx = (body.x - node.x) * tether;
@@ -1452,6 +1513,7 @@ function stepDragMotion({ followers }, releasing) {
     body.vy = (body.vy + fy) * .69;
   }
   for (const body of followers) {
+    if (body.pushed) continue;
     const { node } = body;
     const dx = node.x + body.vx - body.x;
     const dy = node.y + body.vy - body.y;
@@ -1495,6 +1557,7 @@ function queueDragFrame(drag) {
       completeDrag(drag);
       return;
     }
+    if (!releasing) advanceDraggedNode(drag);
     stepDragMotion(drag.motion, releasing);
     const moving = new Set();
     for (const body of drag.motion.bodies) {
@@ -1516,23 +1579,31 @@ function completeDrag(drag) {
   settlingDrag = null;
   const { node, touched, motion } = drag;
   const moving = new Set([node]);
-  for (const body of motion.followers) {
-    body.node.x = body.x;
-    body.node.y = body.y;
-    moving.add(body.node);
+  for (const body of motion.bodies.slice(1)) {
+    const peer = body.node;
+    if (body.pushed) placeNode(peer, peer.x, peer.y);
+    else placeNode(peer, body.x, body.y);
+    moving.add(peer);
   }
   paintDrag(drag, moving, "drop");
   if ([...touched].some(([edge, route]) => route && edge.needsRoute)) {
-    placeNode(node, drag.nodeX, drag.nodeY);
-    paintNode(node);
-    for (const [edge, route] of touched) paintEdge(edge, route);
+    restoreDrag(drag);
   }
+}
+
+function restoreDrag({ motion, touched }) {
+  for (const body of motion.bodies) {
+    placeNode(body.node, body.originalX, body.originalY);
+    paintNode(body.node);
+  }
+  for (const [edge, route] of touched) paintEdge(edge, route);
 }
 
 function clearDropPosition(node, original, restPositions) {
   const otherNodes = layout.nodes.filter((other) => other !== node);
   const clear = (x, y) => otherNodes.every((other) => {
-    const home = restPositions.get(other.id) || other;
+    const body = restPositions.get(other.id);
+    const home = body?.depth && !body.pushed ? body : other;
     const dx = x - home.x;
     const dy = y - home.y;
     const distance = Math.hypot(dx, dy);
@@ -1554,7 +1625,18 @@ function clearDropPosition(node, original, restPositions) {
       if (clear(x, y)) return [x, y];
     }
   }
-  return original;
+  return clear(...original) ? original : null;
+}
+
+function settleDragDrop(drag) {
+  const { node, motion } = drag;
+  for (const body of motion.bodies) {
+    if (!body.pushed && body.node !== node) continue;
+    const position = clearDropPosition(body.node, [body.originalX, body.originalY], motion.byId);
+    if (!position) return false;
+    placeNode(body.node, ...position);
+  }
+  return true;
 }
 
 function pinchPosition() {
@@ -1609,10 +1691,8 @@ diagram.addEventListener("pointermove", (event) => {
     if (gesture.node) startDragMotion(gesture);
   }
   if (gesture.node) {
-    const n = gesture.node;
     layout.manuallyPlaced = true;
-    n.x = gesture.nodeX + dx / camera.scale;
-    n.y = gesture.nodeY + dy / camera.scale;
+    gesture.target = { x: gesture.nodeX + dx / camera.scale, y: gesture.nodeY + dy / camera.scale };
     queueDragFrame(gesture);
   } else {
     camera.x = gesture.cameraX + dx;
@@ -1630,9 +1710,12 @@ function finishGesture(cancelled) {
   if (node && moved) {
     cancelAnimationFrame(dragFrame);
     dragFrame = 0;
-    const [x, y] = clearDropPosition(node, [drag.nodeX, drag.nodeY], drag.motion.byId);
-    placeNode(node, x, y);
-    if (cancelled || !drag.motion.followers.length) completeDrag(drag);
+    advanceDraggedNode(drag);
+    if (!settleDragDrop(drag)) {
+      restoreDrag(drag);
+      return;
+    }
+    if (cancelled || drag.motion.followers.every((body) => body.pushed)) completeDrag(drag);
     else {
       drag.releaseFrames = 0;
       settlingDrag = drag;
