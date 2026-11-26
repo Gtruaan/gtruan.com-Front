@@ -51,6 +51,7 @@ let gesture = null;
 let pinch = null;
 let camera = { x: 0, y: 0, scale: 1, fitted: true, overview: true };
 let dragFrame = 0;
+let settlingDrag = null;
 
 function svg(tag, attributes = {}) {
   const element = document.createElementNS(svgNS, tag);
@@ -668,6 +669,7 @@ function createEdge(link, nodes) {
 function createLayout() {
   cancelAnimationFrame(dragFrame);
   dragFrame = 0;
+  settlingDrag = null;
   gesture = null;
   pinch = null;
   touchPoints.clear();
@@ -717,8 +719,10 @@ function fitNodeLabel(node) {
   const { titleElement: title, stack, math } = node;
   node.rx = node.baseRx;
   node.ry = node.baseRy;
-  const minTitleSize = 13;
+  const minTitleSize = 10;
   const maxTitleSize = node.isRoot ? 23 : 19;
+  title.classList.remove("is-truncated");
+  const wordFits = () => title.scrollWidth <= title.clientWidth;
   for (let attempt = 0; attempt < 6; attempt++) {
     const { width, height } = setLabelBounds(node);
     if (math) {
@@ -735,6 +739,17 @@ function fitNodeLabel(node) {
       math.hidden = math.offsetWidth > width;
     }
     title.style.fontSize = `${minTitleSize}px`;
+    if (!wordFits()) {
+      const fittedRadius = Math.min(Math.floor(node.baseRx * 1.22),
+        Math.ceil((title.scrollWidth + 2) / labelWidthRatio));
+      if (fittedRadius > node.rx) {
+        node.rx = fittedRadius;
+        continue;
+      }
+      // Keep unusually long, unbroken names legible in the inspector.
+      title.classList.add("is-truncated");
+      break;
+    }
     if (stack.offsetHeight > height) {
       node.ry = Math.ceil((stack.offsetHeight + 6) / labelHeightRatio);
       continue;
@@ -744,7 +759,7 @@ function fitNodeLabel(node) {
     for (let i = 0; i < 7; i++) {
       const candidate = (low + high) / 2;
       title.style.fontSize = `${candidate}px`;
-      if (stack.offsetHeight <= height) low = candidate;
+      if (wordFits() && stack.offsetHeight <= height) low = candidate;
       else high = candidate;
     }
     title.style.fontSize = `${low}px`;
@@ -1149,13 +1164,13 @@ function reduceRouteCrossings(edges, routes, spatial) {
   }
 }
 
-function paintDrag({ node, touched }, phase = "drag") {
-  paintNode(node);
+function paintDrag({ touched }, moving, phase = "drag") {
+  for (const node of moving) paintNode(node);
   const index = obstacleIndex(layout.nodes);
-  const obstacle = index.byId.get(node.id);
+  const obstacles = [...moving].map(({ id }) => index.byId.get(id));
   for (const edge of layout.edges) {
-    const incident = edge.a === node || edge.b === node;
-    const blocked = !incident && edge.routePoints && !polylineClear(edge.routePoints, [obstacle]);
+    const incident = moving.has(edge.a) || moving.has(edge.b);
+    const blocked = !incident && edge.routePoints && !polylineClear(edge.routePoints, obstacles);
     if (incident || blocked || (touched.has(edge) && (edge.needsRoute || phase === "drop"))) {
       if (!touched.has(edge)) touched.set(edge, edge.route);
       paintDraggedEdge(edge, index, phase, !incident && !blocked && !edge.needsRoute);
@@ -1384,11 +1399,142 @@ function singlePointer(pointerId, { x, y }, node = null, moved = false) {
     nodeX: node?.x, nodeY: node?.y, touched: new Map() };
 }
 
-function clearDropPosition(node, original) {
+function startDragMotion(drag) {
+  const snapshot = (node, depth) => ({
+    node, depth, x: node.x, y: node.y, vx: 0, vy: 0, drawnX: node.x, drawnY: node.y,
+  });
+  const bodies = [snapshot(drag.node, 0)];
+  const byId = new Map([[drag.node.id, bodies[0]]]);
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    for (const { node, depth } of bodies) {
+      if (depth === 2 || bodies.length >= 17) break;
+      const nearby = [...layout.neighbors.get(node.id)].map((id) => layout.nodeMap.get(id));
+      nearby.sort((a, b) => Math.hypot(a.x - node.x, a.y - node.y) - Math.hypot(b.x - node.x, b.y - node.y));
+      for (const peer of nearby) {
+        if (byId.has(peer.id)) continue;
+        const body = snapshot(peer, depth + 1);
+        byId.set(peer.id, body);
+        bodies.push(body);
+        if (bodies.length >= 17) break;
+      }
+    }
+  }
+  const followers = bodies.slice(1);
+  for (const body of followers) {
+    body.links = [...layout.neighbors.get(body.node.id)]
+      .filter((id) => byId.has(id))
+      .map((id) => {
+        const peer = byId.get(id);
+        return { peer, dx: peer.x - body.x, dy: peer.y - body.y, rest: Math.hypot(peer.x - body.x, peer.y - body.y) };
+      });
+  }
+  drag.motion = { bodies, followers, byId };
+}
+
+function stepDragMotion({ followers }, releasing) {
+  for (const body of followers) {
+    const { node, depth, links } = body;
+    const tether = releasing ? .22 : depth === 1 ? .115 : .16;
+    let fx = (body.x - node.x) * tether;
+    let fy = (body.y - node.y) * tether;
+    if (!releasing) {
+      for (const { peer, rest, dx: homeX, dy: homeY } of links) {
+        const dx = peer.node.x - node.x;
+        const dy = peer.node.y - node.y;
+        const distance = Math.hypot(dx, dy) || 1;
+        const stiffness = peer.depth === 0 ? .092 : .042;
+        const tension = Math.max(-12, Math.min(16, (distance - rest) * stiffness)) / distance;
+        fx += dx * tension + Math.max(-9, Math.min(9, (dx - homeX) * stiffness * .44));
+        fy += dy * tension + Math.max(-9, Math.min(9, (dy - homeY) * stiffness * .44));
+      }
+    }
+    body.vx = (body.vx + fx) * .69;
+    body.vy = (body.vy + fy) * .69;
+  }
+  for (const body of followers) {
+    const { node } = body;
+    const dx = node.x + body.vx - body.x;
+    const dy = node.y + body.vy - body.y;
+    const reach = body.depth === 1 ? 74 : 37;
+    const scale = Math.min(1, reach / (Math.hypot(dx, dy) || 1));
+    node.x = body.x + dx * scale;
+    node.y = body.y + dy * scale;
+    easeDragContact(body, reach);
+  }
+}
+
+function easeDragContact(body, reach) {
+  const { node } = body;
+  for (const other of layout.nodes) {
+    if (other === node) continue;
+    const dx = node.x - other.x;
+    const dy = node.y - other.y;
+    const distance = Math.hypot(dx, dy);
+    if (distance > Math.max(node.rx, node.ry) + Math.max(other.rx, other.ry) + 8) continue;
+    const angle = distance ? Math.atan2(dy, dx) : Math.atan2(body.y - other.y, body.x - other.x);
+    const ux = Math.cos(angle);
+    const uy = Math.sin(angle);
+    const overlap = projectedRadius(node, ux, uy) + projectedRadius(other, ux, uy) + 8 - distance;
+    if (overlap <= 0) continue;
+    const push = Math.min(overlap * .8, 22);
+    const x = node.x - body.x + ux * push;
+    const y = node.y - body.y + uy * push;
+    const scale = Math.min(1, reach / (Math.hypot(x, y) || 1));
+    node.x = body.x + x * scale;
+    node.y = body.y + y * scale;
+  }
+}
+
+function queueDragFrame(drag) {
+  if (dragFrame) return;
+  dragFrame = requestAnimationFrame(() => {
+    dragFrame = 0;
+    const releasing = settlingDrag === drag;
+    if (!releasing && gesture !== drag) return;
+    if (releasing && ++drag.releaseFrames >= 22) {
+      completeDrag(drag);
+      return;
+    }
+    stepDragMotion(drag.motion, releasing);
+    const moving = new Set();
+    for (const body of drag.motion.bodies) {
+      const { node } = body;
+      if (Math.hypot(node.x - body.drawnX, node.y - body.drawnY) < .05) continue;
+      moving.add(node);
+      body.drawnX = node.x;
+      body.drawnY = node.y;
+    }
+    if (moving.size) paintDrag(drag, moving);
+    const movingFollowers = drag.motion.followers.some(({ node }) => moving.has(node));
+    if (releasing || movingFollowers) queueDragFrame(drag);
+  });
+}
+
+function completeDrag(drag) {
+  cancelAnimationFrame(dragFrame);
+  dragFrame = 0;
+  settlingDrag = null;
+  const { node, touched, motion } = drag;
+  const moving = new Set([node]);
+  for (const body of motion.followers) {
+    body.node.x = body.x;
+    body.node.y = body.y;
+    moving.add(body.node);
+  }
+  paintDrag(drag, moving, "drop");
+  if ([...touched].some(([edge, route]) => route && edge.needsRoute)) {
+    placeNode(node, drag.nodeX, drag.nodeY);
+    paintNode(node);
+    for (const [edge, route] of touched) paintEdge(edge, route);
+  }
+}
+
+function clearDropPosition(node, original, restPositions) {
   const otherNodes = layout.nodes.filter((other) => other !== node);
   const clear = (x, y) => otherNodes.every((other) => {
-    const dx = x - other.x;
-    const dy = y - other.y;
+    const home = restPositions.get(other.id) || other;
+    const dx = x - home.x;
+    const dy = y - home.y;
     const distance = Math.hypot(dx, dy);
     const gap = 8;
     if (distance > Math.max(node.rx, node.ry) + Math.max(other.rx, other.ry) + gap) return true;
@@ -1424,6 +1570,7 @@ diagram.addEventListener("pointerdown", (event) => {
   if (!layout || event.button !== 0) return;
   const touch = event.pointerType === "touch";
   if (touchPoints.size === 2 || (gesture && !(touch && touchPoints.size === 1))) return;
+  if (settlingDrag) completeDrag(settlingDrag);
   const point = pointerPosition(event);
   diagram.setPointerCapture(event.pointerId);
   if (touch) {
@@ -1459,18 +1606,14 @@ diagram.addEventListener("pointermove", (event) => {
   if (!gesture.moved) {
     gesture.moved = true;
     diagram.classList.add("is-dragging");
+    if (gesture.node) startDragMotion(gesture);
   }
   if (gesture.node) {
     const n = gesture.node;
     layout.manuallyPlaced = true;
     n.x = gesture.nodeX + dx / camera.scale;
     n.y = gesture.nodeY + dy / camera.scale;
-    if (!dragFrame) {
-      dragFrame = requestAnimationFrame(() => {
-        dragFrame = 0;
-        paintDrag(gesture);
-      });
-    }
+    queueDragFrame(gesture);
   } else {
     camera.x = gesture.cameraX + dx;
     camera.y = gesture.cameraY + dy;
@@ -1487,13 +1630,13 @@ function finishGesture(cancelled) {
   if (node && moved) {
     cancelAnimationFrame(dragFrame);
     dragFrame = 0;
-    const [x, y] = clearDropPosition(node, [drag.nodeX, drag.nodeY]);
+    const [x, y] = clearDropPosition(node, [drag.nodeX, drag.nodeY], drag.motion.byId);
     placeNode(node, x, y);
-    paintDrag(drag, "drop");
-    if ([...drag.touched].some(([edge, route]) => route && edge.needsRoute)) {
-      placeNode(node, drag.nodeX, drag.nodeY);
-      paintNode(node);
-      for (const [edge, route] of drag.touched) paintEdge(edge, route);
+    if (cancelled || !drag.motion.followers.length) completeDrag(drag);
+    else {
+      drag.releaseFrames = 0;
+      settlingDrag = drag;
+      queueDragFrame(drag);
     }
   } else if (!cancelled && !moved) {
     if (node) selectNode(node.id);

@@ -237,8 +237,10 @@ button:focus-visible, a:focus-visible, input:focus-visible {
 .node-title {
   align-self: stretch;
   font: 700 19px/1.02 "Notebook Hand", "Segoe Print", "Comic Sans MS", cursive;
-  overflow-wrap: anywhere;
+  word-break: keep-all;
+  text-wrap: balance;
 }
+.node-title.is-truncated { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .is-root .node-title { font-size: 23px; }
 .node-formula {
   display: inline-block;
